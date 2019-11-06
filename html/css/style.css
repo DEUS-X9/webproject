@@ -7,10 +7,10 @@ body {
     background-repeat: no-repeat;
     font-family: arial;
     height: 100%;
-    margin: 0;
-    padding: 0;
+    padding: 1px;
     position: relative;
     width: 100%;
+    position: sticky;
 }
 
 header {
@@ -18,9 +18,10 @@ header {
     background-image: url("/themes/cesi/images/bgd-logo.png");
     background-position: right top;
     background-repeat: no-repeat;
-    display: block;
-    height: 9em;
+
+    padding-bottom:10px;
     width: 100%;
+
 }
 
 header img {
@@ -29,10 +30,15 @@ header img {
 }
 
 p{
+    padding-left: 40px;
     text-align: center;
 }
 
 h1 {
     text-align: center;
-    color: #4d75bb;;
+    color: #4d75bb;
+}
+h2{
+    padding-left: 40px;
+    color: #4d75bb;
 }

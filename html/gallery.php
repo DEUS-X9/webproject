@@ -4,6 +4,7 @@
 		<meta charset="utf-8">
 		<title>BDE CESI</title>
 		<link rel="stylesheet" href="css/style.css">
+<link rel="icon" type="image/png" href="images/favicon.png" />
 		<script src="script.js"></script>
 	</head>
 	<body>
@@ -11,6 +12,6 @@
  			<img title="Retour à la page d'accueil" alt="Retour à la page d'accueil" src="images/logo.png">
 		</header>
 		<h1>Gallerie</h1>
-		<p>Un bureau des étudiants ou bureau des élèves, est une association étudiante d'une même université ou école, élue par leurs adhérents, et qui s'occupe d'organiser les activités extra-scolaires .</p>
+		<p>Cette section regroupe les photos ds différents évènements organisés par le BDE.</p>
 	</body>
 </html>

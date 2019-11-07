@@ -13,6 +13,6 @@
  			<img title="Retour à la page d'accueil" alt="Retour à la page d'accueil" src="images/logo.png">
 		</header>
 		<h1>Gallerie</h1>
-		<p>Cette section regroupe les photos ds différents évènements organisés par le BDE.</p>
+		<p>Cette section regroupe les photos des différents évènements organisés par le BDE.</p>
 	</body>
 </html>

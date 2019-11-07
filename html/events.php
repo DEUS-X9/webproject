@@ -24,7 +24,7 @@
 		</header>
 		<h1>Evènements:</h1>
 		<p>Cette page regroupe les différents évènements qui vous sont proposés par le bureau des étudiants</p>
-   <?php echo $_GET['message']; ?>
+
 	</body>
 </html>
 

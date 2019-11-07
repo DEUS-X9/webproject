@@ -1,5 +1,3 @@
-
-
 body {
     background-clip: border-box;
     background-origin: padding-box;
@@ -19,6 +17,7 @@ header {
     background-position: right top;
     background-repeat: no-repeat;
 
+
     padding-bottom:10px;
     width: 100%;
 
@@ -35,10 +34,7 @@ p{
 }
 
 h1 {
+    padding:10px;
     text-align: center;
-    color: #4d75bb;
-}
-h2{
-    padding-left: 40px;
     color: #4d75bb;
 }

@@ -3,9 +3,9 @@
 	<head>
 		<meta charset="utf-8">
 		<title>BDE CESI</title>
+                <link rel="stylesheet" href="css/bootstrap.min.css">
 		<link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/bootstrap.min.css">
-<link rel="icon" type="image/png" href="images/favicon.png" />
+		<link rel="icon" type="image/png" href="images/favicon.png" />
 		<script src="script.js"></script>
 	</head>
 	<body>

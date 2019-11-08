@@ -60,7 +60,15 @@ if(isset($_POST['email']) AND isset($_POST['mdp']))
 ?>
 		<h1>Connexion</h1>
 		<span id="info">
-
+		<?php
+		/*if(isset($_SESSION['prem']))
+                {
+		   
+		}
+ 		else
+		{
+		  $_SESSION['prem'] = true;
+		}*/?>
 		</span><br />
 		<form method="post">
 		  <label for="email">Votre email :</label>

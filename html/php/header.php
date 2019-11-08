@@ -37,8 +37,7 @@ if(isset($_COOKIE['mail']) AND isset($_COOKIE['mdp']) AND !isset($_SESSION['id']
   <title>BDE CESI</title>
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <link rel="stylesheet" href="css/style.css">
-<link rel="icon" type="image/png" href="images/favicon.png" />
-  <script src="script.js"></script>
+  <link rel="icon" type="image/png" href="images/favicon.png" />
 </head>
 <body> 
  <header>

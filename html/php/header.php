@@ -11,7 +11,7 @@ catch (Exception $e)
 	die('Erreur : ' . $e->getMessage());
 }
 
-if(isset($_COOKIE('mail')) && isset($_COOKIE('mdp'))
+if(isset($_COOKIE('mail')) && isset($_COOKIE('mdp')))
 {
 	$email = (String)htmlspecialchars($_COOKIE['mail']);
 	$mdp = (String)htmlspecialchars($_COOKIE['mdp']);

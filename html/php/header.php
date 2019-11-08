@@ -1,3 +1,34 @@
+<?php
+session_start();
+header('Content-Type: text/html; charset=utf-8');
+
+try
+{
+  $bdd = new PDO('mysql:host=localhost;dbname=webprojet;charset=utf8', 'webprojet', '7Ydeuzdb52:!');
+}
+catch (Exception $e)
+{
+	die('Erreur : ' . $e->getMessage());
+}
+
+if(isset($_COOKIE('mail')) && isset($_COOKIE('mdp'))
+{
+	$email = (String)htmlspecialchars($_COOKIE['mail']);
+	$mdp = (String)htmlspecialchars($_COOKIE['mdp']);
+	$req = $bdd->prepare("SELECT * FROM MEMBRE WHERE MAIL = ? AND PASSWORD = ?");
+	
+	$req->execute(array($email, $mdp));
+        
+	if($donnee = $req->fetch())
+	{
+	  $_SESSION['id'] = $donnee['ID'];
+	  $_SESSION['nom'] = $donnee['NOM'];
+	  $_SESSION['prenom'] = $donnee['PRENOM'];
+	  $_SESSION['mail'] = $donnee['MAIL'];
+	  $_SESSION['droit'] = $donnee['DROIT'];
+	  $_SESSION['id_region'] = $donnee['ID_REGION'];
+	}
+} ?>
 <!doctype html>
 <html lang="fr">
 <head>

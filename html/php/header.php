@@ -42,7 +42,7 @@ if(isset($_COOKIE['mail']) AND isset($_COOKIE['mdp']))
 <body> 
  <header>
   <a href="index.php">
-   <img title="Retour à la page d'accueil" alt="Retour à la page d'accueil" src="images/logo.png">
+   <img title="Retour à la page d'accueil"  src="images/logo.png">
   </a>
 
     <?php

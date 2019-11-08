@@ -38,6 +38,12 @@ h1 {
     color: #4d75bb;
 }
 
+.centered-image{
+    align: center;
+    size:50%;
+
+}
+
 
 form {
   background-color: #FFFFFF;

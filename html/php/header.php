@@ -44,8 +44,7 @@ if(isset($_COOKIE['mail']) AND isset($_COOKIE['mdp']))
   <img title="Retour à la page d'accueil" alt="Retour à la page d'accueil" src="images/logo.png">
 
     <?php
-    $pageEnCours = $_SERVER['PHP_SELF']; 
-    echo $_SERVER['PHP_SELF'];?>
+    $pageEnCours = $_SERVER['PHP_SELF']; ?>
 
     <nav class="nav nav-pills nav-justified flex-column flex-sm-row">
 	<a class="nav-link nav-item <?php if($pageEnCours == "/webprojet/index.php") { echo "active";} ?>" href="index.php">Accueil</a>

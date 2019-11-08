@@ -42,7 +42,9 @@ if(isset($_COOKIE['mail']) AND isset($_COOKIE['mdp']) AND !isset($_SESSION['id']
 </head>
 <body> 
  <header>
-  <img title="Retour à la page d'accueil" alt="Retour à la page d'accueil" src="images/logo.png">
+  <a href="index.php">
+   <img title="Retour à la page d'accueil"  src="images/logo.png">
+  </a>
 
     <?php
     if(isset($_SESSION['nom']))

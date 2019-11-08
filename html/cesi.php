@@ -1,4 +1,4 @@
-<?php require 'header.php'; ?>
+<?php require 'php/header.php'; ?>
 		<h1>Direction</h1>
 
 	</body>

@@ -13,7 +13,7 @@
             	<label for="cpassword">Confirmer votre mot de passe : </label>
             	<input type="password" name="cpassword" id="password" placeholder="Minimum 6 caractères alphanumériques" required/><br />
            	<input type="checkbox" name="rgpd" id="rgpd" />
-           	<label for="rgpd">J'accepte d'envoyer mes données personnelles à l'association BDE CESI ROUEN à des fins de communication, de gestion de compte et de livraison.<br/>Les données ne seront ni vendues, ni louées ni distribuées pour toute autres raisons que nécessaire à l'exécution de la commande.</label><br />
+           	<label classe="info" for="rgpd">J'accepte d'envoyer mes données personnelles à l'association BDE CESI ROUEN à des fins de communication, de gestion de compte et de livraison.<br/>Les données ne seront ni vendues, ni louées ni distribuées pour toute autres raisons que nécessaire à l'exécution de la commande.</label><br />
             	<input type="submit" value="Envoyer" />
            	<input type="reset" value="Remettre les valeurs à zéro" />
                </form>

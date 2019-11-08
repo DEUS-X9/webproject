@@ -1,0 +1,4 @@
+La gestion des API REST se fera via un serveur Node.js
+La sécurité est essentielle : toutes les requêtes issues des formulaires devront être filtrées et validées en utilisant les fonctionnalités PHP. Idem pour l’accès aux API REST qui devront utiliser un mécanisme d’authentification tel que les tokens.
+
+sequelize-auto -o "./models" -d webprojet -h localhost -u root -p 3306 -x pass -e mysql

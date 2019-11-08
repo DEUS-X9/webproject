@@ -53,6 +53,8 @@ if(isset($_POST['email']) AND isset($_POST['mdp']))
                'ip' => $_SERVER['REMOTE_ADDR'],
                'email' => $_POST['email'],
                'login' => true ));
+       
+	$_SESSION['prem'] = false;
       }
 
       $req->closeCursor();
@@ -64,19 +66,18 @@ else
 }
 ?>
 		<h1>Connexion</h1>
-		<span id="info">
-		<?php
-		if(isset($_SESSION['prem']) AND $_SESSION['prem'] == true)
-		{
-        		if($id == "empty") { echo "Un ou plusieurs champ(s) sont vide(s)"; } else if($id == "pass") { echo "Mot de passe ou compte invalide"; }
-			$_SESSION['prem'] = false;
-		}
-		else
-		{
-		  $_SESSION['prem'] = true;
-		}?>
-		</span><br />
 		<form method="post">
+		  <span class="error">
+		  <?php
+		  if(isset($_SESSION['prem']) AND $_SESSION['prem'] == true)
+		  {
+        		  if($id == "empty") { echo "Un ou plusieurs champ(s) sont vide(s)"; } else if($id == "pass") { echo "Mot de passe ou compte invalide"; }
+		  }
+		  else
+		  {
+		    $_SESSION['prem'] = true;
+		  }?>
+		</span><br />
 		  <label for="email">Votre email :</label>
                   <input type="email" id="email" name="email" placeholder="votrenom@domain.tld" autofocus required/><br />
 		  <label for="mdp">Votre mot de passe :</label>

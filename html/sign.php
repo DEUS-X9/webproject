@@ -50,6 +50,7 @@ if(isset($_POST['nom']) AND isset($_POST['fnom']) AND isset($_POST['email']) AND
                  'fnom'=> $fnom));
 
                  header('Location: login.php');
+		 $_SESSION['prem'] = false;
                }
                else
                {
@@ -88,7 +89,6 @@ if(isset($_POST['nom']) AND isset($_POST['fnom']) AND isset($_POST['email']) AND
 		{
 
         		if($id == "empty") { echo "Un ou plusieurs champ(s) sont vide(s)"; } else if($id == "pass") { echo "Mot de passe différent !"; } else if($id == "email"){ echo "Email incorrecte!"; } else if($id == "rgpd"){ echo "Vous devez accepter l'utilisation de vos données personnelles"; } else if($id == "cgv"){ echo "Vous devez accepter les CGV"; } else if($id == "iPass") { echo "Mot de passe inférieur à 6 caractères"; } else if($id == "users") { echo "Utilisateur déjà existant"; }
-			$_SESSION['prem'] = false;
 		}
 		else
 		{

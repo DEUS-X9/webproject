@@ -62,7 +62,13 @@ if(isset($_COOKIE['mail']) AND isset($_COOKIE['mdp']) AND !isset($_SESSION['id']
 	{ ?>
 		<a class="nav-link nav-item <?php if($pageEnCours == "/webprojet/sign.php") { echo "active";} ?>" href="sign.php">Inscription</a>
 		<a class="nav-link nav-item <?php if($pageEnCours == "/webprojet/login.php") { echo "active";} ?>" href="login.php">Connexion</a>
-	<?php } ?>
+	<?php } 
+        else
+        {?>
+		<a class="nav-link nav-item" href="logout.php">Se déconnecter</a>
+	<?php
+	}
+	?>
     </nav>
  </header>
 

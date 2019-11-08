@@ -41,7 +41,9 @@ if(isset($_COOKIE['mail']) AND isset($_COOKIE['mdp']))
 </head>
 <body> 
  <header>
-  <img title="Retour à la page d'accueil" alt="Retour à la page d'accueil" src="images/logo.png">
+  <a href="index.php">
+   <img title="Retour à la page d'accueil" alt="Retour à la page d'accueil" src="images/logo.png">
+  </a>
 
     <?php
     $pageEnCours = $_SERVER['PHP_SELF']; ?>

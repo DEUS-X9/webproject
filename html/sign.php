@@ -73,7 +73,7 @@ if(isset($_POST['nom']) AND isset($_POST['fnom']) AND isset($_POST['email']) AND
         die('Erreur : ' . $e->getMessage());
      }
   }
-  else if
+  else
   {
     $id = "empty";
   }

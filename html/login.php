@@ -22,6 +22,7 @@ if(isset($_POST['email']) AND isset($_POST['mdp']))
                'ip' => $_SERVER['REMOTE_ADDR'],
                'email' => $email,
                'login' => false ));
+	$id = "pass";
      }
     else
     {
@@ -57,18 +58,23 @@ if(isset($_POST['email']) AND isset($_POST['mdp']))
       $req->closeCursor();
       $req2->closeCursor();
 }
+else
+{
+  $id = "empty";
+}
 ?>
 		<h1>Connexion</h1>
 		<span id="info">
 		<?php
-		/*if(isset($_SESSION['prem']))
-                {
-		   
+		if(isset($_SESSION['prem']) AND $_SESSION['prem'] == true)
+		{
+        		if($id == "empty") { echo "Un ou plusieurs champ(s) sont vide(s)"; } else if($id == "pass") { echo "Mot de passe ou compte invalide"; }
+			$_SESSION['prem'] = false;
 		}
- 		else
+		else
 		{
 		  $_SESSION['prem'] = true;
-		}*/?>
+		}?>
 		</span><br />
 		<form method="post">
 		  <label for="email">Votre email :</label>

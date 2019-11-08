@@ -40,21 +40,21 @@ if(isset($_COOKIE['mail']) AND isset($_COOKIE['mdp']))
   <script src="script.js"></script>
 </head>
 <body> 
-
  <header>
+  <img title="Retour à la page d'accueil" alt="Retour à la page d'accueil" src="images/logo.png">
 
+  <?php
 
+    define('pagencours', $_SERVER['PHP_SELF'], true) 
 
-						<img title="Retour à la page d'accueil" alt="Retour à la page d'accueil" src="images/logo.png">
+    <nav class="nav nav-pills nav-justified flex-column flex-sm-row">
+	<a class="nav-link nav-item if (pagencours == "/index.php") { echo "active";}" href="index.php">Accueil</a>
+	<a class="nav-link nav-item if (pagencours == "/events.php") { echo "active";}" href="events.php">Evenements</a>
+	<a class="nav-link nav-item if (pagencours == "/shop.php") { echo "active";}" href="shop.php">Boutique</a>
+	<a class="nav-link nav-item if (pagencours == "/sign.php") { echo "active";}" href="sign.php">Inscription</a>
+	<a class="nav-link nav-item if (pagencours == "/login.php") { echo "active";}" href="login.php">Connexion</a>
+    </nav>
+  ?>
 
-
-<nav class="nav nav-pills nav-justified flex-column flex-sm-row">
-			<a class="nav-link nav-item active" href="index.php">Accueil</a>
-			<a class="nav-link nav-item" href="events.php">Evenements</a>
-			<a class="nav-link nav-item" href="shop.php">Boutique</a>
-			<a class="nav-link nav-item" href="sign.php">Inscription</a>
-			<a class="nav-link nav-item" href="login.php">Connexion</a>
-		</nav>
-
-			</header>
+ </header>
 

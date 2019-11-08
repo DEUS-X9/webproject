@@ -43,18 +43,16 @@ if(isset($_COOKIE['mail']) AND isset($_COOKIE['mdp']))
  <header>
   <img title="Retour à la page d'accueil" alt="Retour à la page d'accueil" src="images/logo.png">
 
-  <?php
-
-    define('pagencours', $_SERVER['PHP_SELF'], true) 
+    <?php
+    $pageEnCours = $_SERVER['PHP_SELF']; 
+    echo $_SERVER['PHP_SELF'];?>
 
     <nav class="nav nav-pills nav-justified flex-column flex-sm-row">
-	<a class="nav-link nav-item if (pagencours == "/index.php") { echo "active";}" href="index.php">Accueil</a>
-	<a class="nav-link nav-item if (pagencours == "/events.php") { echo "active";}" href="events.php">Evenements</a>
-	<a class="nav-link nav-item if (pagencours == "/shop.php") { echo "active";}" href="shop.php">Boutique</a>
-	<a class="nav-link nav-item if (pagencours == "/sign.php") { echo "active";}" href="sign.php">Inscription</a>
-	<a class="nav-link nav-item if (pagencours == "/login.php") { echo "active";}" href="login.php">Connexion</a>
+	<a class="nav-link nav-item <?php if($pageEnCours == "/webprojet/index.php") { echo "active";} ?>" href="index.php">Accueil</a>
+	<a class="nav-link nav-item <?php if($pageEnCours == "/webprojet/events.php") { echo "active";} ?>" href="events.php">Evenements</a>
+	<a class="nav-link nav-item <?php if($pageEnCours == "/webprojet/shop.php") { echo "active";} ?>" href="shop.php">Boutique</a>
+	<a class="nav-link nav-item <?php if($pageEnCours == "/webprojet/sign.php") { echo "active";} ?>" href="sign.php">Inscription</a>
+	<a class="nav-link nav-item <?php if($pageEnCours == "/webprojet/login.php") { echo "active";} ?>" href="login.php">Connexion</a>
     </nav>
-  ?>
-
  </header>
 

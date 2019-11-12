@@ -25,7 +25,7 @@ if(isset($_COOKIE['mail']) AND isset($_COOKIE['mdp']) AND !isset($_SESSION['id']
 	  $_SESSION['nom'] = $donnee['NOM'];
 	  $_SESSION['prenom'] = $donnee['PRENOM'];
 	  $_SESSION['mail'] = $donnee['MAIL'];
-	  $_SESSION['droit'] = $donnee['DROIT'];
+	  $_SESSION['droit'] = $donnee['TYPE_UTILISATEUR'];
 	  $_SESSION['id_region'] = $donnee['ID_REGION'];
 
           $req2 = $bdd->prepare('INSERT INTO loging(ip, email, login) VALUES(:ip, :email, :login)');

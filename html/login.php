@@ -36,7 +36,7 @@ if(isset($_POST['email']) AND isset($_POST['mdp']))
 	$_SESSION['nom'] = $donnee['NOM'];
 	$_SESSION['prenom'] = $donnee['PRENOM'];
 	$_SESSION['mail'] = $donnee['MAIL'];
-	$_SESSION['droit'] = $donnee['DROIT'];
+	$_SESSION['droit'] = $donnee['TYPE_UTILISATEUR'];
 	$_SESSION['id_region'] = $donnee['ID_REGION'];
 
         if(isset($_SESSION['location']))

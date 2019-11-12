@@ -43,7 +43,6 @@ h1 {
 h2 {
     padding:10px;
     text-align: center;
-    color: #4d75bb;
 }
 
 form {
@@ -69,11 +68,12 @@ color: #4C4C4C;
 }
 
 article {
-  background-color: #c2daff;
+  background-color: #a0abba;
   padding:20px;
-  margin:20px;
+  margin:40px;
   border: solid #4d75bb;
-    text-align: justify;
+  text-align: justify;
+  color: #FFFFFF;
 }
 
 

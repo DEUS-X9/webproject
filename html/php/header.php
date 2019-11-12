@@ -48,9 +48,23 @@ if(isset($_COOKIE['mail']) AND isset($_COOKIE['mdp']) AND !isset($_SESSION['id']
 </head>
 <body> 
  <header>
-  <a href="index.php">
-   <img title="Retour à la page d'accueil"  src="images/logo.png">
-  </a>
+	 
+	<p>
+		<span>  
+			<a href="index.php">
+        			<img title="Retour à la page d'accueil"  src="images/logo.png">
+     			</a>
+		</span>    
+			<?php
+   		 	if(isset($_SESSION['nom']))
+		  	  {
+				echo 'Bienvenue ' . $_SESSION['prenom'] . ' ' . $_SESSION['nom'];
+ 		 	  }
+		  	  $pageEnCours = $_SERVER['PHP_SELF']; ?>
+		 </p> 
+	 
+	 
+
 
     <?php
     if(isset($_SESSION['nom']))

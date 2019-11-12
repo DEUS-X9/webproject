@@ -9,6 +9,18 @@ else if($_SESSION['droit'] != 2)
   header('Location: index.php');
 } ?>
 		<h1>Page d'administration</h1>
+
+<table class="table table-striped table-dark">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">ID</th>
+      <th scope="col">Compte</th>
+
+    </tr>
+  </thead>
+  <tbody>
+
 		<?php 
 		if(!isset($_GET['compte']))
 		{
@@ -23,7 +35,7 @@ else if($_SESSION['droit'] != 2)
  		    echo '<p id="result_compte">';
 		    while($donnees = $req->fetch())
 		    {
-			echo '<article><span class="entite_compte">Compte : ' . $donnees['MAIL']. ' ID : ' . $donnees['ID_MEMBRE']. ' <a href="bde.php?compte="' . $donnees['MAIL'] . '">Gérer</a></span><br /></article>';
+			echo '    <tr> <th scope="row"> ' . $donnees['ID_MEMBRE'] . '</th><td>' . $donnees['MAIL']. '</td>  <td><a href="bde.php?compte=" ' . $donnees['MAIL'] . ' ">Gérer</a></td></tr>' ;
 		    }
                     echo '</p>';
                   }
@@ -43,5 +55,9 @@ else if($_SESSION['droit'] != 2)
                }
 	       $req->closeCursor();
                ?>
+	  
+	  
+	    </tbody>
+	  </table>
 	</body>
 </html>

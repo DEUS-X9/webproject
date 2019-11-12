@@ -28,13 +28,6 @@ header img {
     max-width: 10em;
 }
 
-header p span{
-    float: left;
-}
-
-header p{
-    text-align: right;
-}
 
 p{
     padding-left: 40px;

@@ -75,6 +75,11 @@ article {
   border-radius: 15px;
 }
 
+.error{
+    color: #D8000C;
+    background-color: #FFD2D2;
+}
+
 
 
 

@@ -15,6 +15,10 @@ else if($_SESSION['droit'] != 2)
     <tr>
       <th scope="col">ID</th>
       <th scope="col">Compte</th>
+      <th scope="col">Nom</th>
+      <th scope="col">Prénom</th>
+      <th scope="col">Centre</th>
+      <th scope="col">Rõle</th>	    
       <th scope="col">Gérer</th>
 
     </tr>
@@ -35,7 +39,7 @@ else if($_SESSION['droit'] != 2)
  		    echo '<p id="result_compte">';
 		    while($donnees = $req->fetch())
 		    {
-			echo '    <tr> <th scope="row"> ' . $donnees['ID_MEMBRE'] . '</th><td>' . $donnees['MAIL']. '</td>  <td><a href="bde.php?compte=" ' . $donnees['MAIL'] . ' ">Gérer</a></td></tr>' ;
+			echo '    <tr><th scope="row"> ' . $donnees['ID_MEMBRE'] . '</th><td>' . $donnees['MAIL']. '</td><td>' . $donnees['NOM']. '</td><td>' . $donnees['PRENOM']. '</td><td>' . $donnees['ID_REGION']. '</td><td>' . $donnees['TYPE_UTILISATEUR']. '</td><td><a href="bde.php?compte=" ' . $donnees['MAIL'] . ' ">Gérer</a></td></tr>' ;
 		    }
                     echo '</p>';
                   }

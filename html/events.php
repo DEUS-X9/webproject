@@ -4,7 +4,7 @@
 		<p>Cette page regroupe les différents évènements qui vous sont proposés par le bureau des étudiants :</p>
 		<article>
 			<h2> Titre </h2>
-			<img class="center" src="https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&cad=rja&uact=8&ved=2ahUKEwjt0sK62OTlAhWk8uAKHe3PAgQQjRx6BAgBEAQ&url=%2Furl%3Fsa%3Di%26rct%3Dj%26q%3D%26esrc%3Ds%26source%3Dimages%26cd%3D%26ved%3D%26url%3Dhttp%253A%252F%252Fwww.radioprevert.com%252Fleo-et-esteban-vous-presentent-le-laser-game%252F%26psig%3DAOvVaw1FgrSGvsN-4vXl2MEPbYVc%26ust%3D1573648713255911&psig=AOvVaw1FgrSGvsN-4vXl2MEPbYVc&ust=1573648713255911">
+			<img class="center" src=""https://www.passeo.fr/plugins/timthumb.php?src=uploads/20/i4bfTZhcDw-212-BD-LGValence-2011.11.png&h=400&w=789&zc=0>
 			<br/>
 			<p> 	Vous pouvez personnaliser la description de l'événement pour promouvoir votre événement
 				et fournir aux participants potentiels les informations les plus pertinentes susceptibles

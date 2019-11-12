@@ -5,6 +5,7 @@
 		<article>
 			<h2> Titre </h2>
 			<img class="center" src=" path img">
+			<br/>
 			<p> 	Vous pouvez personnaliser la description de l'événement pour promouvoir votre événement
 				et fournir aux participants potentiels les informations les plus pertinentes susceptibles
 				de les intéresser. Assurez-vous d'inclure une description détaillée, et intégrez des FAQ

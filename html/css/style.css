@@ -13,6 +13,7 @@ body {
 
 header {
     background-color: #ffffff;
+    background-image: url("/themes/cesi/images/bgd-logo.png");
     background-position: right top;
     background-repeat: no-repeat;
 
@@ -27,9 +28,12 @@ header img {
     max-width: 10em;
 }
 
+header p span{
+    float: left;
+}
+
 header p{
     text-align: right;
-    padding-right: 20px;
 }
 
 p{
@@ -54,13 +58,15 @@ form {
   border-radius: 15px;
 }
 
-.info {
-   font-size: 80%;
-   color: #4C4C4C;
-}
 
-img.center {
-display: block;
-margin-left: auto;
-margin-right: auto;
-}
+
+
+
+
+
+
+
+
+
+
+

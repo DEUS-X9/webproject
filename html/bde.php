@@ -23,7 +23,7 @@ else if($_SESSION['droit'] != 2)
  		    echo '<p id="result_compte">';
 		    while($donnees = $req->fetch())
 		    {
-			echo '<span class="entite_compte">Compte : ' . $donnees['MAIL']. ' ID : ' . $donnees['ID_MEMBRE']. ' <a href="bde.php?compte="' . $donnees['MAIL'] . '">Gérer</a></span><br />';
+			echo '<article><span class="entite_compte">Compte : ' . $donnees['MAIL']. ' ID : ' . $donnees['ID_MEMBRE']. ' <a href="bde.php?compte="' . $donnees['MAIL'] . '">Gérer</a></span><br /></article>';
 		    }
                     echo '</p>';
                   }

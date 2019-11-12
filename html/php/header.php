@@ -45,14 +45,14 @@ if(isset($_COOKIE['mail']) AND isset($_COOKIE['mdp']) AND !isset($_SESSION['id']
    <img title="Retour à la page d'accueil"  src="images/logo.png">
   </a>
 
-   <h2>
+   <p>
 	<?php
     if(isset($_SESSION['nom']))
     {
 	echo 'Bienvenue ' . $_SESSION['prenom'] . ' ' . $_SESSION['nom'];
     }
     $pageEnCours = $_SERVER['PHP_SELF']; ?>
-   </h2>
+   </p>
 	 
     <nav class="nav nav-pills nav-justified flex-column flex-sm-row">
 	<a class="nav-link nav-item <?php if($pageEnCours == "/webprojet/index.php") { echo "active";} ?>" href="index.php">Accueil</a>

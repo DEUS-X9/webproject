@@ -1,3 +1,12 @@
+<?php 
+if(!isset($_SESSION['id']))
+{
+  header('Location: index.php');
+}
+else if($_SESSION['droit'] == 2)
+{
+  header('Location: index.php');
+} ?>
 <!doctype html>
 <html lang="fr">
 	<head>
@@ -12,15 +21,26 @@
 		<header>
  			<img title="Retour à la page d'accueil" alt="Retour à la page d'accueil" src="images/logo.png">
 		</header>
-		<h1>Créer un évènement:</h1>
-	<form method="get" action="events.php" >
-        <p>
-        <textarea name="message" rows="8" cols="45">
-                
-        </textarea>
-            <input type="submit" value="Valider" /></p>
-</form>
-
+		<h1>Page d'administration</h1>
+		<?php 
+		if(!isset($_GET['compte']))
+		{
+		  $req = $bdd->query('SELECT * FROM MEMBRE');
+		  
+		  if($req->columnCount() == 0)
+		  {
+		    echo '<p id="result_compte">Aucune compte actif. Erreur BDD';
+		  }
+		  else
+		  {
+ 		    echo '<p id="result_compte">';
+		    while($donnees = $req->fetch())
+		    {
+			echo '<span class="entite_compte">';
+                        echo '';
+		    }
+		  
+		} ?>
 	</body>
 </html>
 

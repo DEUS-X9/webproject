@@ -27,6 +27,13 @@ if(isset($_COOKIE['mail']) AND isset($_COOKIE['mdp']) AND !isset($_SESSION['id']
 	  $_SESSION['mail'] = $donnee['MAIL'];
 	  $_SESSION['droit'] = $donnee['DROIT'];
 	  $_SESSION['id_region'] = $donnee['ID_REGION'];
+
+          $req2 = $bdd->prepare('INSERT INTO loging(ip, email, login) VALUES(:ip, :email, :login)');
+          $req2->execute(array(
+               'ip' => $_SERVER['REMOTE_ADDR'],
+               'email' => $_POST['email'],
+               'login' => true ));
+          $req2->closeCursor();
 	}
 	$req->closeCursor();
 } ?>
@@ -45,15 +52,13 @@ if(isset($_COOKIE['mail']) AND isset($_COOKIE['mdp']) AND !isset($_SESSION['id']
    <img title="Retour à la page d'accueil"  src="images/logo.png">
   </a>
 
-   <p>
-	<?php
+    <?php
     if(isset($_SESSION['nom']))
     {
 	echo 'Bienvenue ' . $_SESSION['prenom'] . ' ' . $_SESSION['nom'];
     }
     $pageEnCours = $_SERVER['PHP_SELF']; ?>
-   </p>
-	 
+
     <nav class="nav nav-pills nav-justified flex-column flex-sm-row">
 	<a class="nav-link nav-item <?php if($pageEnCours == "/webprojet/index.php") { echo "active";} ?>" href="index.php">Accueil</a>
 	<a class="nav-link nav-item <?php if($pageEnCours == "/webprojet/events.php") { echo "active";} ?>" href="events.php">Evenements</a>

@@ -13,9 +13,9 @@ else if($_SESSION['droit'] != 2)
 <table class="table table-striped table-dark">
   <thead>
     <tr>
-      <th scope="col">#</th>
       <th scope="col">ID</th>
       <th scope="col">Compte</th>
+      <th scope="col">Gérer</th>
 
     </tr>
   </thead>

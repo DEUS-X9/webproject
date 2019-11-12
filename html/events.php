@@ -4,7 +4,7 @@
 		<p>Cette page regroupe les différents évènements qui vous sont proposés par le bureau des étudiants :</p>
 		<article>
 			<h2> Titre </h2>
-			<img class="center" src=""https://www.passeo.fr/plugins/timthumb.php?src=uploads/20/i4bfTZhcDw-212-BD-LGValence-2011.11.png&h=400&w=789&zc=0>
+			<img class="center" src="https://www.passeo.fr/plugins/timthumb.php?src=uploads/20/i4bfTZhcDw-212-BD-LGValence-2011.11.png&h=400&w=789&zc=0">
 			<br/>
 			<p> 	Vous pouvez personnaliser la description de l'événement pour promouvoir votre événement
 				et fournir aux participants potentiels les informations les plus pertinentes susceptibles

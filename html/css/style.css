@@ -69,10 +69,11 @@ color: #4C4C4C;
 }
 
 article {
-  background-color: #FFFFFF;
+  background-color: #c2daff;
   padding:20px;
   margin:20px;
   border: solid #4d75bb;
+    text-align: justify;
 }
 
 

@@ -39,5 +39,9 @@ else if($_SESSION['droit'] != 2)
                 ?>
 		  <form method="post">
                   </form>
+               <?php
+               }
+	       $req->closeCursor();
+               ?>
 	</body>
 </html>

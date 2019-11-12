@@ -31,7 +31,7 @@ if(isset($_COOKIE['mail']) AND isset($_COOKIE['mdp']) AND !isset($_SESSION['id']
           $req2 = $bdd->prepare('INSERT INTO loging(ip, email, login) VALUES(:ip, :email, :login)');
           $req2->execute(array(
                'ip' => $_SERVER['REMOTE_ADDR'],
-               'email' => $_POST['email'],
+               'email' => $_COOKIE['mail'],
                'login' => true ));
           $req2->closeCursor();
 	}

@@ -27,6 +27,10 @@ header img {
     max-width: 10em;
 }
 
+header h2{
+    text-align: right;
+}
+
 p{
     padding-left: 40px;
     text-align: center;

@@ -22,10 +22,18 @@ if(isset($_POST['email']) AND isset($_POST['mdp']))
                'ip' => $_SERVER['REMOTE_ADDR'],
                'email' => $email,
                'login' => false ));
-	$id = "pass";
+	        $id = "pass";
      }
-    else
-    {
+     else if($donnee['actif'] == 0)
+     {
+        $req2->execute(array(
+               'ip' => $_SERVER['REMOTE_ADDR'],
+               'email' => $email,
+               'login' => false ));
+	        $id = "pass";
+     }
+     else
+     {
 	if(isset($_POST['auto']))
         {
           setcookie("mail", $email, time() + 365*24*3600, '/webprojet/', 'www.webfacile76.fr', true, true);

@@ -71,15 +71,17 @@ article {
 }
 
 .error{
-    color: #D8000C;
-    background-color: #FFD2D2;
+  color: #D8000C;
+  background-color: #FFD2D2;
 }
 
 .warning{
-     color: #D8000C;
+  color: #D8000C;
 }
 
-
+.metadata{
+  color:#f2f2f2;
+}
 
 
 

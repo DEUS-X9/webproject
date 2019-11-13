@@ -46,9 +46,6 @@ if(isset($_COOKIE['mail']) AND isset($_COOKIE['mdp']) AND !isset($_SESSION['id']
    <link rel="stylesheet" href="css/bootstrap.min.css">
    <link rel="stylesheet" href="css/style.css">
 	
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>	
-	
   <link rel="icon" type="image/png" href="images/favicon.png" />
 </head>
 <body> 
@@ -58,13 +55,13 @@ if(isset($_COOKIE['mail']) AND isset($_COOKIE['mdp']) AND !isset($_SESSION['id']
         			<img title="Retour à la page d'accueil"  src="images/logo.png">
      			</a>
 
-    <div classe="info"> <?php
+    <?php
     if(isset($_SESSION['nom']))
     {
 	echo 'Bienvenue ' . $_SESSION['prenom'] . ' ' . $_SESSION['nom'];
     }
     $pageEnCours = $_SERVER['PHP_SELF']; ?>
-    </div>
+    
     <nav class="nav nav-pills nav-justified flex-column flex-sm-row">
 	<a class="nav-link nav-item <?php if($pageEnCours == "/webprojet/index.php") { echo "active";} ?>" href="index.php">Accueil</a>
 	<a class="nav-link nav-item <?php if($pageEnCours == "/webprojet/events.php") { echo "active";} ?>" href="events.php">Evenements</a>

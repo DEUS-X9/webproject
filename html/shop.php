@@ -1,7 +1,9 @@
 <?php require 'php/header.php'; ?>
+
 		<h1>Boutique</h1> 
 <br/>
 <br/>
+<h2>Nos meilleures ventes : </h2>
 <style>
 * {box-sizing: border-box}
 body {font-family: Verdana, sans-serif; margin:0}
@@ -10,7 +12,7 @@ img {vertical-align: middle;}
 
 /* Slideshow container */
 .slideshow-container {
-  max-width: 20%;
+  max-width: 25%;
   position: relative;
   margin: auto;
 }
@@ -44,7 +46,8 @@ img {vertical-align: middle;}
 
 /* Caption text */
 .text {
-  color: #f2f2f2;
+  color: #ffffff;
+  background-color:#4d75bb;
   font-size: 15px;
   padding: 8px 12px;
   position: absolute;

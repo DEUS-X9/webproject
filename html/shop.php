@@ -8,7 +8,7 @@ img {vertical-align: middle;}
 
 /* Slideshow container */
 .slideshow-container {
-  max-width: 1000px;
+  max-width: 50%;
   position: relative;
   margin: auto;
 }

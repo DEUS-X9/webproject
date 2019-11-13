@@ -62,12 +62,12 @@ color: #4C4C4C;
 }
 
 article {
-  background-color: #333333;
-  padding:30px;
-  margin:50px;
-  text-align: justify;
-  color: #d69c2f;
-  border-radius: 15px;
+    background-color: #050505;
+    padding: 30px;
+    margin: 50px;
+    text-align: justify;
+    color: #d69c2f;
+    border-radius: 4px;
 }
 
 .error{

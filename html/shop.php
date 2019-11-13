@@ -1,5 +1,7 @@
 <?php require 'php/header.php'; ?>
 		<h1>Boutique</h1> 
+<br/>
+<br/>
 <style>
 * {box-sizing: border-box}
 body {font-family: Verdana, sans-serif; margin:0}
@@ -8,7 +10,7 @@ img {vertical-align: middle;}
 
 /* Slideshow container */
 .slideshow-container {
-  max-width: 50%;
+  max-width: 25%;
   position: relative;
   margin: auto;
 }

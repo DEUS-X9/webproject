@@ -1,9 +1,6 @@
 <?php require 'php/header.php'; ?>
 		<h1>Boutique</h1> 
 
-
-<body>
-
 <div class="container">
   <br>
   <div id="myCarousel" class="carousel slide" data-ride="carousel">

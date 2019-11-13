@@ -2,7 +2,6 @@
 
 		<h1>Boutique</h1> 
 <br/>
-<br/>
 <h2>Nos meilleures ventes : </h2>
 <style>
 * {box-sizing: border-box}

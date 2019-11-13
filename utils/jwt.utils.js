@@ -7,7 +7,7 @@ const JWT_SIGN_SECRET = 'fuizyehcdbskuyfz!e';
 module.exports = {
     generateTokenForUser: function(userData) {
         return jwt.sign({
-            ID_MEMBRE: userData.id,
+            ID_MEMBRE: userData.ID_MEMBRE,
             DROIT: userData.DROIT
         },
         JWT_SIGN_SECRET,
@@ -18,7 +18,7 @@ module.exports = {
     parseAutorization: function(authorisation) {
         return (authorisation != null) ? authorisation.replace('Bearer ','') :null;
     },
-    getUseId: function(authorisation) {
+    getUserId: function(authorisation) {
         var ID_MEMBRE = -1;
         var token = module.exports.parseAutorization(authorisation);
         if(token != null) {

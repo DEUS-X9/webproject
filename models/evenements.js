@@ -18,7 +18,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     E_IMAGE: {
       type: DataTypes.STRING(255),
-      allowNull: false
+      allowNull: true
     },
     E_DATE: {
       type: DataTypes.DATEONLY,
@@ -33,6 +33,7 @@ module.exports = function(sequelize, DataTypes) {
       }
     }
   }, {
+    timestamps : false,
     tableName: 'evenements'
   });
 };

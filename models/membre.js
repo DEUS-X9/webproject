@@ -8,8 +8,8 @@ module.exports = function(sequelize, DataTypes) {
       primaryKey: true,
       autoIncrement: true,
       references: {
-        model: 'Users',
-        key: 'id'
+        /*model: 'Users',
+        key: 'id'*/
       }
     },
     NOM: {

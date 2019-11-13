@@ -71,8 +71,8 @@ if(isset($_POST['nom']) AND isset($_POST['fnom']) AND isset($_POST['email']) AND
                {
                  $req2 = $bdd->prepare('INSERT INTO MEMBRE(NOM, PRENOM, MAIL, PASSWORD, ID_REGION) VALUES(:nom, :prenom, :mail, :password, :id_region)');
                  $req2->execute(array(
-                 'nom' => $nom,
-                 'prenom' => $fnom,
+                 'nom' => strtoupper($nom),
+                 'prenom' => ucfirst($fnom),
                  'mail' => $email,
                  'password'=> $password,
                  'id_region' => $selectedRegion));

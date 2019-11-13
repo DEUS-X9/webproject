@@ -1,14 +1,5 @@
 <?php 
 require 'php/header.php';
-if(!isset($_SESSION['id']))
-{
-  header('Location: index.php');
-}
-else if($_SESSION['droit'] != 2)
-{
-  header('Location: index.php');
-} 
-
 function test_reg($arg1, $arg2)
 {
   foreach($arg2 as $element)
@@ -22,68 +13,74 @@ function test_reg($arg1, $arg2)
   return false;
 }
 
-if(isset($_POST['nom']) AND isset($_POST['fnom']) AND isset($_POST['email']) AND isset($_POST['region']) AND isset($_POST['fonction']))
+function test_reg2($arg1, $arg2)
+{
+  foreach($arg2 as $element)
+  {
+    if($element['TYPE_UTILISATEUR'] == $arg1)
+    {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+$req_region = $bdd->query("SELECT * FROM REGION");
+$regions = $req_region->fetchAll(); 
+$req_droit = $bdd->query("SELECT * FROM TYPE_UTILISATEUR");
+$droits = $req_droit->fetchAll(); 
+$id = "";
+
+if(!isset($_SESSION['id']))
+{
+  header('Location: index.php');
+}
+else if($_SESSION['droit'] != 2)
+{
+  header('Location: index.php');
+} 
+else if(isset($_POST['nom']) AND isset($_POST['fnom']) AND isset($_POST['email']) AND isset($_POST['region']) AND isset($_POST['fonction']) AND isset($_GET['compte']))
 {
      $nom = htmlspecialchars((string)$_POST['nom']);
      $fnom = htmlspecialchars((string)$_POST['fnom']);
      $email = htmlspecialchars((string)$_POST['email']);
-     $password = htmlspecialchars((string)$_POST['password']);
-     $cpassword = htmlspecialchars((string)$_POST['cpassword']);
-     $selectedRegion = (int) $_POST['region'];
+     $selectedRegion = (int)$_POST['region'];
+     $selectedFct = (int)$_POST['fonction'];
+     $user = (int)$_GET['compte'];
 
      try
      {
-        if($nom == '' OR $fnom == '' OR $email == '' OR $password == '' OR $cpassword == '')
+        if($nom == '' OR $fnom == '' OR $email == '' OR $selectedRegion == '' OR $selectedFct == '')
         {
            $id = "empty";
-        }
-        else if(strlen($password) < 6 OR !preg_match("#[A-Z0-9]{1,}#", $password))
-        {
-          $id = "iPass";
         }
 	else if(!test_reg($selectedRegion, $regions))
 	{
 	  $id = "region";
 	}
-	else if(!isset($_POST['rgpd']))
-        {
-          $id = "rgpd";
-        }
+        else if(!test_reg2($selectedFct, $droits))
+	{
+	  $id = "fonction";
+	}
         else
         {
           if(preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#", $email))
           {
-             if($password == $cpassword)
-             {
 
-               $password = md5($password . 'fuizyehcdbskuyfz!e');
+            $req = $bdd->prepare('SELECT * FROM MEMBRE WHERE ID_MEMBRE = ?');
+            $req->execute(array($user));
 
-               $req = $bdd->prepare('SELECT * FROM MEMBRE WHERE MAIL = ?');
-               $req->execute(array($email));
-
-               if(!$donnees = $req->fetch())
+               if($donnees = $req->fetch())
                {
-                 $req2 = $bdd->prepare('INSERT INTO MEMBRE(NOM, PRENOM, MAIL, PASSWORD, ID_REGION) VALUES(:nom, :prenom, :mail, :password, :id_region)');
-                 $req2->execute(array(
-                 'nom' => $nom,
-                 'prenom' => $fnom,
-                 'mail' => $email,
-                 'password'=> $password,
-                 'id_region' => $selectedRegion));
-		
-		 $_SESSION['prem'] = false;
-                 header('Location: login.php');
+                 $req2 = $bdd->prepare('UPDATE MEMBRE SET NOM = ?, PRENOM = ?, MAIL = ?, ID_REGION = ?, TYPE_UTILISATEUR = ? WHERE ID_MEMBRE = ?');
+                 $req2->execute(array($nom, $fnom, $email, $selectedRegion, $selectedFct, $donnees['ID_MEMBRE']));
                }
                else
                {
                   $id = "users";
                }
                $req->closeCursor();
-             }
-             else
-             {
-                $id = "pass";
-             }
           }
           else
           {
@@ -95,6 +92,20 @@ if(isset($_POST['nom']) AND isset($_POST['fnom']) AND isset($_POST['email']) AND
      {
         die('Erreur : ' . $e->getMessage());
      }
+}
+else if(isset($_GET['compte']) AND isset($_GET['delete']))
+{
+  $user_del = (int)$_GET['compte'];
+  $req = $bdd->prepare('SELECT * FROM MEMBRE WHERE ID_MEMBRE = ?');
+  $req->execute(array($user_del));
+
+  if($req->columnCount() != 0)
+  {
+    $req2 = $bdd->prepare('UPDATE MEMBRE SET actif = 0 WHERE ID_MEMBRE = ?');
+    $req2->execute(array($user_del));
+  }
+
+  header('Location: bde.php');
 }
 ?>
 		<h1>Page d'administration</h1>
@@ -118,7 +129,7 @@ if(isset($_POST['nom']) AND isset($_POST['fnom']) AND isset($_POST['email']) AND
 			  <th scope="col">Nom</th>
       		          <th scope="col">Prénom</th>
       			  <th scope="col">Centre</th>
-      			  <th scope="col">Rõle</th>
+      			  <th scope="col">Rôle</th>
       			  <th scope="col">Gérer</th>
     			</tr>
   		  </thead>
@@ -126,7 +137,10 @@ if(isset($_POST['nom']) AND isset($_POST['fnom']) AND isset($_POST['email']) AND
                  <?php
 		    while($donnees = $req->fetch())
 		    {
-			echo '    <tr><th scope="row"> ' . $donnees['ID_MEMBRE'] . '</th><td>' . $donnees['MAIL']. '</td><td>' . $donnees['NOM']. '</td><td>' . $donnees['PRENOM']. '</td><td>' . $donnees['ID_REGION']. '</td><td>' . $donnees['TYPE_UTILISATEUR']. '</td><td><a href="bde.php?compte=" ' . $donnees['MAIL'] . ' ">Gérer</a></td></tr>' ;
+                        if($donnees['actif'] == 1)
+			{
+				echo '    <tr><th scope="row"> ' . $donnees['ID_MEMBRE'] . '</th><td>' . $donnees['MAIL']. '</td><td>' . $donnees['NOM']. '</td><td>' . $donnees['PRENOM']. '</td><td>' . $donnees['ID_REGION']. '</td><td>' . $donnees['TYPE_UTILISATEUR']. '</td><td><a href="bde.php?compte=' . $donnees['ID_MEMBRE'] . '">Gérer</a></td></tr>' ;
+                        }
 		    }
                     echo '</tbody>';
                   }
@@ -145,12 +159,17 @@ if(isset($_POST['nom']) AND isset($_POST['fnom']) AND isset($_POST['email']) AND
 		  {
 		    echo '<p>Compte invalide</p>';
 		  }
-		  else
+		  else if($donnee = $req->fetch() AND $donnee['actif'] == 1)
 		  {
-		    $donnee = $req->fetch();
                 ?>
 		  <form method="post">
 			<h3>Compte <?php echo $compte ?></h3><br />
+                        <span class="error">
+			<?php
+        		if($id == "empty") { echo "Un ou plusieurs champ(s) sont vide(s)"; } else if($id == "email"){ echo "Email incorrecte!"; } else if($id == "users") { echo "Utilisateur invalide"; } else if($id == "region") { echo "Region invalide"; } else if($id == "fonction") { echo "Fonction invalide"; }
+			?>
+       	 		</span><br />
+
 			<label for="name">Nom : </label>
 			<input type="text" name="nom" id="nom" value="<?php echo $donnee['NOM']; ?>" required/><br />
 			<label for="fname">Prenom : </label>
@@ -160,8 +179,6 @@ if(isset($_POST['nom']) AND isset($_POST['fnom']) AND isset($_POST['email']) AND
                         <lablel for="region">Région : </lablel>
        			<select name="region" id="region" required>
 			<?php  
-                         $req_region = $bdd->query("SELECT * FROM REGION");
-			 $regions = $req_region->fetchAll(); 
 		 	 foreach($regions as $element)
                   	 {
 		     	  if($donnee['ID_REGION'] == $element['ID_REGION'])
@@ -179,8 +196,6 @@ if(isset($_POST['nom']) AND isset($_POST['fnom']) AND isset($_POST['email']) AND
 		       <lablel for="fonction">Fonction : </lablel>
        		       <select name="fonction" id="fonction" required>
 		       <?php  
-                         $req_droit = $bdd->query("SELECT * FROM TYPE_UTILISATEUR");
-			 $droits = $req_droit->fetchAll(); 
 		 	 foreach($droits as $element)
                   	 {
 		     	  if($donnee['TYPE_UTILISATEUR'] == $element['TYPE_UTILISATEUR'])
@@ -195,12 +210,19 @@ if(isset($_POST['nom']) AND isset($_POST['fnom']) AND isset($_POST['email']) AND
                         $req_droit->closeCursor();
 		       ?>
                        </select><br /><br />
-		       <input type="submit" value="Modifier" />
+		       <input type="submit" value="Modifier" /><br /><br />
+                       <a href="bde.php?compte=<?php echo $compte; ?>&delete=1" class="warning">Supprimer le compte (définitif)</a>
                   </form>
                <?php
 		 }
+                 else
+                 {
+                    echo '<p>Compte désactivé</p>';
+	         }
                }
 	       $req->closeCursor();
+               $req_region->closeCursor();
+               $req_droit->closeCursor();
                ?>
 	  
 	  

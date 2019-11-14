@@ -40,7 +40,7 @@ function month($month_p) {
         break;
   }
 }
-                if(!isset($_GET['id_event']) AND !isset($_GET['ajout']))
+                if(!isset($_GET['id_event']) AND !isset($_GET['ajout']) AND !isset($_GET['id_image']))
                 { 
                     if(!isset($_GET['page']))
                     { 
@@ -187,11 +187,53 @@ function month($month_p) {
                        } 
                     }                       
                  }
-                 else if(isset($_GET['ajout']))
+                 else if(isset($_GET['ajout']) AND !isset($_GET['id_event']) AND !isset($_GET['id_image']))
                  {
-                   
+                    if(isset($_SESSION['droit']) AND ($_SESSION['droit'] == 2 OR $_SESSION['droit'] == 4))
+                    {?> 
+                      <h1>Poster un event</h1>
+                       <form action="post.php" method="post">
+                              <label for="name">Le nom de l'event:</label>
+                              <input type="text" name="name" id="name" required/><br />
+                              <label for="image">Votre photo :</label>
+                              <input type="file" name="image" id="image" required/><br />
+                              <label for="date">La date :</label>
+                              <input type="date" name="date" id="date" required/><br />
+                              <label for="date">La description de l'event :</label><br />
+                              <textarea type="date" name="date" id="date" required></textarea><br />
+                              <?php
+                              if($_SESSION['droit'] == 4)
+                              {
+                                $req_region = $bdd->query("SELECT * FROM REGION");
+                                ?>
+                                <label for="region">Region :</label>
+                                <select name="region" id="region" required>
+                                <?php                  
+		  		foreach($regions as $element)
+                  		{
+		     		  if($_SESSION['id_region'] == $element['ID_REGION'])
+                     		  {
+		     			echo '<option value="' . $element['ID_REGION'] . '" selected>' . $element['REGION'] . '</option>';
+                     		  }
+		     		  else
+		     		  {
+					echo '<option value="' . $element['ID_REGION'] . '">' . $element['REGION'] . '</option>';
+		     		  }
+		  		}
+			       ?>
+                               </select><br />
+                              <?php  
+                              }?>
+                              <input type="submit" value="Poster" />
+                       </form>
+                    <?php 
+                    }
+                    else
+                    {
+                       header('Location: events.php');
+                    }
                  }
-                 else if(isset($_GET['id_event']))
+                 else if(isset($_GET['id_event']) AND !isset($_GET['id_image']))
                  {
                    $e_id = (int)$_GET['id_event'];
                    if($e_id < 1)
@@ -209,7 +251,7 @@ function month($month_p) {
                       }
                       else
                       {
-                        if(isset($_SESSION['id_region']) AND $_SESSION['id_region'] != $donnee['ID_REGION'])
+                        if(isset($_SESSION['id_region']) AND $_SESSION['id_region'] != $donnee['ID_REGION'] AND $_SESSION['droit'] != 4)
                         {
                           header('Location: events.php');
                           $req->closeCursor();
@@ -223,7 +265,7 @@ function month($month_p) {
                           <?php
                           if(!isset($_SESSION['id_region']))
                           {?>
-                          <span class="metadata">A <?php echo $donnee['REGION'] ?></span><br /><br />
+                          <span>A <?php echo $donnee['REGION'] ?></span><br /><br />
                           <?php
                           }
                           ?>
@@ -286,16 +328,23 @@ function month($month_p) {
                                  $donnee2 = $req2->fetch();
                                  ?>
                                  <p>Like(s) : <?php echo $donnee2['nb']; ?>. <a href="#" id="Bphoto<?php echo $image['ID_PHOTO'];?>">Liker</a>
-                                 <p>Photos postées de l'event :</p>
                                  <?php
                                  $req2->closeCursor();  
                               }
                           }
-                          $req->closeCursor();?> 
-                          <form>
-			</article>
+                          $req->closeCursor();
 
+                          if(isset($_SESSION['id']))
+                          {?>
+                            <form action="post.php" method="post">
+                              <h5>Poster votre photo</h5>
+                              <label for="image">Votre photo :</label>
+                              <input type="file" name="image" id="image" required/><br />
+                              <input type="submit" value="Poster" />
+                            </form>
+			  </article>
                         <?php
+                         }
                         }
                      }
                    }

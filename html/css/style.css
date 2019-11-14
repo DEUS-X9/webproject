@@ -26,6 +26,9 @@ header img {
 
 p{
     text-align: justify;
+    margin-left: 50px;
+    margin-right: 50px;
+
 }
 
 h1 {
@@ -80,6 +83,7 @@ article {
 }
 
 .metadata{
+  margin-left: 50px;
   text-size: 130%;
   color:#f2f2f2;
 }

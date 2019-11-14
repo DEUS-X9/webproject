@@ -74,13 +74,8 @@ article {
     border-radius: 10px;
 }
 
-article {
-    background-color:  #2D3538;
-    padding: 30px;
-    margin: 50px;
-    text-align: justify;
-    color: #d69c2f;
-    border-radius: 10px;
+article h2{
+    color:#ea9a02;
 }
 
 article a:hover {

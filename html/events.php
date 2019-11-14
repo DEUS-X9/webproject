@@ -289,7 +289,7 @@ function month($month_p) {
                           $req2->execute(array($donnee['ID_PHOTO']));
                           $donnee2 = $req2->fetch();
                           ?>
-                          <p>Like(s) : <?php echo $donnee2['nb']; ?>. <a href="#" id="Bphoto<?php echo $donnee['ID_PHOTO'];?>">Liker</a>
+                          <p>Like(s) : <?php echo $donnee2['nb']; ?>. <a href="#" id="Bphoto1" ><input type="image" alt="Like" src="https://cdn.pixabay.com/photo/2017/08/17/15/39/love-2651743_640.png"></a>
                           <?php
                           $req2->closeCursor(); 
                           $req->closeCursor();

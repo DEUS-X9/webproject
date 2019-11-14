@@ -9,6 +9,8 @@ body {
     position: relative;
     width: 100%;
     position: sticky;
+        margin-left: 50px;
+
 }
 
 header {

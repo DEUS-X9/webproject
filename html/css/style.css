@@ -83,6 +83,9 @@ article h2,article h1{
 .linkpost:hover {
   color:#ffffff;
 }
+.linkpost{
+  color:#ea9a02;
+}
 
 .error{
   color: #D8000C;

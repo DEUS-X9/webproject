@@ -83,7 +83,10 @@ article h2,article h1{
 
 .linkpost:hover {
   color:#ffffff;
-    
+}
+a{
+  text-decoration: none; 
+  margin-left:50px;
 }
 .linkpost{
   color:#ea9a02;

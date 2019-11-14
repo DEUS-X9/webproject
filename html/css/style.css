@@ -12,6 +12,8 @@ body {
 
 }
 
+
+
 header {
     background-color: #ffffff;
     padding-bottom:10px;
@@ -87,8 +89,8 @@ article h2,article h1{
 }
 
 .linkpost{
-  margin-left: 45px;
   color:#ea9a02;
+  margin-left:50px;
 }
 
 .error{

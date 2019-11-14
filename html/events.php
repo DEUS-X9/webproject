@@ -41,16 +41,19 @@ function month($month_p) {
   }
 }
                 if(!isset($_GET['id_event']) AND !isset($_GET['ajout']) AND !isset($_GET['id_image']))
-                { 
+                {?>
+                    <h1>Evènements</h1>
+                    <?php
+                    if(isset($_SESSION['droit']) AND ($_SESSION['droit'] == 2 OR $_SESSION['droit'] == 4))
+                    {?>
+                       <h4 class="post_event"><a href="events.php?ajout=1">Poster un event</a></h4>
+                    <?php
+                    }?>
+		    <p>Ces pages regroupent les différents évènements qui vous sont proposés et qui ont été proposés par le bureau des étudiants :</p>
+                    <?php
                     if(!isset($_GET['page']))
-                    { 
-                    ?>
-
-		
-		      <h1>Evènements</h1>
-		      <p>Ces pages regroupent les différents évènements qui vous sont proposés et qui ont été proposés par le bureau des étudiants :</p>
-                      <?php
-                      if(!isset($_SESSION['id_region']))
+                    {
+                      if(!isset($_SESSION['id_region']) OR (isset($_SESSION['droit']) AND $_SESSION['droit'] >= 3))
                       {
                       	$req = $bdd->query('SELECT ID_EVENTS, EVENTS, E_DESCRIPTION, DAY(E_DATE) AS jour, MONTH(E_DATE) AS mois, YEAR(E_DATE) AS annee, CHEMIN, REGION FROM EVENEMENTS INNER JOIN PHOTO ON EVENEMENTS.ID_PHOTO = PHOTO.ID_PHOTO INNER JOIN REGION ON REGION.ID_REGION = EVENEMENTS.ID_REGION ORDER BY E_DATE DESC LIMIT 0, 5');
                       }
@@ -63,12 +66,23 @@ function month($month_p) {
                       {
                       ?>
 		        <article>
-		           <a href="events.php?id_event=<?php echo $event['ID_EVENTS']; ?>"><h2> <?php echo $event['EVENTS']; ?> </h2></a>
+		           <a href="events.php?id_event=<?php echo $event['ID_EVENTS']; ?>"><h2 class="linkpost"> <?php echo $event['EVENTS']; ?> </h2></a>
 			   <img class="center" src="photos/<?php echo $event['CHEMIN']; ?>">
 		 	   <br/>
-                           <span class="metadata">Le <?php echo $event['jour'] ?> <?php echo month($event['mois']); ?> <?php echo $event['annee']; ?></span><br />
+                           <span class="metadata">Le <?php echo $event['jour']; ?> <?php echo month($event['mois']); ?> <?php echo $event['annee']; ?></span><br />
                            <?php
-                           if(!isset($_SESSION['id_region']))
+                           if(isset($_SESSION['id']))
+                           {
+                              echo '<a class="linkpost" href="php/e_register.php?e_id=' . $event['ID_EVENTS'] .'">S\'inscrire</a><br />';
+                           }
+
+                           if(isset($_SESSION['droit']) AND $_SESSION['droit'] >= 3)
+                           {
+                              echo '<a class="linkpost metadata" href="php/notice.php?e_id=' . $event['ID_EVENTS'] .'">Signaler</a><br />';
+                           }
+
+
+                           if(!isset($_SESSION['id_region']) OR (isset($_SESSION['droit']) AND $_SESSION['droit'] >= 3))
                            { ?>
                            <span class="metadata">A <?php echo $event['REGION'] ?></span><br /><br />
                            <?php
@@ -118,14 +132,11 @@ function month($month_p) {
                          header('Location: events.php');
                        }
                        else
-                       { ?>
-                         <h1>Evènements</h1>
-		         <p>Ces pages regroupent les différents évènements qui vous sont proposés et qui ont été proposés par le bureau des étudiants :</p>
-                       <?php
+                       {
                          $debut = ($page - 1) * 5;
                          $fin = $page * 5;
 
-                         if(!isset($_SESSION['id_region']))
+                         if(!isset($_SESSION['id_region']) OR (isset($_SESSION['droit']) AND $_SESSION['droit'] >= 3))
                          {
                       	   $req = $bdd->query('SELECT ID_EVENTS, EVENTS, E_DESCRIPTION, DAY(E_DATE) AS jour, MONTH(E_DATE) AS mois, YEAR(E_DATE) AS annee, CHEMIN, REGION FROM EVENEMENTS INNER JOIN PHOTO ON EVENEMENTS.ID_PHOTO = PHOTO.ID_PHOTO INNER JOIN REGION ON REGION.ID_REGION = EVENEMENTS.ID_REGION ORDER BY E_DATE DESC LIMIT ' . $debut . ', ' . $fin . '');
                          }
@@ -139,17 +150,27 @@ function month($month_p) {
                          {
                          ?>
 		           <article>
-		              <a href="events.php?id_event=<?php echo $event['ID_EVENTS']; ?>"><h2> <?php echo $event['EVENTS']; ?> </h2></a>
+		              <a class="linkpost" href="events.php?id_event=<?php echo $event['ID_EVENTS']; ?>"><h2 class="linkpost" > <?php echo $event['EVENTS']; ?> </h2></a>
 			      <img class="center" src="photos/<?php echo $event['CHEMIN']; ?>">
 		 	      <br/>
-                              <span class="metadata">Le <?php echo $event['jour'] ?> <?php echo month($event['mois']); ?> <?php echo $event['annee']; ?></span><br />
+                              <span class="metadata">Le <?php echo $event['jour']; ?> <?php echo month($event['mois']); ?> <?php echo $event['annee']; ?></span><br />
                               <?php
-                              if(!isset($_SESSION['id_region']))
-                              { ?>
-                              <span class="metadata">A <?php echo $event['REGION'] ?></span><br /><br />
-                              <?php
-                              }
-                              ?>
+                               if(isset($_SESSION['droit']) AND $_SESSION['droit'] >= 3)
+                               {
+                                  echo '<a class="linkpost metadata" href="php/notice.php?e_id=' . $event['ID_EVENTS'] .'">Signaler</a><br />';
+                               }
+
+                               if(isset($_SESSION['id']))
+                               {
+                                  echo '<a class="linkpost" href="php/e_register.php?e_id=' . $event['ID_EVENTS'] .'">S\'inscrire</a><br />';
+                               }
+
+                               if(!isset($_SESSION['id_region']) OR (isset($_SESSION['droit']) AND $_SESSION['droit'] >= 3))
+                               { ?>
+                                 <span class="metadata">A <?php echo $event['REGION'] ?></span><br /><br />
+                               <?php
+                               }
+                               ?>
 			      <p><?php echo nl2br(htmlspecialchars($event['E_DESCRIPTION'])); ?></p>
 		           </article>
                          <?php
@@ -192,7 +213,8 @@ function month($month_p) {
                     if(isset($_SESSION['droit']) AND ($_SESSION['droit'] == 2 OR $_SESSION['droit'] == 4))
                     {?> 
                       <h1>Poster un event</h1>
-                       <form action="post.php" method="post">
+                       <form action="php/e_post.php" method="post">
+                              <a href="events.php">Retour à la liste des events<a/>
                               <label for="name">Le nom de l'event:</label>
                               <input type="text" name="name" id="name" required/><br />
                               <label for="image">Votre photo :</label>
@@ -205,6 +227,7 @@ function month($month_p) {
                               if($_SESSION['droit'] == 4)
                               {
                                 $req_region = $bdd->query("SELECT * FROM REGION");
+                                $regions = $req_region->fetchAll();
                                 ?>
                                 <label for="region">Region :</label>
                                 <select name="region" id="region" required>
@@ -251,7 +274,7 @@ function month($month_p) {
                       }
                       else
                       {
-                        if(isset($_SESSION['id_region']) AND $_SESSION['id_region'] != $donnee['ID_REGION'] AND $_SESSION['droit'] != 4)
+                        if(isset($_SESSION['id_region']) AND $_SESSION['id_region'] != $donnee['ID_REGION'] AND $_SESSION['droit'] < 3)
                         {
                           header('Location: events.php');
                           $req->closeCursor();
@@ -260,9 +283,20 @@ function month($month_p) {
                         {
                         ?>
 			  <article>
+                          <a class="linkpost" href="events.php">Retour à la liste des events<a/>
                           <h1><?php echo $donnee['EVENTS']; ?></h1>
-                          <p>Le <?php echo $donnee['jour'] ?> <?php echo month($donnee['mois']); ?> <?php echo $donnee['annee']; ?></p>
+                          <p>Le <?php echo $donnee['jour']; ?> <?php echo month($donnee['mois']); ?> <?php echo $donnee['annee']; ?></p>
                           <?php
+                          if(isset($_SESSION['droit']) AND $_SESSION['droit'] >= 3)
+                          {
+                              echo '<a class="linkpost" href="php/notice.php?e_id=' . $donnee['ID_EVENTS'] .'">Signaler</a><br />';
+                          }
+
+                          if(isset($_SESSION['id']))
+                          {
+                              echo '<a class="linkpost" href="php/e_register.php?e_id=' . $donnee['ID_EVENTS'] .'">S\'inscrire</a><br />';
+                          }
+
                           if(!isset($_SESSION['id_region']))
                           {?>
                           <span>A <?php echo $donnee['REGION'] ?></span><br /><br />
@@ -270,7 +304,7 @@ function month($month_p) {
                           }
                           ?>
                           <p><?php echo nl2br(htmlspecialchars($donnee['E_DESCRIPTION'])); ?></p>
-                          <img class="center" src="photos/<?php echo $donnee['CHEMIN']; ?>">
+                          <a href="events.php?id_event=<?php echo $donnee['ID_EVENTS'];?>&id_image=<?php echo $donnee['ID_PHOTO'];?>"><img class="center" src="photos/<?php echo $donnee['CHEMIN']; ?>"></a>
                           <?php
                           $req2 = $bdd->prepare('SELECT COMMENTAIRE, NOM, PRENOM FROM COMMENTAIRE INNER JOIN MEMBRE ON MEMBRE.ID_MEMBRE = COMMENTAIRE.ID_MEMBRE WHERE ID_PHOTO = ? ORDER BY date DESC LIMIT 0, 1');
                           $req2->execute(array($donnee['ID_PHOTO']));
@@ -289,11 +323,11 @@ function month($month_p) {
                           $req2->execute(array($donnee['ID_PHOTO']));
                           $donnee2 = $req2->fetch();
                           ?>
-                          <p>Like(s) : <?php echo $donnee2['nb']; ?>. <a href="#" id="Bphoto1" ><input type="image" alt="Like" src="https://cdn.pixabay.com/photo/2017/08/17/15/39/love-2651743_640.png"></a>
+                          <p>Like(s) : <?php echo $donnee2['nb']; ?>. <a href="#" id="Bphoto1" ><input type="image" alt="Like" src="images/love.png" height="45px"></a>
                           <?php
                           $req2->closeCursor(); 
                           $req->closeCursor();
-                          $req = $bdd->prepare('SELECT ILLUSTRER.ID_PHOTO, CHEMIN, NOM, PRENOM FROM ILLUSTRER INNER JOIN PHOTO ON ILLUSTRER.ID_PHOTO = PHOTO.ID_PHOTO INNER JOIN MEMBRE ON MEMBRE.ID_MEMBRE = PHOTO.ID_MEMBRE WHERE ID_EVENTS = ?');
+                          $req = $bdd->prepare('SELECT ILLUSTRER.ID_PHOTO, CHEMIN, NOM, PRENOM FROM ILLUSTRER INNER JOIN PHOTO ON ILLUSTRER.ID_PHOTO = PHOTO.ID_PHOTO INNER JOIN MEMBRE ON MEMBRE.ID_MEMBRE = PHOTO.ID_MEMBRE WHERE ID_EVENTS = ? ORDER BY PHOTO.DATE DESC');
                           $req->execute(array($e_id));
                           $donnees = $req->fetchAll();
                           if($req->columnCount() == 0)
@@ -308,7 +342,7 @@ function month($month_p) {
                               foreach($donnees as $image)
                               {?>
                                  <p>Posté par <?php echo $image['NOM'] . ' ' . $image['PRENOM']?></p>
-                                 <img class="center" src="photos/<?php echo $image['CHEMIN']; ?>">
+                                 <a href="events.php?id_event=<?php echo $donnee['ID_EVENTS'];?>&id_image=<?php echo $image['ID_PHOTO'];?>"><img class="center" src="photos/<?php echo $image['CHEMIN']; ?>"></a>
                                  <?php
                                  $req2 = $bdd->prepare('SELECT COMMENTAIRE, NOM, PRENOM FROM COMMENTAIRE INNER JOIN MEMBRE ON MEMBRE.ID_MEMBRE = COMMENTAIRE.ID_MEMBRE WHERE ID_PHOTO = ? ORDER BY date DESC LIMIT 0, 1');
                                  $req2->execute(array($image['ID_PHOTO']));
@@ -327,7 +361,7 @@ function month($month_p) {
                                  $req2->execute(array($donnee['ID_PHOTO']));
                                  $donnee2 = $req2->fetch();
                                  ?>
-                                 <p>Like(s) : <?php echo $donnee2['nb']; ?>. <a href="#" id="Bphoto<?php echo $image['ID_PHOTO'];?>">Liker</a>
+                                 <p>Like(s) : <?php echo $donnee2['nb']; ?>. <a href="#" id="Bphoto1" ><input type="image" alt="Like" src="images/love.png" height="45px"></a>
                                  <?php
                                  $req2->closeCursor();  
                               }
@@ -336,7 +370,7 @@ function month($month_p) {
 
                           if(isset($_SESSION['id']))
                           {?>
-                            <form action="post.php" method="post">
+                            <form action="php/post.php" method="post">
                               <h5>Poster votre photo</h5>
                               <label for="image">Votre photo :</label>
                               <input type="file" name="image" id="image" required/><br />
@@ -348,6 +382,65 @@ function month($month_p) {
                         }
                      }
                    }
+                 }
+                 else if(isset($_GET['id_event']) AND isset($_GET['id_image']))
+                 {
+                    $e_id = (int)$_GET['id_event'];
+                    $i_img = (int)$_GET['id_image'];
+
+                    if($e_id < 1 OR $i_img < 1)
+                    {
+                      header('Location: events.php');
+                    }
+                    else
+                    {
+                      $req = $bdd->prepare('SELECT CHEMIN, EVENTS, NOM, PRENOM, DAY(DATE) AS jour, MONTH(DATE) AS mois, YEAR(DATE) AS annee  FROM PHOTO INNER JOIN ILLUSTRER ON PHOTO.ID_PHOTO = ILLUSTRER.ID_PHOTO INNER JOIN EVENEMENTS ON EVENEMENTS.ID_EVENTS = ILLUSTRER.ID_EVENTS INNER JOIN MEMBRE ON MEMBRE.ID_MEMBRE = PHOTO.ID_MEMBRE WHERE PHOTO.ID_PHOTO = ? AND EVENEMENTS.ID_EVENTS = ?');
+                      $req->execute(array($i_img, $e_id));
+                      if(!$donnee = $req->fetch())
+                      {
+                        $req->closeCursor();
+                        $req = $bdd->prepare('SELECT CHEMIN, EVENTS, NOM, PRENOM, DAY(DATE) AS jour, MONTH(DATE) AS mois, YEAR(DATE) AS annee FROM PHOTO INNER JOIN EVENEMENTS ON EVENEMENTS.ID_PHOTO = PHOTO.ID_PHOTO INNER JOIN MEMBRE ON MEMBRE.ID_MEMBRE = PHOTO.ID_MEMBRE WHERE PHOTO.ID_PHOTO = ? AND EVENEMENTS.ID_EVENTS = ?');
+                        $req->execute(array($i_img, $e_id));
+                        if(!$donnee = $req->fetch())
+                        {
+                          header('Location: events.php');
+                        }
+                      }
+                      ?>
+                      <h1><?php echo $donnee['EVENTS'];?></h1>
+                      <article>
+                        <p><?php if(isset($_SESSION['droit']) AND $_SESSION['droit'] >= 3) { echo '<a href="php/notice.php?id_img=' . $i_img . '">[Signaler]</a> '; }?>Postée par <?php echo $donnee['NOM'] . ' ' . $donnee['PRENOM']?>, le <?php echo $donnee['jour']; ?> <?php echo month($donnee['mois']); ?> <?php echo $donnee['annee']; ?></p>
+                        <p><?php echo '<a href="events.php?id_event=' . $e_id . '">Retour</a>';?></p>
+                        <img class="center" src="photos/<?php echo $donnee['CHEMIN']; ?>" />
+                        <?php 
+                        if(isset($_SESSION['id']))
+                        {?>
+                          <input id="com" type="text" placeholder="Tapez votre commentaire" /><input id="com_send" type="button" value="Envoyer" />
+                        <?php
+                        }
+                        $req2 = $bdd->prepare('SELECT ID_COMMENTAIRE, COMMENTAIRE, NOM, PRENOM, MINUTE(DATE) AS min, HOUR(DATE) AS heures, DAY(DATE) AS jour, MONTH(DATE) AS mois, YEAR(DATE) AS annee FROM COMMENTAIRE INNER JOIN MEMBRE ON MEMBRE.ID_MEMBRE = COMMENTAIRE.ID_MEMBRE WHERE ID_PHOTO = ? ORDER BY DATE DESC');
+                        $req2->execute(array($i_img));
+                        if(!$donnees = $req2->fetchAll())
+                        {
+                           echo '<p class="comment">Pas de commentaire</p>';
+                        }
+                        else
+                        {
+                           foreach($donnees as $donnee)
+                           {?>
+                             <p class="comment"><?php if(isset($_SESSION['droit']) AND $_SESSION['droit'] >= 3) { echo '<a href="php/notice.php?id_com=' . $donnee['ID_COMMENTAIRE'] . '">[Signaler]</a> '; }?>Le <?php echo $donnee['jour']; ?> <?php echo month($donnee['mois']); ?> <?php echo $donnee['annee']; ?> à <?php echo $donnee['heures']; ?>:<?php echo $donnee['min']; ?> par <?php echo $donnee['NOM'] . ' ' . $donnee['PRENOM']; ?> : <?php echo htmlspecialchars($donnee['COMMENTAIRE']);?></p>
+                           <?php   
+                           }
+  	                }
+                        ?>
+                      <article>
+                      <?php
+                      $req->closeCursor();
+                    }
+                 }
+                 else
+                 {
+                    header('Location: events.php');
                  }
              ?>
 	</body>

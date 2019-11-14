@@ -45,6 +45,8 @@ function month($month_p) {
                     if(!isset($_GET['page']))
                     { 
                     ?>
+
+		
 		      <h1>Evènements</h1>
 		      <p>Ces pages regroupent les différents évènements qui vous sont proposés et qui ont été proposés par le bureau des étudiants :</p>
                       <?php
@@ -215,6 +217,7 @@ function month($month_p) {
                         else
                         {
                         ?>
+			  <article>
                           <h1><?php echo $donnee['EVENTS']; ?></h1>
                           <p>Le <?php echo $donnee['jour'] ?> <?php echo month($donnee['mois']); ?> <?php echo $donnee['annee']; ?></p>
                           <?php
@@ -290,6 +293,8 @@ function month($month_p) {
                           }
                           $req->closeCursor();?> 
                           <form>
+			</article>
+
                         <?php
                         }
                      }

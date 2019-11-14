@@ -68,20 +68,20 @@ color: #4C4C4C;
 }
 
 article {
-    background-color:  #2D3538;
-    padding: 30px;
-    margin: 50px;
-    text-align: justify;
-    color: #d69c2f;
-    border-radius: 10px;
+   background-color:  #2D3538;
+   padding: 30px;
+   margin: 50px;
+   text-align: justify;
+   color: #d69c2f;
+   border-radius: 10px;
 }
 
 article h2,article h1{
-    color:#ea9a02;
+  color:#ea9a02;
 }
 
-article h2 a:hover {
-color:#ffaf19;
+.linkpost:hover {
+  color:#303030;
 }
 
 .error{

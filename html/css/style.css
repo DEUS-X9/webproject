@@ -76,7 +76,7 @@ article {
     border-radius: 10px;
 }
 
-article h2{
+article h2,article h1{
     color:#ea9a02;
 }
 

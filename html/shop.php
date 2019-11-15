@@ -114,6 +114,12 @@ img {vertical-align: middle;}
   <span class="dot" onclick="currentSlide(3)"></span> 
 </div>
 
+<div class="item">
+	<h3>Nom item</h3>
+	<img/>
+	<p>description de l'item que vous voulez acheter</p>
+</div>
+
 <script>
 var slideIndex = 1;
 showSlides(slideIndex);

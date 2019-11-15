@@ -9,7 +9,6 @@ body {
     position: relative;
     width: 100%;
     position: sticky;
-
 }
 
 
@@ -18,7 +17,6 @@ header {
     background-color: #ffffff;
     padding-bottom:10px;
     width: 100%;
-
 }
 
 header img {
@@ -31,7 +29,6 @@ p{
     text-align: justify;
     margin-left: 50px;
     margin-right: 50px;
-
 }
 
 h1 {
@@ -126,8 +123,7 @@ article h2,article h1{
     border-radius: 20px;
     margin: 30px;
     padding-bottom: 40px;
-      padding-bottom: 15px;
-
+    padding-bottom: 15px;
 }
 
 .pseudo{

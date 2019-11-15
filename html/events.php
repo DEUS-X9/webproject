@@ -315,7 +315,7 @@ function month($month_p) {
                           }
                           else
                           {?>
-                            <p>Commentaires :<br /><?php echo $donnee2['NOM'] . ' ' . $donnee2['PRENOM'] . ' : ' . $donnee2['COMMENTAIRE'];?></p>
+                            <p>Commentaires :<br /><div class="com"><div class="pseudo"> <?php echo $donnee2['NOM'] . ' ' . $donnee2['PRENOM'] . ' </div>: ' . $donnee2['COMMENTAIRE'];?></div></p>
                           <?php
                           }
                           $req2->closeCursor(); 
@@ -354,7 +354,7 @@ function month($month_p) {
                                  }
                                  else
                                  {
-                                    echo $donnee2['NOM'] . ' ' . $donnee2['PRENOM'] . ' : ' . $donnee2['COMMENTAIRE'];
+                                    echo   <div class="com"><div class="pseudo"> '. $donnee2['NOM'] . ' ' . $donnee2['PRENOM'] . ' </div> : ' . $donnee2['COMMENTAIRE'] . '</div>;
                                  }
                                  $req2->closeCursor(); 
                                  $req2 = $bdd->prepare('SELECT COUNT(*) AS nb FROM LIKES WHERE ID_PHOTO = ?');

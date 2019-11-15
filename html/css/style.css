@@ -112,7 +112,8 @@ article h2,article h1{
     color:#000000;
     background-color: #c2c2c2;
     border-radius: 20px;
-    margin-left: 10px;
+    margin-left:10px;
+    margin-right: 60px;
     padding:10px;
 
 }
@@ -120,7 +121,7 @@ article h2,article h1{
 .forum{
     background-color: #ffffff;
     border-radius: 20px;
-    margin-left: 30px;
+    margin: 30px;
 }
 
 .pseudo{

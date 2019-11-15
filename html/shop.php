@@ -5,7 +5,6 @@
 <h2>Nos meilleures ventes : </h2>
 <style>
 * {box-sizing: border-box}
-body {font-family: Verdana, sans-serif; margin:0}
 .mySlides {display: none}
 img {vertical-align: middle;}
 
@@ -47,7 +46,6 @@ img {vertical-align: middle;}
 .text {
   color: #ffffff;
   background-color:#4d75bb;
-  font-size: 15px;
   padding: 8px 12px;
   position: absolute;
   bottom: 8px;

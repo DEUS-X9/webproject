@@ -1,19 +1,19 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('region', {
-    ID_REGION: {
+  return sequelize.define('type_utilisateur', {
+    TYPE_UTILISATEUR: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
       primaryKey: true,
       autoIncrement: true
     },
-    REGION: {
+    NOM_TYPE: {
       type: DataTypes.STRING(50),
       allowNull: false
     }
   }, {
     timestamps : false,
-    tableName: 'region'
+    tableName: 'type_utilisateur'
   });
 };

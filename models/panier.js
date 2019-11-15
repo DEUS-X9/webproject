@@ -8,13 +8,17 @@ module.exports = function(sequelize, DataTypes) {
       primaryKey: true,
       autoIncrement: true
     },
+    DATE: {
+      type: DataTypes.DATEONLY,
+      allowNull: false
+    },
     NOMBRE: {
       type: DataTypes.INTEGER(11),
       allowNull: false
     },
     ID_MEMBRE: {
       type: DataTypes.INTEGER(11),
-      allowNull: true,
+      allowNull: false,
       references: {
         model: 'membre',
         key: 'ID_MEMBRE'
@@ -29,6 +33,7 @@ module.exports = function(sequelize, DataTypes) {
       }
     }
   }, {
+    timestamps : false,
     tableName: 'panier'
   });
 };

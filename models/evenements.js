@@ -13,12 +13,8 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     },
     E_DESCRIPTION: {
-      type: DataTypes.STRING(255),
+      type: DataTypes.TEXT,
       allowNull: false
-    },
-    E_IMAGE: {
-      type: DataTypes.STRING(255),
-      allowNull: true
     },
     E_DATE: {
       type: DataTypes.DATEONLY,
@@ -30,6 +26,14 @@ module.exports = function(sequelize, DataTypes) {
       references: {
         model: 'region',
         key: 'ID_REGION'
+      }
+    },
+    ID_PHOTO: {
+      type: DataTypes.INTEGER(11),
+      allowNull: false,
+      references: {
+        model: 'photo',
+        key: 'ID_PHOTO'
       }
     }
   }, {

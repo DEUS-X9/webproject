@@ -1,32 +1,28 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('photo', {
-    ID_PHOTO: {
+  return sequelize.define('vente', {
+    ID_PANIER: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
       primaryKey: true,
       autoIncrement: true
     },
-    CHEMIN: {
-      type: DataTypes.STRING(70),
+    Date: {
+      type: DataTypes.DATEONLY,
       allowNull: false
     },
-    DATE: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
-    },
-    ID_MEMBRE: {
+    ID_PANIER_DONNE_LIEU: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
       references: {
-        model: 'membre',
-        key: 'ID_MEMBRE'
-      }
+        model: 'panier',
+        key: 'ID_PANIER'
+      },
+      unique: true
     }
   }, {
     timestamps : false,
-    tableName: 'photo'
+    tableName: 'vente'
   });
 };

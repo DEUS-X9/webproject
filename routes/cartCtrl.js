@@ -7,72 +7,63 @@ var jwtUtils = require('../utils/jwt.utils');
 const TITLE_LIMIT = 2;
 const CONTENT_LIMIT = 4;
 const ITEMS_LIMIT = 50;
-const ADMIN = 2;
 
 // Routes
 module.exports = {
-  createItem: function (req, res) {
+  createCart: function (req, res) {
     // Getting auth header
     var headerAuth = req.headers['authorization'];
     var ID_MEMBRE = jwtUtils.getUserId(headerAuth);
 
     // Params
-    var ITEM = req.body.ITEM;
-    var DESCRIPTION = req.body.DESCRIPTION;
-    var PRIX = req.body.PRIX;
-    var TYPE_UTILISATEUR = req.body.TYPE_UTILISATEUR;
-    var ID_CATEGORIE = req.body.ID_CATEGORIE;
+    var ID_ITEM = req.body.ID_ITEM;
+    var DATE = new Date();
+    var NOMBRE = req.body.NOMBRE;
 
 
-    if (ITEM == null || DESCRIPTION == null) {
+    if (ID_ITEM == null || NOMBRE == null) {
       return res.status(400).json({ 'error': 'missing parameters' });
-    }
-
-    if (ITEM.length <= TITLE_LIMIT || DESCRIPTION.length <= CONTENT_LIMIT) {
-      return res.status(400).json({ 'error': 'invalid parameters' });
     }
 
     asyncLib.waterfall([
       function (done) {
         models.membre.findOne({
-          where: { ID_MEMBRE: ID_MEMBRE, TYPE_UTILISATEUR: ADMIN }
+          where: { ID_MEMBRE: ID_MEMBRE }
         })
           .then(function (userFound) {
             done(null, userFound);
           })
           .catch(function (err) {
             console.log(err);
-            return res.status(500).json({ 'error': 'unable to verify user or do not have the right to post' });
+            return res.status(500).json({ 'error': 'unable to verify user' });
           });
       },
       function (userFound, done) {
         if (userFound) {
-          models.shop.create({
-            ITEM: ITEM,
-            PRIX: PRIX,
-            DESCRIPTION: DESCRIPTION,
-            /*ID_MEMBRE : userFound.ID_MEMBRE,*/
-            ACTIF: 1,
-            ID_CATEGORIE: ID_CATEGORIE
+          models.panier.create({
+            DATE: DATE,
+            NOMBRE: NOMBRE,
+            ID_ITEM: ID_ITEM,
+            ID_MEMBRE : ID_MEMBRE
           })
-            .then(function (newItem) {
-              done(newItem);
+            .then(function (newCart) {
+              done(newCart);
             });
         } else {
             console.log(err);
           res.status(404).json({ 'error': 'user not found' });
         }
       },
-    ], function (newItem) {
-      if (newItem) {
-        return res.status(201).json(newItem);
+    ], function (newCart) {
+      if (newCart) {
+        return res.status(201).json(newCart);
       } else {
-        return res.status(500).json({ 'error': 'cannot post item' });
+        return res.status(500).json({ 'error': 'cannot put in cart' });
       }
     });
 
   },
-  listItem: function (req, res) {
+  listCart: function (req, res) {
     var fields = req.query.fields;
     var limit = parseInt(req.query.limit);
     var offset = parseInt(req.query.offset);
@@ -82,18 +73,18 @@ module.exports = {
       limit = ITEMS_LIMIT;
     }
 
-    models.shop.findAll({
-      order: [(order != null) ? order.split(':') : ['ITEM', 'ASC']],
+    models.panier.findAll({
+      order: [(order != null) ? order.split(':') : ['ID_PANIER', 'ASC']],
       attributes: (fields !== '*' && fields != null) ? fields.split(',') : null,
       limit: (!isNaN(limit)) ? limit : null,
       offset: (!isNaN(offset)) ? offset : null,
       /*include: [{
-        model: models.membre,
-        attributes: [ 'MAIL' ]
+        model: models.panier,
+        attributes: [ 'ID_MEMBRE' ]
       }]*/
-    }).then(function (shop) {
-      if (shop) {
-        res.status(200).json(shop);
+    }).then(function (cart) {
+      if (cart) {
+        res.status(200).json(cart);
       } else {
         res.status(404).json({ "error": "no item found" });
       }

@@ -22,11 +22,16 @@ module.exports = function(sequelize, DataTypes) {
     },
     ACTIF: {
       type: DataTypes.INTEGER(1),
-      allowNull: false
+      allowNull: false,
+      defaultValue: '1'
     },
     ID_CATEGORIE: {
       type: DataTypes.INTEGER(11),
-      allowNull: false
+      allowNull: false,
+      references: {
+        model: 'categorie',
+        key: 'ID_CATEGORIE'
+      }
     }
   }, {
     timestamps : false,

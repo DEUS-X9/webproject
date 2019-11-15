@@ -6,11 +6,7 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER(11),
       allowNull: false,
       primaryKey: true,
-      autoIncrement: true,
-      references: {
-        /*model: 'Users',
-        key: 'id'*/
-      }
+      autoIncrement: true
     },
     NOM: {
       type: DataTypes.STRING(50),
@@ -25,12 +21,13 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     },
     PASSWORD: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.STRING(255),
       allowNull: false
     },
-    DROIT: {
+    actif: {
       type: DataTypes.INTEGER(11),
-      allowNull: false
+      allowNull: false,
+      defaultValue: '1'
     },
     ID_REGION: {
       type: DataTypes.INTEGER(11),
@@ -38,6 +35,15 @@ module.exports = function(sequelize, DataTypes) {
       references: {
         model: 'region',
         key: 'ID_REGION'
+      }
+    },
+    TYPE_UTILISATEUR: {
+      type: DataTypes.INTEGER(11),
+      allowNull: false,
+      defaultValue: '1',
+      references: {
+        model: 'type_utilisateur',
+        key: 'TYPE_UTILISATEUR'
       }
     }
   }, {

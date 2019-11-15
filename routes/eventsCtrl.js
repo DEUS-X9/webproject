@@ -21,7 +21,8 @@ module.exports = {
     var E_DESCRIPTION = req.body.E_DESCRIPTION;
     var ID_REGION = req.body.ID_REGION;
     var E_DATE = new Date();
-    var DROIT = req.body.DROIT;
+    var TYPE_UTILISATEUR = req.body.TYPE_UTILISATEUR;
+    var ID_PHOTO = req.body.ID_PHOTO;
     
 
 
@@ -36,7 +37,7 @@ module.exports = {
     asyncLib.waterfall([
       function (done) {
         models.membre.findOne({
-          where: { ID_MEMBRE: ID_MEMBRE, DROIT: ADMIN }
+          where: { ID_MEMBRE: ID_MEMBRE, TYPE_UTILISATEUR: ADMIN }
         })
           .then(function (userFound) {
             done(null, userFound);
@@ -53,7 +54,8 @@ module.exports = {
             E_DESCRIPTION: E_DESCRIPTION,
             /*ID_MEMBRE : userFound.ID_MEMBRE,*/
             ID_REGION: ID_REGION,
-            E_DATE: E_DATE
+            E_DATE: E_DATE,
+            ID_PHOTO: ID_PHOTO
           })
             .then(function (newEvents) {
               done(newEvents);

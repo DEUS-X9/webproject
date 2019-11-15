@@ -3,6 +3,7 @@ var express = require('express');
 var usersCtrl = require('./routes/usersCtrl');
 var eventsCtrl = require('./routes/eventsCtrl');
 var shopCtrl = require('./routes/shopCtrl');
+var cartCtrl = require('./routes/cartCtrl');
 
 // Router
 exports.router = (function() {
@@ -21,6 +22,10 @@ exports.router = (function() {
     // Shop routes
     apiRouter.route('/item/new/').post(shopCtrl.createItem);
     apiRouter.route('/item').get(shopCtrl.listItem);
+
+    // Cart routes
+    apiRouter.route('/cart/new/').post(cartCtrl.createCart);
+    apiRouter.route('/cart').get(cartCtrl.listCart);
 
     return apiRouter;
 })();

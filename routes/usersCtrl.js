@@ -61,14 +61,15 @@ module.exports = {
           NOM: NOM,
           PRENOM: PRENOM,
           PASSWORD: bcryptedPassword,
-          DROIT: 1,
+          TYPE_UTILISATEUR: 1,
+          actif: 1,
           ID_REGION: ID_REGION
         })
           .then(function (newUser) {
             done(newUser);
           })
           .catch(function (err) {
-            console.log(err);
+            //console.log(err);
             return res.status(500).json({ 'error': 'cannot add user' });
           });
       }
@@ -87,6 +88,8 @@ module.exports = {
     // Params
     var MAIL = req.body.MAIL;
     var PASSWORD = req.body.PASSWORD;
+    var NOM = req.body.NOM;
+    var PRENOM = req.body.PRENOM;
 
     if (MAIL == null || PASSWORD == null) {
       return res.status(400).json({ 'error': 'missing parameters' })
@@ -124,6 +127,9 @@ module.exports = {
       if (userFound) {
         return res.status(201).json({
           'ID_MEMBRE': userFound.ID_MEMBRE,
+          'NOM': userFound.NOM,
+          'PRENOM': userFound.PRENOM,
+          'MAIL': MAIL,
           'token': jwtUtils.generateTokenForUser(userFound)
         });
       } else {

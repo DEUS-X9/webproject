@@ -139,9 +139,13 @@ article h2,article h1{
     border-radius: 13px;
     margin-top: 50px;
     margin-left:10%;
-        margin-right:10%;
-
+    margin-right:10%;
     padding-top:20px;
-        padding-bottom:20px;
-
+    padding-bottom:20px;
 }
+
+img.item{
+    height:5%;
+    width:5%;
+}
+

@@ -315,7 +315,7 @@ function month($month_p) {
                           }
                           else
                           {?>
-                            <p>Commentaires :<br /><div class="com"><div class="pseudo"> <?php echo $donnee2['NOM'] . ' ' . $donnee2['PRENOM'] . ' </div>: ' . $donnee2['COMMENTAIRE'];?></div></p>
+                            <div class="forum"><p>Commentaires :<br /><div class="com"><div class="pseudo"> <?php echo $donnee2['NOM'] . ' ' . $donnee2['PRENOM'] . ' </div>: ' . $donnee2['COMMENTAIRE'];?></div></p>
                           <?php
                           }
                           $req2->closeCursor(); 
@@ -361,7 +361,7 @@ function month($month_p) {
                                  $req2->execute(array($donnee['ID_PHOTO']));
                                  $donnee2 = $req2->fetch();
                                  ?>
-                                 <p>Like(s) : <?php echo $donnee2['nb']; ?>. <a href="#" id="Bphoto1" ><input type="image" alt="Like" src="images/love.png" height="45px"></a>
+                                 </div><p>Like(s) : <?php echo $donnee2['nb']; ?>. <a href="#" id="Bphoto1" ><input type="image" alt="Like" src="images/love.png" height="45px"></a>
                                  <?php
                                  $req2->closeCursor();  
                               }

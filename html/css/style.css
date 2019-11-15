@@ -115,7 +115,6 @@ article h2,article h1{
     margin-left:10px;
    margin-right:70%;
     padding:10px;
-
 }
 
 .forum{
@@ -130,3 +129,10 @@ article h2,article h1{
     color:#6e6e6e;
 }
 
+.item{
+    color:#4d75bb;
+    background-color: #c2c2c2;
+    border-radius: 13px;
+    margin:40%;
+    padding:10px;
+}

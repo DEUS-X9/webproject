@@ -370,8 +370,9 @@ function month($month_p) {
 
                           if(isset($_SESSION['id']))
                           {?>
-                            <form action="php/post.php" method="post">
+                            <form action="php/post.php" method="post" enctype="multipart/form-data">
                               <h5>Poster votre photo</h5>
+                              <input type=text name="e_id" value="<?php echo $e_id;?>" hidden />
                               <label for="image">Votre photo :</label>
                               <input type="file" name="image" id="image" required/><br />
                               <input type="submit" value="Poster" />

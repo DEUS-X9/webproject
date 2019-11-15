@@ -44,8 +44,9 @@ h2 {
     padding:10px;
     text-align: center;
 }
-h4 {
-    margin-left:50%;
+
+h4{
+    margin-left: 50px;
 }
 
 form {
@@ -136,6 +137,11 @@ article h2,article h1{
     color:#4d75bb;
     background-color: #c2c2c2;
     border-radius: 13px;
-    margin:40%;
-    padding:10px;
+    margin-top: 50px;
+    margin-left:10%;
+        margin-right:10%;
+
+    padding-top:20px;
+        padding-bottom:20px;
+
 }

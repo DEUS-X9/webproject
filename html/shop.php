@@ -119,6 +119,21 @@ img {vertical-align: middle;}
 	<img/>
 	<p>description de l'item que vous voulez acheter</p>
 </div>
+<div class="item">
+	<h4>Nom item</h4>
+	<img/>
+	<p>description de l'item que vous voulez acheter</p>
+</div>
+<div class="item">
+	<h4>Nom item</h4>
+	<img/>
+	<p>description de l'item que vous voulez acheter</p>
+</div>
+<div class="item">
+	<h4>Nom item</h4>
+	<img/>
+	<p>description de l'item que vous voulez acheter</p>
+</div>
 
 <script>
 var slideIndex = 1;

@@ -116,22 +116,22 @@ img {vertical-align: middle;}
 
 <div class="item">
 	<h4>Noms items</h4>
-	<img/>
+	<img style="margin-left:90%; height:20%"/>
 	<p>description de l'item que vous voulez acheter</p>
 </div>
 <div class="item">
 	<h4>Nom item</h4>
-	<img/>
+	<img style="margin-left:90%; height:20%"/>
 	<p>description de l'item que vous voulez acheter</p>
 </div>
 <div class="item">
 	<h4>Nom item</h4>
-	<img/>
+	<img style="margin-left:90%; height:20%"/>
 	<p>description de l'item que vous voulez acheter</p>
 </div>
 <div class="item">
 	<h4>Nom item</h4>
-	<img src="images/IMG_0888.jpg"/>
+	<img src="images/IMG_0888.jpg"/ style="margin-left:90%; height:20%">
 	<p>description de l'item que vous voulez acheter</p>
 </div>
 

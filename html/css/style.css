@@ -89,7 +89,7 @@ article h2,article h1{
 }
 
 .linkpost{
-  color:#ea9a02;
+  color:#ff7b00;
   margin-left:50px;
 }
 
@@ -113,7 +113,7 @@ article h2,article h1{
     background-color: #c2c2c2;
     border-radius: 20px;
     margin-left:10px;
-   margin-right:50%;
+   margin-right:70%;
     padding:10px;
 
 }
@@ -122,6 +122,8 @@ article h2,article h1{
     background-color: #ffffff;
     border-radius: 20px;
     margin: 30px;
+    padding-bottom: 40px;
+  
 }
 
 .pseudo{

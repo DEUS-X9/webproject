@@ -464,7 +464,7 @@ function month($month_p) {
                         {
                            foreach($donnees as $donnee)
                            {?>
-                             <p class="comment"><?php if(isset($_SESSION['droit']) AND $_SESSION['droit'] >= 3) { echo '<a href="php/notice.php?id_com=' . $donnee['ID_COMMENTAIRE'] . '">[Signaler]</a><div class="com"><div class="pseudo"> '; }?>Le <?php echo $donnee['jour']; ?> <?php echo month($donnee['mois']); ?> <?php echo $donnee['annee']; ?> à <?php echo $donnee['heures']; ?>:<?php echo $donnee['min']; ?> par <?php echo $donnee['NOM'] . ' ' . $donnee['PRENOM']; ?> :</div> <?php echo htmlspecialchars($donnee['COMMENTAIRE']);?></div></p>
+                             <p class="comment"><?php if(isset($_SESSION['droit']) AND $_SESSION['droit'] >= 3) { echo '<a href="php/notice.php?id_com=' . $donnee['ID_COMMENTAIRE'] . '">[Signaler]</a><div class="com"> '; }?>Le <?php echo $donnee['jour']; ?> <?php echo month($donnee['mois']); ?> <?php echo $donnee['annee']; ?> à <?php echo $donnee['heures']; ?>:<?php echo $donnee['min']; ?> par <div class="pseudo"> <?php echo $donnee['NOM'] . ' ' . $donnee['PRENOM']; ?> :</div> <?php echo htmlspecialchars($donnee['COMMENTAIRE']);?></div></p>
                            <?php   
                            }
   	                }

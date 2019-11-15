@@ -73,12 +73,21 @@ function month($month_p) {
                            <?php
                            if(isset($_SESSION['id']))
                            {
-                              echo '<a class="linkpost" href="php/e_register.php?e_id=' . $event['ID_EVENTS'] .'">S\'inscrire</a><br />';
+                              $req2 = $bdd->prepare('SELECT ID_EVENTS, ID_MEMBRE FROM INSCRIRE WHERE ID_EVENTS = ? AND ID_MEMBRE = ?');
+                              $req2->execute(array($event['ID_EVENTS'], $_SESSION['id']));
+                              if(!$test = $req2->fetch())
+                              {
+                                 echo '<a class="linkpost" href="php/e_register.php?e_id=' . $event['ID_EVENTS'] .'">S\'inscrire</a><br />';
+                              }
+                              else
+                              {
+                                 echo '<span class="metadata">Déjà inscrit</span><br />';
+                              }
                            }
 
                            if(isset($_SESSION['droit']) AND $_SESSION['droit'] >= 3)
                            {
-                              echo '<a class="linkpost metadata" href="php/notice.php?e_id=' . $event['ID_EVENTS'] .'">Signaler</a><br />';
+                              echo '<a class="linkpost" href="php/notice.php?e_id=' . $event['ID_EVENTS'] .'">Signaler</a><br />';
                            }
 
 
@@ -157,12 +166,21 @@ function month($month_p) {
                               <?php
                                if(isset($_SESSION['droit']) AND $_SESSION['droit'] >= 3)
                                {
-                                  echo '<a class="linkpost metadata" href="php/notice.php?e_id=' . $event['ID_EVENTS'] .'">Signaler</a><br />';
+                                  echo '<a class="linkpost" href="php/notice.php?e_id=' . $event['ID_EVENTS'] .'">Signaler</a><br />';
                                }
 
                                if(isset($_SESSION['id']))
                                {
-                                  echo '<a class="linkpost" href="php/e_register.php?e_id=' . $event['ID_EVENTS'] .'">S\'inscrire</a><br />';
+                                  $req2 = $bdd->prepare('SELECT ID_EVENTS, ID_MEMBRE FROM INSCRIRE WHERE ID_EVENTS = ? AND ID_MEMBRE = ?');
+                                  $req2->execute(array($event['ID_EVENTS'], $_SESSION['id']));
+                                 if(!$test = $req2->fetch())
+                                 {
+                                    echo '<a class="linkpost" href="php/e_register.php?e_id=' . $event['ID_EVENTS'] .'">S\'inscrire</a><br />';
+                                 }
+                                 else
+                                 {
+                                    echo '<span class="metadata">Déjà inscrit</span><br />';
+                                 }
                                }
 
                                if(!isset($_SESSION['id_region']) OR (isset($_SESSION['droit']) AND $_SESSION['droit'] >= 3))
@@ -213,16 +231,16 @@ function month($month_p) {
                     if(isset($_SESSION['droit']) AND ($_SESSION['droit'] == 2 OR $_SESSION['droit'] == 4))
                     {?> 
                       <h1>Poster un event</h1>
-                       <form action="php/e_post.php" method="post">
-                              <a href="events.php">Retour à la liste des events<a/>
+                       <form action="php/e_post.php" method="post" enctype="multipart/form-data">
+                              <a href="events.php">Retour à la liste des events<a/><br />
                               <label for="name">Le nom de l'event:</label>
                               <input type="text" name="name" id="name" required/><br />
                               <label for="image">Votre photo :</label>
                               <input type="file" name="image" id="image" required/><br />
                               <label for="date">La date :</label>
                               <input type="date" name="date" id="date" required/><br />
-                              <label for="date">La description de l'event :</label><br />
-                              <textarea type="date" name="date" id="date" required></textarea><br />
+                              <label for="desc">La description de l'event :</label><br />
+                              <textarea name="desc" id="desc" required></textarea><br />
                               <?php
                               if($_SESSION['droit'] == 4)
                               {
@@ -283,7 +301,14 @@ function month($month_p) {
                         {
                         ?>
 			  <article>
-                          <a class="linkpost" href="events.php">Retour à la liste des events<a/>
+                          <a class="linkpost" href="events.php">Retour à la liste des events<a/><br />
+                          <?php 
+                          if(!(isset($_SESSION['id_region']) AND (($_SESSION['id_region'] != $donnee['ID_REGION'] AND $_SESSION['droit'] != 4) OR ($_SESSION['id_region'] == $donnee['ID_REGION'] AND ($_SESSION['droit'] != 2 AND $_SESSION['droit'] != 4))))) 
+                          {?>
+                             <b><a class="linkpost" href="php/registration_download.php?e_id=<?php echo $e_id; ?>" target="_blank">Télécharger la liste des participants</a></b>
+                          <?php   
+                          }
+                          ?>      
                           <h1><?php echo $donnee['EVENTS']; ?></h1>
                           <p>Le <?php echo $donnee['jour']; ?> <?php echo month($donnee['mois']); ?> <?php echo $donnee['annee']; ?></p>
                           <?php
@@ -294,7 +319,16 @@ function month($month_p) {
 
                           if(isset($_SESSION['id']))
                           {
-                              echo '<a class="linkpost" href="php/e_register.php?e_id=' . $donnee['ID_EVENTS'] .'">S\'inscrire</a><br />';
+                             $req2 = $bdd->prepare('SELECT ID_EVENTS, ID_MEMBRE FROM INSCRIRE WHERE ID_EVENTS = ? AND ID_MEMBRE = ?');
+                             $req2->execute(array($e_id, $_SESSION['id']));
+                             if(!$test = $req2->fetch())
+                             {
+                                echo '<a class="linkpost" href="php/e_register.php?e_id=' . $e_id .'">S\'inscrire</a><br />';
+                             }
+                             else
+                             {
+                               echo '<span class="metadata">Déjà inscrit</span><br />';
+                             }
                           }
 
                           if(!isset($_SESSION['id_region']))
@@ -358,7 +392,7 @@ function month($month_p) {
                                  }
                                  $req2->closeCursor(); 
                                  $req2 = $bdd->prepare('SELECT COUNT(*) AS nb FROM LIKES WHERE ID_PHOTO = ?');
-                                 $req2->execute(array($donnee['ID_PHOTO']));
+                                 $req2->execute(array($image['ID_PHOTO']));
                                  $donnee2 = $req2->fetch();
                                  ?>
                                  <p>Like(s) : <?php echo $donnee2['nb']; ?>. <a href="#" id="Bphoto1" ><input type="image" alt="Like" src="images/love.png" height="45px"></a>

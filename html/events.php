@@ -451,6 +451,7 @@ function month($month_p) {
                         if(isset($_SESSION['id']))
                         {?>
                           <input id="com" type="text" placeholder="Tapez votre commentaire" /><input id="com_send" type="button" value="Envoyer" />
+			      <div class="forum">
                         <?php
                         }
                         $req2 = $bdd->prepare('SELECT ID_COMMENTAIRE, COMMENTAIRE, NOM, PRENOM, MINUTE(DATE) AS min, HOUR(DATE) AS heures, DAY(DATE) AS jour, MONTH(DATE) AS mois, YEAR(DATE) AS annee FROM COMMENTAIRE INNER JOIN MEMBRE ON MEMBRE.ID_MEMBRE = COMMENTAIRE.ID_MEMBRE WHERE ID_PHOTO = ? ORDER BY DATE DESC');
@@ -463,12 +464,12 @@ function month($month_p) {
                         {
                            foreach($donnees as $donnee)
                            {?>
-                             <p class="comment"><?php if(isset($_SESSION['droit']) AND $_SESSION['droit'] >= 3) { echo '<a href="php/notice.php?id_com=' . $donnee['ID_COMMENTAIRE'] . '">[Signaler]</a> '; }?>Le <?php echo $donnee['jour']; ?> <?php echo month($donnee['mois']); ?> <?php echo $donnee['annee']; ?> à <?php echo $donnee['heures']; ?>:<?php echo $donnee['min']; ?> par <?php echo $donnee['NOM'] . ' ' . $donnee['PRENOM']; ?> : <?php echo htmlspecialchars($donnee['COMMENTAIRE']);?></p>
+                             <p class="comment"><?php if(isset($_SESSION['droit']) AND $_SESSION['droit'] >= 3) { echo '<a href="php/notice.php?id_com=' . $donnee['ID_COMMENTAIRE'] . '">[Signaler]</a><div class="com"><div class="pseudo"> '; }?>Le <?php echo $donnee['jour']; ?> <?php echo month($donnee['mois']); ?> <?php echo $donnee['annee']; ?> à <?php echo $donnee['heures']; ?>:<?php echo $donnee['min']; ?> par <?php echo $donnee['NOM'] . ' ' . $donnee['PRENOM']; ?> :</div> <?php echo htmlspecialchars($donnee['COMMENTAIRE']);?></div></p>
                            <?php   
                            }
   	                }
-                        ?>
-                      <article>
+                        ?></div>
+                      </article>
                       <?php
                       $req->closeCursor();
                     }

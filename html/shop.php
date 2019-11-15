@@ -115,7 +115,7 @@ img {vertical-align: middle;}
 </div>
 
 <div class="item">
-	<h4>Nom item</h4>
+	<h4>Noms items</h4>
 	<img/>
 	<p>description de l'item que vous voulez acheter</p>
 </div>

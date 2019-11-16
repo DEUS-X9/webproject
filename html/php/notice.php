@@ -25,6 +25,8 @@ function del_event($e_id, $bdd, $raison)
         $req_reg = $bdd->prepare('DELETE FROM INSCRIRE WHERE ID_EVENTS = ?');
         $req_reg->execute(array($e_id));
 
+        email('Event', $donnee['ID_EVENTS'], $raison, $bdd);
+
         if(!$donnee2 = $req->fetch())
         {
           $req2 = $bdd->prepare('DELETE FROM EVENEMENTS WHERE ID_EVENTS = ?');
@@ -32,13 +34,17 @@ function del_event($e_id, $bdd, $raison)
           
 	  $req3 = $bdd->prepare('DELETE FROM COMMENTAIRE WHERE ID_PHOTO = ?');
           $req3->execute(array($donnee['ID_PHOTO']));
-      
-          $req4 = $bdd->prepare('DELETE FROM PHOTO WHERE ID_PHOTO = ?');
+
+          $req4 = $bdd->prepare('DELETE FROM LIKES WHERE ID_PHOTO = ?');
           $req4->execute(array($donnee['ID_PHOTO']));
+      
+          $req5 = $bdd->prepare('DELETE FROM PHOTO WHERE ID_PHOTO = ?');
+          $req5->execute(array($donnee['ID_PHOTO']));
           $req->closeCursor();
           $req2->closeCursor();
           $req3->closeCursor();
           $req4->closeCursor();
+          $req5->closeCursor();
         }
         else
         {
@@ -57,10 +63,14 @@ function del_event($e_id, $bdd, $raison)
            $req3 = $bdd->prepare('DELETE FROM COMMENTAIRE WHERE ID_PHOTO = ?');
            $req3->execute(array($donnee['ID_PHOTO']));
            $req3->closeCursor();
-      
-           $req4 = $bdd->prepare('DELETE FROM PHOTO WHERE ID_PHOTO = ?');
+           
+           $req4 = $bdd->prepare('DELETE FROM LIKES WHERE ID_PHOTO = ?');
            $req4->execute(array($donnee['ID_PHOTO']));
            $req4->closeCursor();
+      
+           $req5 = $bdd->prepare('DELETE FROM PHOTO WHERE ID_PHOTO = ?');
+           $req5->execute(array($donnee['ID_PHOTO']));
+           $req5->closeCursor();
            
            foreach($photos as $photo)
            {
@@ -75,14 +85,94 @@ function del_event($e_id, $bdd, $raison)
            }
            $req->closeCursor();
         }
-        email('Event', $donnee['EVENTS'], $raison);
         header('Location: ../events.php');
       }
     }
 }
 
-function email($message_type, $name, $message){
+function email($message_type, $id, $message, $bdd) {
 
+   $adresses_mail = array();
+   $objet = '';
+   $mail = '';
+
+   if($message_type == 'Event')
+   {
+     $req = $bdd->prepare("SELECT EVENTS, EVENEMENTS.ID_REGION, REGION FROM EVENEMENTS INNER JOIN REGION ON REGION.ID_REGION = EVENEMENTS.ID_REGION WHERE ID_EVENTS = ?");
+     $req->execute(array($id));
+     $donnee = $req->fetch();
+     $mail = "Membre du BDE de " .  $donnee['REGION'] . ",\n\nSuite à un report d'un membre du personnel CESI ou de l'administrateur du site, l'événement nommé \"" . $donnee['EVENTS'] . "\" a été supprimé à " . date("H:i:s") . " le " . date("d/m/Y") . " pour la raison suivante :\n\"" . $message . "\".\n Pour tout complément d'information, veuillez adresser un mail à " . $_SESSION['mail'] . ".\n\nBonne réception.\n\nCeci est un mail généré automatiquement. Merci de ne pas répondre.";
+     $objet = "Supression événement " . $donnee['EVENTS'];
+
+     $req->closeCursor();
+     $req = $bdd->prepare("SELECT MAIL FROM MEMBRE WHERE (ID_REGION = ? AND TYPE_UTILISATEUR = 2) OR TYPE_UTILISATEUR = 4");
+     $req->execute(array($donnee['ID_REGION']));
+     $adresses_mail = $req->fetchAll();
+     $req->closeCursor();
+   }
+   else if($message_type == 'Image')
+   {
+     $req = $bdd->prepare("SELECT EVENTS, EVENEMENTS.ID_REGION, REGION FROM EVENEMENTS INNER JOIN REGION ON REGION.ID_REGION = EVENEMENTS.ID_REGION WHERE ID_EVENTS = ?");
+     $req->execute(array($id));
+     $donnee = $req->fetch();
+     $mail = "Membre du BDE de " .  $donnee['REGION'] . ",\n\nSuite à un report d'un membre du personnel CESI ou de l'administrateur du site, une image associée à l'événement nommé \"" . $donnee['EVENTS'] . "\" a été supprimé à " . date("H:i:s") . " le " . date("d/m/Y") . " pour la raison suivante :\n\"" . $message . "\".\n Pour tout complément d'information, veuillez adresser un mail à " . $_SESSION['mail'] . ".\n\nBonne réception.\n\nCeci est un mail généré automatiquement. Merci de ne pas répondre.";
+     $objet = "Supression image associé à l'événement " . $donnee['EVENTS'];
+
+     $req->closeCursor();
+     $req = $bdd->prepare("SELECT MAIL FROM MEMBRE WHERE (ID_REGION = ? AND TYPE_UTILISATEUR = 2) OR TYPE_UTILISATEUR = 4");
+     $req->execute(array($donnee['ID_REGION']));
+     $adresses_mail = $req->fetchAll();
+     $req->closeCursor();
+   }
+   else
+   {
+     $req = $bdd->prepare("SELECT COMMENTAIRE, EVENTS, EVENEMENTS.ID_REGION, REGION FROM COMMENTAIRE INNER JOIN ILLUSTRER ON ILLUSTRER.ID_PHOTO = COMMENTAIRE.ID_PHOTO INNER JOIN EVENEMENTS ON EVENEMENTS.ID_EVENTS = ILLUSTRER.ID_EVENTS INNER JOIN REGION ON REGION.ID_REGION = EVENEMENTS.ID_REGION WHERE ID_COMMENTAIRE = ?");
+     $req->execute(array($id));
+
+     if(!$donnee = $req->fetch())
+     {
+       $req->closeCursor();
+       $req = $bdd->prepare("SELECT COMMENTAIRE, EVENTS, EVENEMENTS.ID_REGION, REGION FROM COMMENTAIRE INNER JOIN EVENEMENTS ON EVENEMENTS.ID_PHOTO = COMMENTAIRE.ID_PHOTO INNER JOIN REGION ON REGION.ID_REGION = EVENEMENTS.ID_REGION WHERE ID_COMMENTAIRE = ?");
+       $req->execute(array($id));
+       $donnee = $req->fetch();
+     }
+
+     $mail = "Membre du BDE de " .  $donnee['REGION'] . ",\n\nSuite à un report d'un membre du personnel CESI ou de l'administrateur du site, le commentaire \"" . $donnee['COMMENTAIRE'] . "\" associé à l'événement nommé \"" . $donnee['EVENTS'] . "\" a été supprimé à " . date("H:i:s") . " le " . date("d/m/Y") . " pour la raison suivante :\n\"" . $message . "\".\n Pour tout complément d'information, veuillez adresser un mail à " . $_SESSION['mail'] . ".\n\nBonne réception.\n\nCeci est un mail généré automatiquement. Merci de ne pas répondre.";
+     $objet = "Supression commentaire associé à l'événement " . $donnee['EVENTS'];
+
+     $req->closeCursor();
+     $req = $bdd->prepare("SELECT MAIL FROM MEMBRE WHERE (ID_REGION = ? AND TYPE_UTILISATEUR = 2) OR TYPE_UTILISATEUR = 4");
+     $req->execute(array($donnee['ID_REGION']));
+     $adresses_mail = $req->fetchAll();
+     $req->closeCursor(); 
+   }
+   
+   $mail_html = nl2br($mail);
+
+   $boundary = "-----=".md5(rand());
+
+   //Création du header de l'e-mail.
+   $header = "From: \"Site BDE CESI\"<web@webfacile76.fr>\n";
+   $header .= "Reply-to: \"Site BDE CESI\" <web@webfacile76.fr>\n";
+   $header .= "MIME-Version: 1.0\n";
+   $header .= "Content-Type: multipart/alternative;\n boundary=\"$boundary\"\n";
+                          
+  //Définition du message
+  $message = "\n--" . $boundary . "\n";
+  $message .= "Content-Type: text/plain; charset=\"utf8\"\n";
+  $message .= "Content-Transfer-Encoding: 8bit\n";
+  $message .= "\n" . $mail . "\n";
+  $message .= "\n--" . $boundary . "\n";
+  $message .= "Content-Type: text/html; charset=\"utf8\"\n";
+  $message .= "Content-Transfer-Encoding: 8bit\n";
+  $message .= "\n" . $mail_html . "\n";
+  $message .= "\n--" . $boundary . "--\n";
+  $message .= "\n--" . $boundary . "--\n";
+ 
+  foreach($adresses_mail as $adresse_mail)
+  {
+    mail($adresse_mail['MAIL'], $objet, $message, $header, NULL);
+  }   
 }
 
 if(!isset($_SESSION['id']))
@@ -209,7 +299,7 @@ else if(!empty($_POST) AND isset($_POST))
   {
     $e_id = (int)$_POST['e_id'];
     
-    del_event($e_id, $bdd); 
+    del_event($e_id, $bdd, $raison); 
   }
   else if(isset($_POST['id_img']))
   {
@@ -239,10 +329,16 @@ else if(!empty($_POST) AND isset($_POST))
            $req = $bdd->prepare('SELECT ID_EVENTS, PHOTO.ID_PHOTO FROM PHOTO INNER JOIN ILLUSTRER ON ILLUSTRER.ID_PHOTO = PHOTO.ID_PHOTO WHERE PHOTO.ID_PHOTO = ?');
            $req->execute(array($id_img));
            $donnee = $req->fetch();
+           
+           email('Image', $donnee['ID_EVENTS'], $raison, $bdd);
 
            $req2 = $bdd->prepare('DELETE FROM COMMENTAIRE WHERE ID_PHOTO = ?');
            $req2->execute(array($donnee['ID_PHOTO']));
            $req2->closeCursor();
+
+           $req3 = $bdd->prepare('DELETE FROM LIKES WHERE ID_PHOTO = ?');
+           $req3->execute(array($donnee['ID_PHOTO']));
+           $req3->closeCursor();
 
            $req3 = $bdd->prepare('DELETE FROM ILLUSTRER WHERE ID_PHOTO = ?');
            $req3->execute(array($donnee['ID_PHOTO']));
@@ -253,11 +349,10 @@ else if(!empty($_POST) AND isset($_POST))
            $req4->closeCursor();
 
            header('Location: ../events.php?id_event=' . $donnee['ID_EVENTS']);
-           email('Image', $donnee['ID_EVENTS'], $raison);
         }
         else
         {
-          del_event($donnee2['ID_EVENTS'], $bdd);
+          del_event($donnee2['ID_EVENTS'], $bdd, $raison);
         }
         $req2->closeCursor();
         $req->closeCursor();
@@ -294,12 +389,12 @@ else if(!empty($_POST) AND isset($_POST))
           $donnee = $req->fetch();
         }
 
+        email('Commentaire', $donnee['ID_COMMENTAIRE'], $raison, $bdd);
         $req->closeCursor();
         $req = $bdd->prepare('DELETE FROM COMMENTAIRE WHERE ID_COMMENTAIRE = ?');
         $req->execute(array($id_com));
 
         header('Location: ../events.php?id_event=' . $donnee['ID_EVENTS'] . '&id_image=' . $donnee['ID_PHOTO']);
-        email('Image', $donnee['ID_EVENTS'], $raison);
       }
     } 
   }

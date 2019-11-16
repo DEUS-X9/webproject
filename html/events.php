@@ -387,15 +387,16 @@ function month($month_p) {
                                  <?php
                                  }
                                  else
-                                 {
-                                    echo   ' <div class="com"><div class="pseudo"> ' . $donnee2['NOM'] . ' ' . $donnee2['PRENOM'] . '  :</div> ' . $donnee2['COMMENTAIRE'] . '</div> ';
+                                 {?>
+                                    <div class="forum"><p>Commentaires :<br /><div class="com"><div class="pseudo"> <?php echo $donnee2['NOM'] . ' ' . $donnee2['PRENOM'] . ' :</div>' . $donnee2['COMMENTAIRE'];?></div></p>
+                                 <?php
                                  }
                                  $req2->closeCursor(); 
                                  $req2 = $bdd->prepare('SELECT COUNT(*) AS nb FROM LIKES WHERE ID_PHOTO = ?');
                                  $req2->execute(array($image['ID_PHOTO']));
                                  $donnee2 = $req2->fetch();
                                  ?>
-                                 <p>Like(s) : <?php echo $donnee2['nb']; ?>. <a href="#" id="Bphoto1" ><input type="image" alt="Like" src="images/love.png" height="45px"></a>
+                                 </div><p>Like(s) : <?php echo $donnee2['nb']; ?>. <a href="#" id="Bphoto1" ><input type="image" alt="Like" src="images/love.png" height="45px"></a>
                                  <?php
                                  $req2->closeCursor();  
                               }
@@ -451,7 +452,6 @@ function month($month_p) {
                         if(isset($_SESSION['id']))
                         {?>
                           <input id="com" type="text" placeholder="Tapez votre commentaire" /><input id="com_send" type="button" value="Envoyer" />
-			      <div class="forum">
                         <?php
                         }
                         $req2 = $bdd->prepare('SELECT ID_COMMENTAIRE, COMMENTAIRE, NOM, PRENOM, MINUTE(DATE) AS min, HOUR(DATE) AS heures, DAY(DATE) AS jour, MONTH(DATE) AS mois, YEAR(DATE) AS annee FROM COMMENTAIRE INNER JOIN MEMBRE ON MEMBRE.ID_MEMBRE = COMMENTAIRE.ID_MEMBRE WHERE ID_PHOTO = ? ORDER BY DATE DESC');
@@ -461,15 +461,21 @@ function month($month_p) {
                            echo '<p class="comment">Pas de commentaire</p>';
                         }
                         else
-                        {
-                           foreach($donnees as $donnee)
-                           {?>
-                             <p class="comment"><?php if(isset($_SESSION['droit']) AND $_SESSION['droit'] >= 3) { echo '<a href="php/notice.php?id_com=' . $donnee['ID_COMMENTAIRE'] . '">[Signaler]</a><div class="com"> '; }?>Le <?php echo $donnee['jour']; ?> <?php echo month($donnee['mois']); ?> <?php echo $donnee['annee']; ?> à <?php echo $donnee['heures']; ?>:<?php echo $donnee['min']; ?> par <div class="pseudo"> <?php echo $donnee['NOM'] . ' ' . $donnee['PRENOM']; ?> :</div> <?php echo htmlspecialchars($donnee['COMMENTAIRE']);?></div></p>
-                           <?php   
-                           }
+                        {?>
+                           <div class="forum"><p>Commentaires :<br />
+                             <div class="com">
+                             <?php
+                             foreach($donnees as $donnee)
+                             {?>
+                                <?php if(isset($_SESSION['droit']) AND $_SESSION['droit'] >= 3) { echo '<a href="php/notice.php?id_com=' . $donnee['ID_COMMENTAIRE'] . '">[Signaler]</a> '; }?>Le <?php echo $donnee['jour']; ?> <?php echo month($donnee['mois']); ?> <?php echo $donnee['annee']; ?> à <?php echo $donnee['heures']; ?>:<?php echo $donnee['min']; ?> par <?php echo $donnee['NOM'] . ' ' . $donnee['PRENOM']; ?> : <?php echo htmlspecialchars($donnee['COMMENTAIRE']);?><br />
+                             <?php   
+                             }?>
+                             </div>
+                           </div>
+                        <?php
   	                }
-                        ?></div>
-                      </article>
+                        ?>
+                      <article>
                       <?php
                       $req->closeCursor();
                     }

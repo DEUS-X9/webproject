@@ -36,7 +36,7 @@ if(!isset($_SESSION['id']))
 {
   header('Location: index.php');
 }
-else if($_SESSION['droit'] != 2)
+else if($_SESSION['droit'] != 2 AND $_SESSION['droit'] != 4)
 {
   header('Location: index.php');
 } 

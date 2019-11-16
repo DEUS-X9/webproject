@@ -36,7 +36,8 @@ else
                 if(in_array($extension_upload, $extensions_autorisees))
                 {
                    $nom_fichier = '' . time() . '.' . $infosfichier['extension'] . '';
-                   move_uploaded_file($_FILES['image']['tmp_name'], '../photos/' . $nom_fichier);
+                   move_uploaded_file($_FILES['image']['tmp_name'], '/home/webprojet/www/photos/' . $nom_fichier);
+                   
                    $req = $bdd->prepare('INSERT INTO PHOTO(CHEMIN, ID_MEMBRE) VALUES(?, ?)');
                    $req->execute(array($nom_fichier, $_SESSION['id']));
                    $id_img = $bdd->lastInsertId();

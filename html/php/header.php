@@ -43,16 +43,16 @@ if(isset($_COOKIE['mail']) AND isset($_COOKIE['mdp']) AND !isset($_SESSION['id']
   <meta charset="utf-8">
   <title>BDE CESI</title>
 	
-   <link rel="stylesheet" href="css/bootstrap.min.css">
-   <link rel="stylesheet" href="css/style.css">
+   <link rel="stylesheet" href="/webprojet/css/bootstrap.min.css">
+   <link rel="stylesheet" href="/webprojet/css/style.css">
 	
-  <link rel="icon" type="image/png" href="images/favicon.png" />
+  <link rel="icon" type="image/png" href="/webprojet/images/favicon.png" />
 </head>
 <body> 
  <header>
 	
-			<a href="index.php">
-        			<img title="Retour à la page d'accueil"  src="images/logo.png">
+			<a href="/webprojet/index.php">
+        			<img title="Retour à la page d'accueil"  src="/webprojet/images/logo.png">
      			</a>
 
     <?php
@@ -63,25 +63,25 @@ if(isset($_COOKIE['mail']) AND isset($_COOKIE['mdp']) AND !isset($_SESSION['id']
     $pageEnCours = $_SERVER['PHP_SELF']; ?>
     
     <nav class="nav nav-pills nav-justified flex-column flex-sm-row">
-	<a class="nav-link nav-item <?php if($pageEnCours == "/webprojet/index.php") { echo "active";} ?>" href="index.php">Accueil</a>
-	<a class="nav-link nav-item <?php if($pageEnCours == "/webprojet/events.php") { echo "active";} ?>" href="events.php">Evenements</a>
-	<a class="nav-link nav-item <?php if($pageEnCours == "/webprojet/shop.php") { echo "active";} ?>" href="shop.php">Boutique</a>
+	<a class="nav-link nav-item <?php if($pageEnCours == "/webprojet/index.php") { echo "active";} ?>" href="/webprojet/index.php">Accueil</a>
+	<a class="nav-link nav-item <?php if($pageEnCours == "/webprojet/events.php") { echo "active";} ?>" href="/webprojet/events.php">Evenements</a>
+	<a class="nav-link nav-item <?php if($pageEnCours == "/webprojet/shop.php") { echo "active";} ?>" href="/webprojet/shop.php">Boutique</a>
 	<?php
         if(!isset($_SESSION['id']))
 	{ ?>
-		<a class="nav-link nav-item <?php if($pageEnCours == "/webprojet/sign.php") { echo "active";} ?>" href="sign.php">Inscription</a>
-		<a class="nav-link nav-item <?php if($pageEnCours == "/webprojet/login.php") { echo "active";} ?>" href="login.php">Connexion</a>
+		<a class="nav-link nav-item <?php if($pageEnCours == "/webprojet/sign.php") { echo "active";} ?>" href="/webprojet/sign.php">Inscription</a>
+		<a class="nav-link nav-item <?php if($pageEnCours == "/webprojet/login.php") { echo "active";} ?>" href="/webprojet/login.php">Connexion</a>
 	<?php } 
-        else if($_SESSION['droit'] == 2)
+        else if($_SESSION['droit'] == 2 OR $_SESSION['droit'] == 4)
         {?>
-		<a class="nav-link nav-item <?php if($pageEnCours == "/webprojet/bde.php") { echo "active";} ?>" href="bde.php">Administration</a>
-		<a class="nav-link nav-item" href="logout.php">Se déconnecter</a>
+		<a class="nav-link nav-item <?php if($pageEnCours == "/webprojet/bde.php") { echo "active";} ?>" href="/webprojet/bde.php">Administration</a>
+		<a class="nav-link nav-item" href="/webprojet/logout.php">Se déconnecter</a>
 	<?php
 	}
 	else
 	{
 	?>
-		<a class="nav-link nav-item" href="logout.php">Se déconnecter</a>
+		<a class="nav-link nav-item" href="/webprojet/logout.php">Se déconnecter</a>
         <?php
         } ?>
     </nav>

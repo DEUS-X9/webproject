@@ -51,7 +51,7 @@ function month($month_p) {
                     }
                     if(isset($_SESSION['droit']) AND $_SESSION['droit'] >= 3)
                     {?>
-                       <h4 class="head_event"><a href="php/images_download.php" target="_blank">Télécharger toute les photos postées</a></h4>
+                       <h4 class="head_event"><a href="php/images_download.php" target="_blank">Télécharger toutes les photos postées</a></h4>
                     <?php
                     }?>
 		    <p>Ces pages regroupent les différents évènements qui vous sont proposés et qui ont été proposés par le bureau des étudiants :</p>

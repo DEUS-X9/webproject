@@ -46,7 +46,12 @@ function month($month_p) {
                     <?php
                     if(isset($_SESSION['droit']) AND ($_SESSION['droit'] == 2 OR $_SESSION['droit'] == 4))
                     {?>
-                       <h4 class="post_event"><a href="events.php?ajout=1">Poster un event</a></h4>
+                       <h4 class="head_event"><a href="events.php?ajout=1">Poster un event</a></h4>
+                    <?php
+                    }
+                    if(isset($_SESSION['droit']) AND $_SESSION['droit'] >= 3)
+                    {?>
+                       <h4 class="head_event"><a href="php/images_download.php" target="_blank">Télécharger toute les photos postées</a></h4>
                     <?php
                     }?>
 		    <p>Ces pages regroupent les différents évènements qui vous sont proposés et qui ont été proposés par le bureau des étudiants :</p>
@@ -349,7 +354,7 @@ function month($month_p) {
                           }
                           else
                           {?>
-                            <div class="forum"><p>Commentaires :<br /><div class="com"><div class="pseudo"> <?php echo $donnee2['NOM'] . ' ' . $donnee2['PRENOM'] . ' :</div>' . $donnee2['COMMENTAIRE'];?></div></p>
+                            <div><a href="events.php?id_event=<?php echo $donnee['ID_EVENTS'];?>&id_image=<?php echo $donnee['ID_PHOTO'];?>"><div class="forum"><p>Commentaires :<br /><div class="com"><div class="pseudo"> <?php echo $donnee2['NOM'] . ' ' . $donnee2['PRENOM'] . ' :</div>' . $donnee2['COMMENTAIRE'];?></div></p>
                           <?php
                           }
                           $req2->closeCursor(); 
@@ -357,6 +362,8 @@ function month($month_p) {
                           $req2->execute(array($donnee['ID_PHOTO']));
                           $donnee2 = $req2->fetch();
                           ?>
+                          </div>
+                          </a>
                           </div><p>Like(s) : <?php echo $donnee2['nb']; ?>. <a href="#" id="Bphoto1" ><input type="image" alt="Like" src="images/love.png" height="45px"></a>
                           <?php
                           $req2->closeCursor(); 
@@ -388,7 +395,7 @@ function month($month_p) {
                                  }
                                  else
                                  {?>
-                                    <div class="forum"><p>Commentaires :<br /><div class="com"><div class="pseudo"> <?php echo $donnee2['NOM'] . ' ' . $donnee2['PRENOM'] . ' :</div>' . $donnee2['COMMENTAIRE'];?></div></p>
+                                    <div><a href="events.php?id_event=<?php echo $donnee['ID_EVENTS'];?>&id_image=<?php echo $donnee['ID_PHOTO'];?>"><div class="forum"><p>Commentaires :<br /><div class="com"><div class="pseudo"> <?php echo $donnee2['NOM'] . ' ' . $donnee2['PRENOM'] . ' :</div>' . $donnee2['COMMENTAIRE'];?></div></p>
                                  <?php
                                  }
                                  $req2->closeCursor(); 
@@ -396,7 +403,10 @@ function month($month_p) {
                                  $req2->execute(array($image['ID_PHOTO']));
                                  $donnee2 = $req2->fetch();
                                  ?>
-                                 </div><p>Like(s) : <?php echo $donnee2['nb']; ?>. <a href="#" id="Bphoto1" ><input type="image" alt="Like" src="images/love.png" height="45px"></a>
+                                 </div>
+                                 </a>
+                                 </div>
+                                 <p>Like(s) : <?php echo $donnee2['nb']; ?>. <a href="#" id="Bphoto1" ><input type="image" alt="Like" src="images/love.png" height="45px"></a>
                                  <?php
                                  $req2->closeCursor();  
                               }

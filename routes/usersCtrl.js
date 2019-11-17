@@ -6,7 +6,9 @@ var asyncLib = require('async');
 
 //Constantes
 const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-const PASSWORD_REGEX = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,8}$/;
+const PASSWORD_REGEX = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,}$/;
+const ADMIN = 4;
+const BDE = 2;
 
 //Routes
 module.exports = {
@@ -47,7 +49,7 @@ module.exports = {
       },
       function (userFound, done) {
         if (!userFound) {
-          bcrypt.hash(PASSWORD, 5, function (err, bcryptedPassword) {
+          bcrypt.hash(PASSWORD,5 , function (err, bcryptedPassword) {
             done(null, userFound, bcryptedPassword);
           });
         } else {
@@ -200,5 +202,60 @@ module.exports = {
         return res.status(500).json({ 'error': 'cannot update user profile' });
       }
     });
+  },
+  listUser: function (req, res) {
+    var headerAuth = req.headers['authorization'];
+    var ID_MEMBRE = jwtUtils.getUserId(headerAuth);
+
+    var fields = req.query.fields;
+    var limit = parseInt(req.query.limit);
+    var offset = parseInt(req.query.offset);
+    var order = req.query.order;
+    var TYPE_UTILISATEUR = req.body.TYPE_UTILISATEUR;
+
+    /*if (limit > ITEMS_LIMIT) {
+      limit = ITEMS_LIMIT;
+    }*/
+
+    asyncLib.waterfall([
+        function (done) {
+          models.membre.findOne({
+              where: { ID_MEMBRE: ID_MEMBRE, TYPE_UTILISATEUR: BDE || ADMIN }
+            })
+              .then(function (userFound) {
+                done(null, userFound);
+              })
+              .catch(function (err) {
+                console.log(err);
+                return res.status(500).json({ 'error': 'unable to verify user or do not have the right' });
+              });
+          },
+        function (userFound, done) {
+          if (userFound) {
+            models.membre.findAll({
+              attributes: ['ID_MEMBRE', 'MAIL', 'NOM', 'PRENOM', 'ID_REGION', 'TYPE_UTILISATEUR'],
+              }).then(function (membre) {
+                if (membre) {
+                  res.status(200).json(membre);
+                } else {
+                  res.status(404).json({ "error": "no item found" });
+                }
+              }).catch(function (err) {
+                console.log(err);
+                res.status(500).json({ "error": "invalid fields" });
+              });
+          } else {
+              console.log(err);
+            res.status(404).json({ 'error': 'user not found' });
+          }
+        },
+      ], function (newCart) {
+        if (newCart) {
+          return res.status(201).json(newCart);
+        } else {
+          return res.status(500).json({ 'error': 'cannot put in cart' });
+        }
+      });
+    
   }
 }

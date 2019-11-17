@@ -10,27 +10,24 @@ const ITEMS_LIMIT = 50;
 
 // Routes
 module.exports = {
-  createComments: function (req, res) {
+  createLikes: function (req, res) {
     // Getting auth header
     var headerAuth = req.headers['authorization'];
     var ID_MEMBRE = jwtUtils.getUserId(headerAuth);
 
     // Params
-    var COMMENTAIRE = req.body.COMMENTAIRE;
     var ID_PHOTO = req.body.ID_PHOTO;
-    var DATE = new Date();
+    
 
-    if (COMMENTAIRE == null ) {
+
+    if (ID_PHOTO == null) {
       return res.status(400).json({ 'error': 'missing parameters' });
     }
 
-    if (COMMENTAIRE.length <= TITLE_LIMIT) {
-      return res.status(400).json({ 'error': 'invalid parameters' });
-    }
 
     asyncLib.waterfall([
       function (done) {
-        models.inscrire.findOne({
+        models.membre.findOne({
           where: { ID_MEMBRE: ID_MEMBRE}
         })
           .then(function (userFound) {
@@ -43,29 +40,27 @@ module.exports = {
       },
       function (userFound, done) {
         if (userFound) {
-            models.commentaire.create({
-              COMMENTAIRE: COMMENTAIRE,
-              DATE: DATE,
-              ID_PHOTO: ID_PHOTO,
-              ID_MEMBRE: ID_MEMBRE
-            })
-            .then(function (newComments) {
-              done(newComments);
+          models.likes.create({
+            ID_MEMBRE: ID_MEMBRE,
+            ID_PHOTO: ID_PHOTO
+          })
+            .then(function (newLikes) {
+              done(newLikes);
             });
         } else {
           res.status(404).json({ 'error': 'user not found' });
         }
       },
-    ], function (newComments) {
-      if (newComments) {
-        return res.status(201).json(newComments);
+    ], function (newLikes) {
+      if (newLikes) {
+        return res.status(201).json(newLikes);
       } else {
-        return res.status(500).json({ 'error': 'cannot post message' });
+        return res.status(500).json({ 'error': 'cannot post like' });
       }
     });
 
   },
-  listComments: function (req, res) {
+  nbLike: function (req, res) {
     var fields = req.query.fields;
     var limit = parseInt(req.query.limit);
     var offset = parseInt(req.query.offset);
@@ -73,16 +68,12 @@ module.exports = {
 
     var ID_PHOTO = req.body.ID_PHOTO;
 
-    if (limit > ITEMS_LIMIT) {
-      limit = ITEMS_LIMIT;
-    }
-
-    models.commentaire.findAll({
+    models.likes.findAndCountAll ({
       where: {ID_PHOTO: ID_PHOTO},
-      order: [(order != null) ? order.split(':') : ['ID_COMMENTAIRE', 'ASC']],
+      /*order: [(order != null) ? order.split(':') : ['ID_PHOTO', 'ASC']],
       attributes: (fields !== '*' && fields != null) ? fields.split(',') : null,
       limit: (!isNaN(limit)) ? limit : null,
-      offset: (!isNaN(offset)) ? offset : null,
+      offset: (!isNaN(offset)) ? offset : null,*/
       /*include: [{
         model: models.membre,
         attributes: [ 'MAIL' ]
@@ -97,5 +88,4 @@ module.exports = {
       console.log(err);
       res.status(500).json({ "error": "invalid fields" });
     });
-  }
-}
+  },}

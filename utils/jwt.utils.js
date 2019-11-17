@@ -1,14 +1,14 @@
 //Imports
 var jwt = require('jsonwebtoken');
 
-const JWT_SIGN_SECRET = 'fuizyehcdbskuyfz!e';
+const JWT_SIGN_SECRET = 'fuizyehcdbskuyfz!eklnb';
 
 //Exported functions
 module.exports = {
     generateTokenForUser: function(userData) {
         return jwt.sign({
             ID_MEMBRE: userData.ID_MEMBRE,
-            DROIT: userData.DROIT
+            TYPE_UTILISATEUR: userData.TYPE_UTILISATEUR
         },
         JWT_SIGN_SECRET,
         {

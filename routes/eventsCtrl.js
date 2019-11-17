@@ -23,7 +23,7 @@ module.exports = {
     var E_DATE = new Date();
     var TYPE_UTILISATEUR = req.body.TYPE_UTILISATEUR;
     var ID_PHOTO = req.body.ID_PHOTO;
-    
+
 
 
     if (EVENTS == null || E_DESCRIPTION == null) {
@@ -37,7 +37,7 @@ module.exports = {
     asyncLib.waterfall([
       function (done) {
         models.membre.findOne({
-          where: { ID_MEMBRE: ID_MEMBRE, TYPE_UTILISATEUR: ADMIN }
+          where: { ID_MEMBRE: ID_MEMBRE, TYPE_UTILISATEUR: ADMIN || BDE }
         })
           .then(function (userFound) {
             done(null, userFound);
@@ -102,5 +102,58 @@ module.exports = {
       console.log(err);
       res.status(500).json({ "error": "invalid fields" });
     });
+  },
+  signEvents: function (req, res) {
+    // Getting auth header
+    var headerAuth = req.headers['authorization'];
+    var ID_MEMBRE = jwtUtils.getUserId(headerAuth);
+
+    // Params
+    var ID_EVENTS = req.body.ID_EVENTS;
+
+
+    if (ID_EVENTS == null) {
+      return res.status(400).json({ 'error': 'missing parameters' });
+    }
+
+    asyncLib.waterfall([
+      function (done) {
+        models.membre.findOne({
+          where: { ID_MEMBRE: ID_MEMBRE }
+        })
+          .then(function (userFound) {
+            done(null, userFound);
+          })
+          .catch(function (err) {
+            console.log(err);
+            return res.status(500).json({ 'error': 'unable to verify user' });
+          });
+      },
+      function (userFound, done) {
+        if (userFound) {
+          models.inscrire.create({
+            ID_EVENTS: ID_EVENTS,
+            ID_MEMBRE: ID_MEMBRE
+          })
+            .then(function (signEvents) {
+              done(signEvents);
+            }).catch(function (err) {
+              console.log(err);
+              res.status(500).json({ "error": "already sign" });
+            });
+        } else {
+          res.status(404).json({ 'error': 'user not found' });
+        }
+
+
+      },
+    ], function (signEvents) {
+      if (signEvents) {
+        return res.status(201).json(signEvents);
+      } else {
+        return res.status(500).json({ 'error': 'cannot post sign to event' });
+      }
+    });
+
   }
 }

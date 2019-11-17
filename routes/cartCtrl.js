@@ -64,6 +64,9 @@ module.exports = {
 
   },
   listCart: function (req, res) {
+    var headerAuth = req.headers['authorization'];
+    var ID_MEMBRE = jwtUtils.getUserId(headerAuth);
+
     var fields = req.query.fields;
     var limit = parseInt(req.query.limit);
     var offset = parseInt(req.query.offset);
@@ -73,24 +76,53 @@ module.exports = {
       limit = ITEMS_LIMIT;
     }
 
-    models.panier.findAll({
-      order: [(order != null) ? order.split(':') : ['ID_PANIER', 'ASC']],
-      attributes: (fields !== '*' && fields != null) ? fields.split(',') : null,
-      limit: (!isNaN(limit)) ? limit : null,
-      offset: (!isNaN(offset)) ? offset : null,
-      /*include: [{
-        model: models.panier,
-        attributes: [ 'ID_MEMBRE' ]
-      }]*/
-    }).then(function (cart) {
-      if (cart) {
-        res.status(200).json(cart);
-      } else {
-        res.status(404).json({ "error": "no item found" });
-      }
-    }).catch(function (err) {
-      console.log(err);
-      res.status(500).json({ "error": "invalid fields" });
-    });
+    asyncLib.waterfall([
+        function (done) {
+          models.membre.findOne({
+            where: { ID_MEMBRE: ID_MEMBRE }
+          })
+            .then(function (userFound) {
+              done(null, userFound);
+            })
+            .catch(function (err) {
+              console.log(err);
+              return res.status(500).json({ 'error': 'unable to verify user' });
+            });
+        },
+        function (userFound, done) {
+          if (userFound) {
+            models.panier.findAll({
+                order: [(order != null) ? order.split(':') : ['ID_PANIER', 'DESC']],
+                attributes: (fields !== '*' && fields != null) ? fields.split(',') : null,
+                limit: (!isNaN(limit)) ? limit : null,
+                offset: (!isNaN(offset)) ? offset : null,
+                where: { ID_MEMBRE: ID_MEMBRE }
+                /*include: [{
+                  model: models.panier,
+                  attributes: [ 'ID_MEMBRE' ]
+                }]*/
+              }).then(function (cart) {
+                if (cart) {
+                  res.status(200).json(cart);
+                } else {
+                  res.status(404).json({ "error": "no item found" });
+                }
+              }).catch(function (err) {
+                console.log(err);
+                res.status(500).json({ "error": "invalid fields" });
+              });
+          } else {
+              console.log(err);
+            res.status(404).json({ 'error': 'user not found' });
+          }
+        },
+      ], function (newCart) {
+        if (newCart) {
+          return res.status(201).json(newCart);
+        } else {
+          return res.status(500).json({ 'error': 'cannot put in cart' });
+        }
+      });
+    
   }
 }

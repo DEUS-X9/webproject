@@ -10,7 +10,7 @@ if(isset($_POST['email']) AND isset($_POST['mdp']))
      $email = htmlspecialchars((string)$_POST['email']);
      $password = htmlspecialchars((string)$_POST['mdp']);
 
-     $password = md5($password . 'fuizyehcdbskuyfz!e');
+     $password = $password = password_hash($password, PASSWORD_BCRYPT, array('salt' => 'fuizyehcdbskuyfz!eklnbkl'));
      $req = $bdd->prepare('SELECT * FROM MEMBRE WHERE MAIL = ? AND PASSWORD = ?');
      $req->execute(array($email, $password));
 

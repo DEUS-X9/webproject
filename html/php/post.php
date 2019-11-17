@@ -82,6 +82,7 @@ else
         }
       }
     }
+  }
 }
 ?>
          <a href="../events.php?id_event=<?php echo $e_id; ?>">Retour</a></p>

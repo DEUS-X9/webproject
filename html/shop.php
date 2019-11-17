@@ -1,13 +1,13 @@
 <?php require 'php/header.php'; ?>
 <h1>Boutique</h1>
 <?php 
-    if(isset($_SESSION['id']))
+    if(isset($_SESSION['id']) && !isset($_SESSION['']))
     {
-      $req_nombre = $bdd->prepare('SELECT COUNT(*) AS nbre FROM ENREGISTRER INNER JOIN PANIER ON PANIER.ID_PANIER = ENREGISTRER.ID_PANIER WHERE PANIER.ID_MEMBRE = ?');
+      $req_nombre = $bdd->prepare('SELECT SUM(NOMBRE) AS total FROM ENREGISTRER INNER JOIN PANIER ON PANIER.ID_PANIER = ENREGISTRER.ID_PANIER WHERE PANIER.ID_MEMBRE = ? GROUP BY ENREGISTRER.ID_ITEM');
       $req_nombre->execute(array($_SESSION['id']));
       $nombre = $req_nombre->fetch();
       ?>
-      <p><a href="basket.php">Voir mon panier (<?php echo $nombre['nbre']; ?>)</a></p>
+      <p><a href="basket.php">Voir mon panier (<?php echo $nombre['total']; ?>)</a></p>
     <?php
     } 
     if(!isset($_GET['admin']) AND !isset($_GET['id_item']))
@@ -91,15 +91,15 @@
      <div class="slideshow-container">
        <!-- Full-width images with number and caption text -->
        <div class="mySlides">
-        <img src="https://cadoetik.ch/267161/kit-crayon-papier-et-marque-page-10-cm-inco.jpg" style="width:100%">
+        <img src="" style="width:100%">
        <div class="text">Caption Text</div>
       </div>
       <div class="mySlides">
-          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT43SK3N2SLA8aAGwJXThZDYQLxKhGSdlK5n2aUvZov-yJOUV8d&s" style="width:100%">
+          <img src="" style="width:100%">
           <div class="text">Caption Two</div>
       </div>
       <div class="mySlides">
-          <img src="data:image/jpeg;base64,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" style="width:100%">
+          <img src="" style="width:100%">
           <div class="text">Caption Three</div>
       </div>
       <!-- Next and previous buttons -->
@@ -146,7 +146,7 @@
            </div>
              <div><input type="radio" name="ordre_prix" value="0" id="prix_croissant" checked/> <label for="prix_croissant">Prix croissant</label></div>
            <div><input type="radio" name="ordre_prix" value="1" id="prix_decroissant" /> <label for="prix_decroissant">Prix décroissant</label></div>
-           <div><input id="send" type="submit" value="Filtrer">  <input id="send" type="reset" value="Remettre à 0" /></div>
+           <div><input id="send" type="submit" value="Filtrer">  <input id="reset" type="reset" value="Remettre à 0" /></div>
        </div>
    </form>
    <br/>
@@ -174,7 +174,7 @@
     $req1->closeCursor();
     ?>
    <div>
-   <script type="text/javascript" src="js/caroussel_shop.js">    </script>
+   <script type="text/javascript" src="js/caroussel_shop.js"></script>
    <script type="text/javascript" src="js/ajax_shop.js"></script>
 <?php
     }
@@ -199,23 +199,188 @@
 <?php
     foreach($images as $image)
     {?>
-<img class="center" src="photos/<?php echo $image['CHEMIN']; ?>" />
+       <img class="center" src="photos/<?php echo $image['CHEMIN']; ?>" />
        <br/>
 <?php
     }
-    ?>
-    <form method="post" action="basket.php">
-      Mettre dans le panier<br />
-      <input type="text" name="id_item" value="<?php echo $id_item; ?>" hidden/>
-      <label for="nombre">Nombre : </label> <input type="number" name="nombre" id="nombre" /><br /><br />
-      <input type="submit" value="Mettre dans mon panier" />
-    </form>
-<?php
+    if(isset($_SESSION['id']))
+    {?>
+      <form method="post" action="basket.php">
+        Mettre dans le panier<br />
+        <input type="text" name="id_item" value="<?php echo $id_item; ?>" hidden/>
+        <label for="nombre">Nombre : </label> <input type="number" name="nombre" id="nombre" /><br /><br />
+        <input type="submit" value="Mettre dans mon panier" />
+      </form>
+    <?php
+    }
     }
     }
     else if(isset($_GET['admin']))
     {
-    
-    }?>
+       if(!isset($_SESSION['droit']))
+       {
+         header('Location: shop.php'); 
+       }
+       else
+       {
+         if($_SESSION['droit'] == 2 OR $_SESSION['droit'] == 4)
+         {?>
+           <h4>Gestion articles</h4>
+           <div id="item_admin_box">
+             <?php
+               $req = $bdd->query('SELECT ID_ITEM, ITEM, PRIX, DESCRIPTION, ACTIF, NOM_CATEGORIE FROM SHOP INNER JOIN CATEGORIE ON CATEGORIE.ID_CATEGORIE = SHOP.ID_CATEGORIE');
+		  
+	       if($req->columnCount() == 0)
+	       {
+		    echo '<p id="result_compte">Aucune item. Erreur BDD</p>';
+	       }
+	       else
+	       {?>
+                  <table class="table table-striped table-dark">
+  		  <thead>
+    			<tr>
+      			  <th scope="col">ID</th>
+      			  <th scope="col">Nom</th>
+			  <th scope="col">Catégorie</th>
+      		          <th scope="col">Prix</th>
+      			  <th scope="col">Gérer</th>
+    			</tr>
+  		  </thead>
+                  <tbody>
+                <?php
+		  while($donnees = $req->fetch())
+		  {
+		      echo '    <tr><th scope="row"> ' . $donnees['ID_ITEM'] . '</th><td>' . $donnees['ITEM']. '</td><td>' . $donnees['NOM_CATEGORIE']. '</td><td>' . $donnees['PRIX']. '</td><td>';
+                      if($donnees['ACTIF'] == 1)
+                      {
+                        echo '<a href="#" onclick="supp_item(' . $donnees['ID_ITEM'] . '); return false;">Supprimer</a></td></tr>' ;
+                      }
+                      else
+                      {
+                        echo 'Article supprimé</td></tr>' ;
+                      }
+		   }
+                   echo '</tbody></table>';
+               }
+	       $req->closeCursor();
+             ?>
+           </div>
+           <br /><h4>Ajouter article</h4>
+           <form id="form_add_item">
+               <label for="nom_item">Nom : </label><input type="text" name="nom_item" id="nom_item"/><br />
+	       <lablel for="cat_item">Categorie: </lablel>
+       	       <select name="cat_item" id="cat_item" required>
+	       <?php  
+                 $req = $bdd->query('SELECT * FROM CATEGORIE');
+                 $categories = $req->fetchAll();
+ 
+		 foreach($categories as $categorie)
+                 {
+		    echo '<option value="' . $categorie['ID_CATEGORIE'] . '">' . $categorie['NOM_CATEGORIE'] . '</option>';
+		 }
+                 $req->closeCursor();
+	       ?>
+               </select><br />
+               <label for="prix_item">Prix : </label><input type="number" name="prix_item" id="prix_item"/><br /><br />
+               <label for="desc_item">Description : </label><br /><textarea name="desc_item" id="desc_item"/></textarea><br />
+               <label for="image">Photo : </label><input type="file" name="image" id="image"/><br /><br />
+	       <input id="form_add_submit_item" type="submit" value="Ajouter" /><br />
+           </form>
+           <br /><h4>Ajouter catégorie</h4>
+           <form id="form_add_cat">
+               <label for="nom_item">Nom : </label><input type="text" name="nom_item" id="nom_item"/><br />
+	       <input id="form_add_submit_cat" type="submit" value="Ajouter" /><br />
+           </form>
+           <script>
+              function supp_item(id_item) {
+                var xhr = new XMLHttpRequest();
+                var data = new FormData();
+
+                data.append('item_id', id_item);
+
+                xhr.onloadend = function() {
+	        if(xhr.status == 200)
+	        {
+	          item_box.innerHTML = xhr.responseText;
+	        }
+	        else
+	        {
+	          alert('Erreur lors du filtrage : Erreur ' + xhr.status + '; ' + xhr.statusText);
+	        } 
+	        };
+	        xhr.open('POST', 'ajax/admin_category.php');
+	        xhr.send(data);
+              }
+              
+              function addEvent(element, event, func) {
+	        if(element.addEventListener)
+		{
+		  element.addEventListener(event, func, false);
+		}
+		else
+		{
+		  element.attachEvent('on' + event, func);
+		}
+	      }
+	
+	      var formulaire_add_item = document.getElementById('form_add_item');
+              var formulaire_add_cat = document.getElementById('form_add_cat');
+              var boutton_item = document.getElementById('form_add_submit_item');
+              var boutton_cat = document.getElementById('form_add_submit_cat');
+              
+              var item_box = document.getElementById('item_admin_box');
+              var cat_item_box = document.getElementById('cat_item');
+	
+	      addEvent(boutton_item, 'click', function(e){
+	          e.preventDefault();
+	  
+	          var xhr = new XMLHttpRequest();
+	          var data = new FormData(formulaire_add_item);
+	  
+	          xhr.onloadend = function() {
+	           if(xhr.status == 200)
+	           {
+	             item_box.innerHTML = xhr.responseText;
+                     formulaire_add_item.reset();
+	           }
+	           else
+	           {
+	             alert('Erreur ajout item : Erreur ' + xhr.status + '; ' + xhr.statusText);
+	           } 
+	      };
+	      xhr.open('POST', 'ajax/admin_add_item.php');
+	      xhr.send(data);
+	      });
+
+              addEvent(boutton_cat, 'click', function(e){
+	          e.preventDefault();
+	  
+	          var xhr = new XMLHttpRequest();
+	          var data = new FormData(formulaire_add_cat);
+	  
+	          xhr.onloadend = function() {
+	           if(xhr.status == 200)
+	           {
+	             cat_item_box.innerHTML = xhr.responseText;
+	           }
+	           else
+	           {
+	             alert('Erreur ajout catégorie : Erreur ' + xhr.status + '; ' + xhr.statusText);
+	           } 
+	      };
+	      xhr.open('POST', 'ajax/admin_add_cat.php');
+	      xhr.send(data);
+	      });
+           </script>
+         <?php 
+         }
+         else
+         {
+           header('Location: shop.php');
+         }
+       }
+    }
+    require('php/footer.php');
+    ?>
 </body>
 </html>

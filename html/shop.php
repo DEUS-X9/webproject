@@ -11,7 +11,6 @@
                   <p><a href="basket.php">Voir mon panier (<?php echo $nombre['nbre']; ?>)</a></p>
                 <?php
                 } 
-
   if(!isset($_GET['admin']) AND !isset($_GET['id_item']))
   {?>
     <h2>Nos meilleures ventes : </h2>
@@ -19,14 +18,12 @@
 * {box-sizing: border-box}
 .mySlides {display: none}
 img {vertical-align: middle;}
-
 /* Slideshow container */
 .slideshow-container {
   max-width: 25%;
   position: relative;
   margin: auto;
 }
-
 /* Next & previous buttons */
 .prev, .next {img
   cursor: pointer;
@@ -42,18 +39,15 @@ img {vertical-align: middle;}
   border-radius: 0 3px 3px 0;
   user-select: none;
 }
-
 /* Position the "next button" to the right */
 .next {
   right: 0;
   border-radius: 3px 0 0 3px;
 }
-
 /* On hover, add a black background color with a little bit see-through */
 .prev:hover, .next:hover {
   background-color: rgba(0,0,0,0.8);
 }
-
 /* Caption text */
 .text {
   color: #ffffff;
@@ -64,7 +58,6 @@ img {vertical-align: middle;}
   width: 100%;
   text-align: center;
 }
-
 /* The dots/bullets/indicators */
 .dot {
   cursor: pointer;
@@ -76,38 +69,21 @@ img {vertical-align: middle;}
   display: inline-block;
   transition: background-color 0.6s ease;
 }
-
 .active, .dot:hover {
   background-color: #717171;
 }
-
 @-webkit-keyframes fade {
   from {opacity: .4} 
   to {opacity: 1}
 }
-
 @keyframes fade {
   from {opacity: .4} 
   to {opacity: 1}
 }
-
 /* On smaller screens, decrease text size */
 @media only screen and (max-width: 300px) {
   .prev, .next,.text {font-size: 11px}
 }
-
-.flex-container {
-  display: flex;
-  background-color: DodgerBlue;
-}
-
-.flex-container > div {
-  background-color: #f1f1f1;
-  margin: 10px;
-  padding: 20px;
-  font-size: 30px;
-}
-	
 </style>
 
 <div class="slideshow-container">img
@@ -138,15 +114,14 @@ img {vertical-align: middle;}
   <span class="dot" onclick="currentSlide(2)"></span> 
   <span class="dot" onclick="currentSlide(3)"></span> 
 </div>
+
 <?php
   $req1 = $bdd->query('SELECT * FROM CATEGORIE');
   $categories = $req1->fetchAll();img
 ?>
 
 <form id="filtres">
-	
-<div class="flex-container">
-  <div>   Filtrer par :
+   Filtrer par :<br />
    <label for="categorie">Catégorie : </label>
    <select name="categorie" id="categorie">
    <option value="0" selected>Toutes</option>
@@ -156,11 +131,10 @@ img {vertical-align: middle;}
       echo '<option value="' . $categorie['ID_CATEGORIE'] . '">' . $categorie['NOM_CATEGORIE'] . '</option>';
     }
    ?>
-   </select></div>
-  <div>  <?php
+   </select><br/>
+   <?php
      $req_prix_min = $bdd->query('SELECT PRIX FROM SHOP ORDER BY PRIX LIMIT 0, 1');
      $req_prix_max = $bdd->query('SELECT PRIX FROM SHOP ORDER BY PRIX DESC LIMIT 0, 1');
-
      $prix_min = $req_prix_min->fetch();
      $prix_max = $req_prix_max->fetch();
    ?>
@@ -168,25 +142,9 @@ img {vertical-align: middle;}
    <input type="text" name="prix1" id="prix1" value="<?php echo $prix_min['PRIX']; ?>"/>
    <label for="prix2"> et </label>
    <input type="text" name="prix2" id="prix2" value="<?php echo $prix_max['PRIX']; ?>"/><br /><br />
-   <input type="radio" name="ordre_prix" value="0" id="prix_croissant" checked/> <label for="prix_croissant">Prix croissant</label>
-	</div>
-  <div> 
-	
-   <input type="radio" name="ordre_prix" value="1" id="prix_decroissant" /> <label for="prix_decroissant">Prix décroissant</label>
-	</div>  
-	<div>
-	
+   <input type="radio" name="ordre_prix" value="0" id="prix_croissant" checked/> <label for="prix_croissant">Prix croissant</label><br />
+   <input type="radio" name="ordre_prix" value="1" id="prix_decroissant" /> <label for="prix_decroissant">Prix décroissant</label><br /><br />
    <input id="send" type="submit" value="Filtrer">  <input id="send" type="reset" value="Remettre à 0" />
-	</div>
-</div>
-
-	
-	
-
-	
-	
-
-	
 </form>  
 
 <br/>
@@ -266,3 +224,6 @@ img {vertical-align: middle;}
   }?>
   </body>
 </html>
+
+ 
+

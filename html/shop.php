@@ -142,7 +142,7 @@ imgimgimg
       echo '<option value="' . $categorie['ID_CATEGORIE'] . '">' . $categorie['NOM_CATEGORIE'] . '</option>';
     }
    ?>
-   </select><br /><br />
+   </select><br/>
    <?php
      $req_prix_min = $bdd->query('SELECT PRIX FROM SHOP ORDER BY PRIX LIMIT 0, 1');
      $req_prix_max = $bdd->query('SELECT PRIX FROM SHOP ORDER BY PRIX DESC LIMIT 0, 1');

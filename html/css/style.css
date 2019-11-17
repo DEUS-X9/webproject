@@ -156,3 +156,11 @@ article h2,article h1{
     font-size: 70%;
 }
 
+.footer{
+    bottom-margin:30px;
+    margin-left:40px;
+    margin-right:40px;
+    background-color: #4a4a4a;
+    color:#ffffff;
+    font-size:80%;
+}

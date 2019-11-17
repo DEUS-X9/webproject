@@ -8,5 +8,6 @@
 				<div style="margin-left:auto; margin-right:auto;">QUANTITÉE</div>
 			</div>
 		</div>
+		<?php require 'php/footer.php'; ?>
 	</body>
 </html>

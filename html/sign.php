@@ -156,6 +156,6 @@ if(isset($_POST['nom']) AND isset($_POST['fnom']) AND isset($_POST['email']) AND
            	<input type="reset" value="Remettre les valeurs à zéro" />
                </form>
 
-	
+	       <?php require 'php/footer.php'; ?>
 	</body>
 </html>

@@ -200,6 +200,7 @@
     foreach($images as $image)
     {?>
 <img class="center" src="photos/<?php echo $image['CHEMIN']; ?>" />
+       <br/>
 <?php
     }
     ?>

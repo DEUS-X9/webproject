@@ -173,7 +173,7 @@ img {vertical-align: middle;}
     {?>
       <div class="item">
 	 <a href="shop.php?id_item=<?php echo $article['ID_ITEM']; ?>"><h4><?php echo $article['ITEM']; ?></h4></a>
-	 <img src="photos/<?php echo $article['CHEMIN']; ?>" style="margin-left:90%; height:20%"/>
+	 <img class="center" src="photos/<?php echo $article['CHEMIN']; ?>" style="margin-left:90%; height:20%"/>
 	 <p>Prix : <?php echo $article['PRIX']; ?>€<br /><?php echo nl2br($article['DESCRIPTION']); ?></p>
       </div>
     <?php
@@ -213,7 +213,7 @@ img {vertical-align: middle;}
       <?php
       foreach($images as $image)
       {?>
-        <img src="photos/<?php echo $image['CHEMIN']; ?>" />
+        <img class="center" src="photos/<?php echo $image['CHEMIN']; ?>" />
       <?php
       }
       ?>

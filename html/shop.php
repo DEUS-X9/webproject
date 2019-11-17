@@ -90,7 +90,7 @@ img {vertical-align: middle;}
 }
 </style>
 
-<div class="slideshow-container">img
+<div class="slideshow-container">
 
 <div class="mySlides">
   <img src="https://cadoetik.ch/267161/kit-crayon-papier-et-marque-page-10-cm-inco.jpg" style="width:100%">

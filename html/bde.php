@@ -228,5 +228,6 @@ else if(isset($_GET['compte']) AND isset($_GET['delete']))
 	  
 	    </tbody>
 	  </table>
+	  <?php require 'php/footer.php'; ?>
 	</body>
 </html>

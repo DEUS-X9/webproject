@@ -230,7 +230,7 @@ img {vertical-align: middle;}
          Mettre dans le panier<br />
          <input type="text" name="id_item" value="<?php echo $id_item; ?>" hidden/>
          <label for="nombre">Nombre : </label> <input type="number" name="nombre" id="nombre" /><br /><br />
-         <input type="submit" value="Mettre dans mon pannier" />
+         <input type="submit" value="Mettre dans mon panier" />
       </form>
       
     <?php

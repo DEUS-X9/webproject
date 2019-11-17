@@ -1,8 +1,20 @@
 <?php require 'php/header.php'; ?>
 
-		<h1>Boutique</h1> 
-<br/>
-<h2>Nos meilleures ventes : </h2>
+		<h1>Boutique</h1>
+                <?php 
+                if(isset($_SESSION['id']))
+                {
+                  $req_nombre = $bdd->prepare('SELECT COUNT(*) AS nbre FROM ENREGISTRER INNER JOIN PANIER ON PANIER.ID_PANIER = ENREGISTRER.ID_PANIER WHERE PANIER.ID_MEMBRE = ?');
+                  $req_nombre->execute(array($_SESSION['id']));
+                  $nombre = $req_nombre->fetch();
+                  ?>
+                  <p><a href="basket.php">Voir mon panier (<?php echo $nombre['nbre']; ?>)</a></p>
+                <?php
+                } 
+
+  if(!isset($_GET['admin']) AND !isset($_GET['id_item']))
+  {?>
+    <h2>Nos meilleures ventes : </h2>
 <style>
 * {box-sizing: border-box}
 .mySlides {display: none}
@@ -114,27 +126,99 @@ img {vertical-align: middle;}
   <span class="dot" onclick="currentSlide(3)"></span> 
 </div>
 
-<div class="item">
-	<h4>Noms items</h4>
-	<img style="margin-left:90%; height:20%"/>
-	<p>description de l'item que vous voulez acheter</p>
-</div>
-<div class="item">
-	<h4>Nom item</h4>
-	<img style="margin-left:90%; height:20%"/>
-	<p>description de l'item que vous voulez acheter</p>
-</div>
-<div class="item">
-	<h4>Nom item</h4>
-	<img style="margin-left:90%; height:20%"/>
-	<p>description de l'item que vous voulez acheter</p>
-</div>
-<div class="item">
-	<h4>Nom item</h4>
-	<img src="images/IMG_0888.jpg"/ style="margin-left:90%; height:20%">
-	<p>description de l'item que vous voulez acheter</p>
-</div>
+<?php
+  $req1 = $bdd->query('SELECT * FROM CATEGORIE');
+  $categories = $req1->fetchAll();
+?>
 
+<form id="filtres">
+   Filtrer par :<br />
+   <label for="categorie">Catégorie : </label>
+   <select name="categorie" id="categorie">
+   <option value="0" selected>Toutes</option>
+   <?php  
+    foreach($categories as $categorie)
+    {
+      echo '<option value="' . $categorie['ID_CATEGORIE'] . '">' . $categorie['NOM_CATEGORIE'] . '</option>';
+    }
+   ?>
+   </select><br /><br />
+   <?php
+     $req_prix_min = $bdd->query('SELECT PRIX FROM SHOP ORDER BY PRIX LIMIT 0, 1');
+     $req_prix_max = $bdd->query('SELECT PRIX FROM SHOP ORDER BY PRIX DESC LIMIT 0, 1');
+
+     $prix_min = $req_prix_min->fetch();
+     $prix_max = $req_prix_max->fetch();
+   ?>
+   <label for="prix1">Prix (en €) entre : </label>
+   <input type="text" name="prix1" id="prix1" value="<?php echo $prix_min['PRIX']; ?>"/>
+   <label for="prix2"> et </label>
+   <input type="text" name="prix2" id="prix2" value="<?php echo $prix_max['PRIX']; ?>"/><br /><br />
+   <input type="radio" name="ordre_prix" value="0" id="prix_croissant" checked/> <label for="prix_croissant">Prix croissant</label><br />
+   <input type="radio" name="ordre_prix" value="1" id="prix_decroissant" /> <label for="prix_decroissant">Prix décroissant</label><br /><br />
+   <input id="send" type="submit" value="Filtrer">  <input id="send" type="reset" value="Remettre à 0" />
+</form>  
+
+<div id="items_box">
+<?php
+  foreach($categories as $categorie)
+  {?>
+    <h5 class="categorie"><?php echo $categorie['NOM_CATEGORIE']; ?></h5><br />
+    <?php
+    $req2 = $bdd->prepare('SELECT SHOP.ID_ITEM, ITEM, PRIX, DESCRIPTION, CHEMIN FROM SHOP INNER JOIN REPRESENTER ON REPRESENTER.ID_ITEM = SHOP.ID_ITEM INNER JOIN PHOTO ON REPRESENTER.ID_PHOTO = PHOTO.ID_PHOTO WHERE ID_CATEGORIE = ? ORDER BY PRIX');
+    $req2->execute(array($categorie['ID_CATEGORIE']));
+    $articles = $req2->fetchAll();
+    
+    foreach($articles as $article)
+    {?>
+      <div class="item">
+	 <a href="shop.php?id_item=<?php echo $article['ID_ITEM']; ?>"><h4><?php echo $article['ITEM']; ?></h4></a>
+	 <img src="photos/<?php echo $article['CHEMIN']; ?>" style="margin-left:90%; height:20%"/>
+	 <p>Prix : <?php echo $article['PRIX']; ?>€<br /><?php echo nl2br($article['DESCRIPTION']); ?></p>
+      </div>
+    <?php
+    }
+  }
+  $req1->closeCursor();
+?>
+<div>
+
+<script>
+      function addEvent(element, event, func) {
+	     if(element.addEventListener)
+		{
+		  element.addEventListener(event, func, false);
+		}
+		else
+		{
+		  element.attachEvent('on' + event, func);
+		}
+	}
+	
+	var formulaire = document.getElementById('filtres');
+        var boutton = document.getElementById('send');
+        var item_box = document.getElementById('items_box');
+	
+	addEvent(boutton, 'click', function(e){
+	  e.preventDefault();
+	  
+	  var xhr = new XMLHttpRequest();
+	  var data = new FormData(formulaire);
+	  
+	  xhr.onloadend = function() {
+	  if(xhr.status == 200)
+	  {
+	    item_box.innerHTML = xhr.responseText;
+	  }
+	  else
+	  {
+	     alert('Erreur lors du filtrage : Erreur ' + xhr.status + '; ' + xhr.statusText);
+	  } 
+	  };
+	  xhr.open('POST', 'ajax/filters.php');
+	  xhr.send(data);
+	});
+</script>
 <script>
 var slideIndex = 1;
 showSlides(slideIndex);
@@ -163,7 +247,50 @@ function showSlides(n) {
   dots[slideIndex-1].className += " active";
 }
 </script>
+  <?php
+  }
+  else if(isset($_GET['id_item']) AND !isset($_GET['admin']))
+  {
+    $id_item = (int)$_GET['id_item'];
+    $req = $bdd->prepare('SELECT ITEM, PRIX, DESCRIPTION FROM SHOP WHERE ID_ITEM = ? AND ACTIF = 1');
+    $req->execute(array($id_item));
+    
+    if(!$article = $req->fetch())
+    {
+      header('Location: shop.php');
+    }
+    else
+    {
+      $req_img = $bdd->prepare('SELECT CHEMIN FROM SHOP INNER JOIN REPRESENTER ON REPRESENTER.ID_ITEM = SHOP.ID_ITEM INNER JOIN PHOTO ON REPRESENTER.ID_PHOTO = PHOTO.ID_PHOTO WHERE SHOP.ID_ITEM = ? AND ACTIF = 1 ');
+      $req_img->execute(array($id_item));
+      $images = $req_img->fetchAll(); ?>
 
-</body>
+      <h2><?php echo $article['ITEM']; ?></h2>
 
+      <p>Description : <?php echo nl2br($article['DESCRIPTION']); ?></p>
+      <p>Prix : <?php echo $article['PRIX']; ?></p>
+ 
+      <?php
+      foreach($images as $image)
+      {?>
+        <img src="photos/<?php echo $image['CHEMIN']; ?>" />
+      <?php
+      }
+      ?>
+      
+      <form method="post" action="basket.php">
+         Mettre dans le panier<br />
+         <input type="text" name="id_item" value="<?php echo $id_item; ?>" hidden/>
+         <label for="nombre">Nombre : </label> <input type="number" name="nombre" id="nombre" /><br /><br />
+         <input type="submit" value="Mettre dans mon pannier" />
+      </form>
+      
+    <?php
+    }
+  }
+  else if(isset($_GET['admin']))
+  {
+    
+  }?>
+  </body>
 </html>

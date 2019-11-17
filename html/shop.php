@@ -159,6 +159,8 @@ imgimgimg
    <input id="send" type="submit" value="Filtrer">  <input id="send" type="reset" value="Remettre à 0" />
 </form>  
 
+<br/>
+
 <div id="items_box">
 <?php
   foreach($categories as $categorie)

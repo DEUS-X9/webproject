@@ -28,7 +28,7 @@ img {vertical-align: middle;}
 }
 
 /* Next & previous buttons */
-.prev, .next {
+.prev, .next {img
   cursor: pointer;
   position: absolute;
   top: 50%;
@@ -97,7 +97,7 @@ img {vertical-align: middle;}
 }
 </style>
 
-<div class="slideshow-container">
+<div class="slideshow-container">img
 
 <div class="mySlides">
   <img src="https://cadoetik.ch/267161/kit-crayon-papier-et-marque-page-10-cm-inco.jpg" style="width:100%">
@@ -125,10 +125,10 @@ img {vertical-align: middle;}
   <span class="dot" onclick="currentSlide(2)"></span> 
   <span class="dot" onclick="currentSlide(3)"></span> 
 </div>
-
+imgimgimg
 <?php
   $req1 = $bdd->query('SELECT * FROM CATEGORIE');
-  $categories = $req1->fetchAll();
+  $categories = $req1->fetchAll();img
 ?>
 
 <form id="filtres">
@@ -163,7 +163,7 @@ img {vertical-align: middle;}
 <?php
   foreach($categories as $categorie)
   {?>
-    <h5 class="categorie"><?php echo $categorie['NOM_CATEGORIE']; ?></h5><br />
+    <h4 class="categorie"><?php echo $categorie['NOM_CATEGORIE']; ?></h4><br />
     <?php
     $req2 = $bdd->prepare('SELECT SHOP.ID_ITEM, ITEM, PRIX, DESCRIPTION, CHEMIN FROM SHOP INNER JOIN REPRESENTER ON REPRESENTER.ID_ITEM = SHOP.ID_ITEM INNER JOIN PHOTO ON REPRESENTER.ID_PHOTO = PHOTO.ID_PHOTO WHERE ID_CATEGORIE = ? ORDER BY PRIX');
     $req2->execute(array($categorie['ID_CATEGORIE']));

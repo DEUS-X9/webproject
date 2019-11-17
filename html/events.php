@@ -76,19 +76,39 @@ function month($month_p) {
 		 	   <br/>
                            <span class="metadata">Le <?php echo $event['jour']; ?> <?php echo month($event['mois']); ?> <?php echo $event['annee']; ?></span><br />
                            <?php
-                           if(isset($_SESSION['id']))
+                           $req_check = $bdd->prepare('SELECT ID_EVENTS FROM EVENEMENTS WHERE ID_EVENTS = ? AND E_DATE < NOW()');
+                           $req_check->execute(array($event['ID_EVENTS']));
+
+                           $req2 = $bdd->prepare('SELECT ID_EVENTS, ID_MEMBRE FROM INSCRIRE WHERE ID_EVENTS = ? AND ID_MEMBRE = ?');
+                           $req2->execute(array($event['ID_EVENTS'], $_SESSION['id']));
+
+                           if(!$check = $req_check->fetch())
                            {
-                              $req2 = $bdd->prepare('SELECT ID_EVENTS, ID_MEMBRE FROM INSCRIRE WHERE ID_EVENTS = ? AND ID_MEMBRE = ?');
-                              $req2->execute(array($event['ID_EVENTS'], $_SESSION['id']));
-                              if(!$test = $req2->fetch())
-                              {
-                                 echo '<a class="linkpost" href="php/e_register.php?e_id=' . $event['ID_EVENTS'] .'">S\'inscrire</a><br />';
-                              }
-                              else
-                              {
-                                 echo '<span class="metadata">Déjà inscrit</span><br />';
-                              }
+                             if(isset($_SESSION['id']))
+                             {
+                                if(!$test = $req2->fetch())
+                                {
+                                   echo '<a class="linkpost" href="php/e_register.php?e_id=' . $event['ID_EVENTS'] .'">S\'inscrire</a><br />';
+                                }
+                                else
+                                {
+                                   echo '<span class="metadata">Déjà inscrit</span><br />';
+                                }
+                             }
                            }
+                           else
+                           {
+                             if(!$test = $req2->fetch())
+                             {
+                                 echo '<span class="metadata">Vous n\'étiez pas inscrit à cet événement</span><br />';
+                             }
+                             else
+                             {
+                                 echo '<span class="metadata">Vous étiez inscrit à cet événement</span><br />';
+                             }
+                           }
+                           
+                           $req2->closeCursor();
 
                            if(isset($_SESSION['droit']) AND $_SESSION['droit'] >= 3)
                            {
@@ -174,19 +194,39 @@ function month($month_p) {
                                   echo '<a class="linkpost" href="php/notice.php?e_id=' . $event['ID_EVENTS'] .'">Signaler</a><br />';
                                }
 
-                               if(isset($_SESSION['id']))
+                               $req_check = $bdd->prepare('SELECT ID_EVENTS FROM EVENEMENTS WHERE ID_EVENTS = ? AND E_DATE < NOW()');
+                               $req_check->execute(array($event['ID_EVENTS']));
+
+                               $req2 = $bdd->prepare('SELECT ID_EVENTS, ID_MEMBRE FROM INSCRIRE WHERE ID_EVENTS = ? AND ID_MEMBRE = ?');
+                               $req2->execute(array($event['ID_EVENTS'], $_SESSION['id']));
+
+                               if(!$check = $req_check->fetch())
                                {
-                                  $req2 = $bdd->prepare('SELECT ID_EVENTS, ID_MEMBRE FROM INSCRIRE WHERE ID_EVENTS = ? AND ID_MEMBRE = ?');
-                                  $req2->execute(array($event['ID_EVENTS'], $_SESSION['id']));
-                                 if(!$test = $req2->fetch())
+                                 if(isset($_SESSION['id']))
                                  {
-                                    echo '<a class="linkpost" href="php/e_register.php?e_id=' . $event['ID_EVENTS'] .'">S\'inscrire</a><br />';
+                                   if(!$test = $req2->fetch())
+                                   {
+                                     echo '<a class="linkpost" href="php/e_register.php?e_id=' . $event['ID_EVENTS'] .'">S\'inscrire</a><br />';
+                                   }
+                                   else
+                                   {
+                                     echo '<span class="metadata">Déjà inscrit</span><br />';
+                                   }
                                  }
-                                 else
-                                 {
-                                    echo '<span class="metadata">Déjà inscrit</span><br />';
-                                 }
-                               }
+                              }
+                              else
+                              {
+                                if(!$test = $req2->fetch())
+                                {
+                                  echo '<span class="metadata">Vous n\'étiez pas inscrit à cet événement</span><br />';
+                                }
+                                else
+                                {
+                                  echo '<span class="metadata">Vous étiez inscrit à cet événement</span><br />';
+                                }
+                              }
+                           
+                              $req2->closeCursor();
 
                                if(!isset($_SESSION['id_region']) OR (isset($_SESSION['droit']) AND $_SESSION['droit'] >= 3))
                                { ?>
@@ -322,19 +362,39 @@ function month($month_p) {
                               echo '<a class="linkpost" href="php/notice.php?e_id=' . $donnee['ID_EVENTS'] .'">Signaler</a><br />';
                           }
 
-                          if(isset($_SESSION['id']))
+                          $req_check = $bdd->prepare('SELECT ID_EVENTS FROM EVENEMENTS WHERE ID_EVENTS = ? AND E_DATE < NOW()');
+                          $req_check->execute(array($e_id));
+
+                          $req2 = $bdd->prepare('SELECT ID_EVENTS, ID_MEMBRE FROM INSCRIRE WHERE ID_EVENTS = ? AND ID_MEMBRE = ?');
+                          $req2->execute(array($e_id, $_SESSION['id']));
+
+                          if(!$check = $req_check->fetch())
                           {
-                             $req2 = $bdd->prepare('SELECT ID_EVENTS, ID_MEMBRE FROM INSCRIRE WHERE ID_EVENTS = ? AND ID_MEMBRE = ?');
-                             $req2->execute(array($e_id, $_SESSION['id']));
+                              if(isset($_SESSION['id']))
+                              {
+                                 if(!$test = $req2->fetch())
+                                 {
+                                   echo '<a class="linkpost" href="php/e_register.php?e_id=' . $e_id .'">S\'inscrire</a><br />';
+                                 }
+                                 else
+                                 {
+                                   echo '<span class="metadata">Déjà inscrit</span><br />';
+                                 }
+                               }
+                           }
+                           else
+                           {
                              if(!$test = $req2->fetch())
                              {
-                                echo '<a class="linkpost" href="php/e_register.php?e_id=' . $e_id .'">S\'inscrire</a><br />';
+                                echo '<span class="metadata">Vous n\'étiez pas inscrit à cet événement</span><br />';
                              }
                              else
                              {
-                               echo '<span class="metadata">Déjà inscrit</span><br />';
+                                echo '<span class="metadata">Vous étiez inscrit à cet événement</span><br />';
                              }
-                          }
+                           }
+                          } 
+                          $req2->closeCursor();
 
                           if(!isset($_SESSION['id_region']))
                           {?>
@@ -345,89 +405,109 @@ function month($month_p) {
                           <p><?php echo nl2br(htmlspecialchars($donnee['E_DESCRIPTION'])); ?></p>
                           <a href="events.php?id_event=<?php echo $donnee['ID_EVENTS'];?>&id_image=<?php echo $donnee['ID_PHOTO'];?>"><img class="center" src="photos/<?php echo $donnee['CHEMIN']; ?>"></a>
                           <?php
-                          $req2 = $bdd->prepare('SELECT COMMENTAIRE, NOM, PRENOM FROM COMMENTAIRE INNER JOIN MEMBRE ON MEMBRE.ID_MEMBRE = COMMENTAIRE.ID_MEMBRE WHERE ID_PHOTO = ? ORDER BY date DESC LIMIT 0, 1');
-                          $req2->execute(array($donnee['ID_PHOTO']));
-                          if(!$donnee2 = $req2->fetch())
-                          {?>
-                             <span>Pas de commentaire</span>
-                          <?php
+                          $req_check = $bdd->prepare('SELECT ID_EVENTS FROM EVENEMENTS WHERE ID_EVENTS = ? AND E_DATE < NOW()');
+                          $req_check->execute(array($e_id));
+                          
+                          if(!$check = $req_check->fetch())
+                          {
+                            $req_check->closeCursor();
                           }
                           else
-                          {?>
-                            <div><a href="events.php?id_event=<?php echo $donnee['ID_EVENTS'];?>&id_image=<?php echo $donnee['ID_PHOTO'];?>"><div class="forum"><p>Commentaires :<br /><div class="com"><div class="pseudo"> <?php echo $donnee2['NOM'] . ' ' . $donnee2['PRENOM'] . ' :</div>' . $donnee2['COMMENTAIRE'];?></div></p>
-                          <?php
-                          }
-                          $req2->closeCursor(); 
-                          $req2 = $bdd->prepare('SELECT COUNT(*) AS nb FROM LIKES WHERE ID_PHOTO = ?');
-                          $req2->execute(array($donnee['ID_PHOTO']));
-                          $donnee2 = $req2->fetch();
-                          ?>
-                          </div>
-                          </a>
-                          </div><p>Like(s) : <?php echo $donnee2['nb']; ?>. <a href="#" id="Bphoto1" ><input type="image" alt="Like" src="images/love.png" height="45px"></a>
-                          <?php
-                          $req2->closeCursor(); 
-                          $req->closeCursor();
-                          $req = $bdd->prepare('SELECT ILLUSTRER.ID_PHOTO, CHEMIN, NOM, PRENOM FROM ILLUSTRER INNER JOIN PHOTO ON ILLUSTRER.ID_PHOTO = PHOTO.ID_PHOTO INNER JOIN MEMBRE ON MEMBRE.ID_MEMBRE = PHOTO.ID_MEMBRE WHERE ID_EVENTS = ? ORDER BY PHOTO.DATE DESC');
-                          $req->execute(array($e_id));
-                          $donnees = $req->fetchAll();
-                          if($req->columnCount() == 0)
-                          {?>
-                             <p>Pas de photos postées pour cet event.</p>
-                          <?php
-                          }
-                          else
-                          {?>
-                             <p>Photos postées de l'event :</p>
-                             <?php
-                              foreach($donnees as $image)
-                              {?>
-                                 <p>Posté par <?php echo $image['NOM'] . ' ' . $image['PRENOM']?></p>
-                                 <a href="events.php?id_event=<?php echo $donnee['ID_EVENTS'];?>&id_image=<?php echo $image['ID_PHOTO'];?>"><img class="center" src="photos/<?php echo $image['CHEMIN']; ?>"></a>
-                                 <?php
-                                 $req2 = $bdd->prepare('SELECT COMMENTAIRE, NOM, PRENOM FROM COMMENTAIRE INNER JOIN MEMBRE ON MEMBRE.ID_MEMBRE = COMMENTAIRE.ID_MEMBRE WHERE ID_PHOTO = ? ORDER BY date DESC LIMIT 0, 1');
-                                 $req2->execute(array($image['ID_PHOTO']));
+                          {
+                            $req_check->closeCursor();
+                            $req2 = $bdd->prepare('SELECT COMMENTAIRE, NOM, PRENOM FROM COMMENTAIRE INNER JOIN MEMBRE ON MEMBRE.ID_MEMBRE = COMMENTAIRE.ID_MEMBRE WHERE ID_PHOTO = ? ORDER BY date DESC LIMIT 0, 1');
+                            $req2->execute(array($donnee['ID_PHOTO']));
+                            if(!$donnee2 = $req2->fetch())
+                            {?>
+                               <span>Pas de commentaire</span>
+                            <?php
+                            }
+                            else
+                            {?>
+                              <div><a href="events.php?id_event=<?php echo $donnee['ID_EVENTS'];?>&id_image=<?php echo $donnee['ID_PHOTO'];?>"><div class="forum"><p>Commentaires :<br /><div class="com"><div class="pseudo"> <?php echo $donnee2['NOM'] . ' ' . $donnee2['PRENOM'] . ' :</div>' . $donnee2['COMMENTAIRE'];?></div></p>
+                            <?php
+                            }
+                            $req2->closeCursor(); 
+                            $req2 = $bdd->prepare('SELECT COUNT(*) AS nb FROM LIKES WHERE ID_PHOTO = ?');
+                            $req2->execute(array($donnee['ID_PHOTO']));
+                            $donnee2 = $req2->fetch();
+                            ?>
+                            </div>
+                            </a>
+                            </div><p>Like(s) : <?php echo $donnee2['nb']; ?>. <a href="#" id="Bphoto1" ><input type="image" alt="Like" src="images/love.png" height="45px"></a>
+                            <?php
+                            $req2->closeCursor(); 
+                            $req->closeCursor();
+                            $req = $bdd->prepare('SELECT ILLUSTRER.ID_PHOTO, CHEMIN, NOM, PRENOM FROM ILLUSTRER INNER JOIN PHOTO ON ILLUSTRER.ID_PHOTO = PHOTO.ID_PHOTO INNER JOIN MEMBRE ON MEMBRE.ID_MEMBRE = PHOTO.ID_MEMBRE WHERE ID_EVENTS = ? ORDER BY PHOTO.DATE DESC');
+                            $req->execute(array($e_id));
+                            $donnees = $req->fetchAll();
+                            if($req->columnCount() == 0)
+                            {?>
+                               <p>Pas de photos postées pour cet event.</p>
+                            <?php
+                            }
+                            else
+                            {?>
+                               <p>Photos postées de l'event :</p>
+                               <?php
+                                foreach($donnees as $image)
+                                {?>
+                                   <p>Posté par <?php echo $image['NOM'] . ' ' . $image['PRENOM']?></p>
+                                   <a href="events.php?id_event=<?php echo $donnee['ID_EVENTS'];?>&id_image=<?php echo $image['ID_PHOTO'];?>"><img class="center" src="photos/<?php echo $image['CHEMIN']; ?>"></a>
+                                   <?php
+                                   $req2 = $bdd->prepare('SELECT COMMENTAIRE, NOM, PRENOM FROM COMMENTAIRE INNER JOIN MEMBRE ON MEMBRE.ID_MEMBRE = COMMENTAIRE.ID_MEMBRE WHERE ID_PHOTO = ? ORDER BY date DESC LIMIT 0, 1');
+                                   $req2->execute(array($image['ID_PHOTO']));
                               
-                                 if(!$donnee2 = $req2->fetch())
-                                 {?>
-                                   <p>Pas de commentaire</p>
-                                 <?php
-                                 }
-                                 else
-                                 {?>
-                                    <div><a href="events.php?id_event=<?php echo $donnee['ID_EVENTS'];?>&id_image=<?php echo $donnee['ID_PHOTO'];?>"><div class="forum"><p>Commentaires :<br /><div class="com"><div class="pseudo"> <?php echo $donnee2['NOM'] . ' ' . $donnee2['PRENOM'] . ' :</div>' . $donnee2['COMMENTAIRE'];?></div></p>
-                                 <?php
-                                 }
-                                 $req2->closeCursor(); 
-                                 $req2 = $bdd->prepare('SELECT COUNT(*) AS nb FROM LIKES WHERE ID_PHOTO = ?');
-                                 $req2->execute(array($image['ID_PHOTO']));
-                                 $donnee2 = $req2->fetch();
-                                 ?>
-                                 </div>
-                                 </a>
-                                 </div>
-                                 <p>Like(s) : <?php echo $donnee2['nb']; ?>. <a href="#" id="Bphoto1" ><input type="image" alt="Like" src="images/love.png" height="45px"></a>
-                                 <?php
-                                 $req2->closeCursor();  
-                              }
-                          }
-                          $req->closeCursor();
+                                   if(!$donnee2 = $req2->fetch())
+                                   {?>
+                                     <p>Pas de commentaire</p>
+                                   <?php
+                                   }
+                                   else
+                                   {?>
+                                      <div><a href="events.php?id_event=<?php echo $donnee['ID_EVENTS'];?>&id_image=<?php echo $donnee['ID_PHOTO'];?>"><div class="forum"><p>Commentaires :<br /><div class="com"><div class="pseudo"> <?php echo $donnee2['NOM'] . ' ' . $donnee2['PRENOM'] . ' :</div>' . $donnee2['COMMENTAIRE'];?></div></p>
+                                   <?php
+                                   }
+                                   $req2->closeCursor(); 
+                                   $req2 = $bdd->prepare('SELECT COUNT(*) AS nb FROM LIKES WHERE ID_PHOTO = ?');
+                                   $req2->execute(array($image['ID_PHOTO']));
+                                   $donnee2 = $req2->fetch();
+                                   ?>
+                                   </div>
+                                   </a>
+                                   </div>
+                                   <p>Like(s) : <?php echo $donnee2['nb']; ?>. <a href="#" id="Bphoto1" ><input type="image" alt="Like" src="images/love.png" height="45px"></a>
+                                   <?php
+                                   $req2->closeCursor();  
+                                }
+                            }
+                            $req->closeCursor();
 
-                          if(isset($_SESSION['id']))
-                          {?>
-                            <form action="php/post.php" method="post" enctype="multipart/form-data">
-                              <h5>Poster votre photo</h5>
-                              <input type=text name="e_id" value="<?php echo $e_id;?>" hidden />
-                              <label for="image">Votre photo :</label>
-                              <input type="file" name="image" id="image" required/><br />
-                              <input type="submit" value="Poster" />
-                            </form>
-			  </article>
+                            $req_check = $bdd->prepare('SELECT ID_EVENTS FROM INSCRIRE WHERE ID_EVENTS = ? AND ID_MEMBRE = ?');
+                            $req_check->execute(array($e_id, $_SESSION['id']));
+
+                            if(!$check = $req_check->fetch())
+                            {
+                               $req_check->closeCursor();
+                            } 
+                            else
+                            {?>
+                              <form action="php/post.php" method="post" enctype="multipart/form-data">
+                                <h5>Poster votre photo</h5>
+                                <input type=text name="e_id" value="<?php echo $e_id;?>" hidden />
+                                <label for="image">Votre photo :</label>
+                                <input type="file" name="image" id="image" required/><br />
+                                <input type="submit" value="Poster" />
+                              </form>
+                            <?php
+                            }
+                            $req_check->closeCursor();
+                          } 
+                          ?>
+                          </article>
                         <?php
-                         }
                         }
                      }
-                   }
                  }
                  else if(isset($_GET['id_event']) AND isset($_GET['id_image']))
                  {
@@ -458,32 +538,43 @@ function month($month_p) {
                         <p><?php if(isset($_SESSION['droit']) AND $_SESSION['droit'] >= 3) { echo '<a href="php/notice.php?id_img=' . $i_img . '">[Signaler]</a> '; }?>Postée par <?php echo $donnee['NOM'] . ' ' . $donnee['PRENOM']?>, le <?php echo $donnee['jour']; ?> <?php echo month($donnee['mois']); ?> <?php echo $donnee['annee']; ?></p>
                         <p><?php echo '<a href="events.php?id_event=' . $e_id . '">Retour</a>';?></p>
                         <img class="center" src="photos/<?php echo $donnee['CHEMIN']; ?>" />
-                        <?php 
-                        if(isset($_SESSION['id']))
-                        {?>
-                          <input id="com" type="text" placeholder="Tapez votre commentaire" /><input id="com_send" type="button" value="Envoyer" />
                         <?php
-                        }
-                        $req2 = $bdd->prepare('SELECT ID_COMMENTAIRE, COMMENTAIRE, NOM, PRENOM, MINUTE(DATE) AS min, HOUR(DATE) AS heures, DAY(DATE) AS jour, MONTH(DATE) AS mois, YEAR(DATE) AS annee FROM COMMENTAIRE INNER JOIN MEMBRE ON MEMBRE.ID_MEMBRE = COMMENTAIRE.ID_MEMBRE WHERE ID_PHOTO = ? ORDER BY DATE DESC');
-                        $req2->execute(array($i_img));
-                        if(!$donnees = $req2->fetchAll())
+                        $req_check = $bdd->prepare('SELECT ID_EVENTS FROM EVENEMENTS WHERE ID_EVENTS = ? AND E_DATE < NOW()');
+                        $req_check->execute(array($e_id));
+ 
+                        if(!$check = $req_check->fetch())
                         {
-                           echo '<p class="comment">Pas de commentaire</p>';
+                           $req_check->closeCursor();
                         }
                         else
-                        {?>
-                           <div class="forum"><p>Commentaires :<br />
-                             <div class="com">
-                             <?php
-                             foreach($donnees as $donnee)
-                             {?>
-                                <?php if(isset($_SESSION['droit']) AND $_SESSION['droit'] >= 3) { echo '<a href="php/notice.php?id_com=' . $donnee['ID_COMMENTAIRE'] . '">[Signaler]</a> '; }?>Le <?php echo $donnee['jour']; ?> <?php echo month($donnee['mois']); ?> <?php echo $donnee['annee']; ?> à <?php echo $donnee['heures']; ?>:<?php echo $donnee['min']; ?> par <?php echo $donnee['NOM'] . ' ' . $donnee['PRENOM']; ?> : <?php echo htmlspecialchars($donnee['COMMENTAIRE']);?><br />
-                             <?php   
-                             }?>
+                        {
+                          $req_check->closeCursor();
+                          if(isset($_SESSION['id']))
+                          {?>
+                            <input id="com" type="text" placeholder="Tapez votre commentaire" /><input id="com_send" type="button" value="Envoyer" />
+                          <?php
+                          }
+                          $req2 = $bdd->prepare('SELECT ID_COMMENTAIRE, COMMENTAIRE, NOM, PRENOM, MINUTE(DATE) AS min, HOUR(DATE) AS heures, DAY(DATE) AS jour, MONTH(DATE) AS mois, YEAR(DATE) AS annee FROM COMMENTAIRE INNER JOIN MEMBRE ON MEMBRE.ID_MEMBRE = COMMENTAIRE.ID_MEMBRE WHERE ID_PHOTO = ? ORDER BY DATE DESC');
+                          $req2->execute(array($i_img));
+                          if(!$donnees = $req2->fetchAll())
+                          {
+                             echo '<p class="comment">Pas de commentaire</p>';
+                          }
+                          else
+                          {?>
+                             <div class="forum"><p>Commentaires :<br />
+                               <div class="com">
+                               <?php
+                               foreach($donnees as $donnee)
+                               {?>
+                                  <?php if(isset($_SESSION['droit']) AND $_SESSION['droit'] >= 3) { echo '<a href="php/notice.php?id_com=' . $donnee['ID_COMMENTAIRE'] . '">[Signaler]</a> '; }?>Le <?php echo $donnee['jour']; ?> <?php echo month($donnee['mois']); ?> <?php echo $donnee['annee']; ?> à <?php echo $donnee['heures']; ?>:<?php echo $donnee['min']; ?> par <?php echo $donnee['NOM'] . ' ' . $donnee['PRENOM']; ?> : <?php echo htmlspecialchars($donnee['COMMENTAIRE']);?><br />
+                               <?php   
+                               }?>
+                               </div>
                              </div>
-                           </div>
-                        <?php
-  	                }
+                          <?php
+  	                  }
+                        }
                         ?>
                       <article>
                       <?php

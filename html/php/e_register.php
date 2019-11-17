@@ -16,7 +16,7 @@ else
   }
   else
   {
-    $req = $bdd->prepare('SELECT ID_EVENTS, ID_REGION FROM EVENEMENTS WHERE ID_EVENTS = ?');
+    $req = $bdd->prepare('SELECT ID_EVENTS, ID_REGION FROM EVENEMENTS WHERE ID_EVENTS = ? AND E_DATE > NOW()');
     $req->execute(array($e_id));
     if(!$donnee = $req->fetch())
     {

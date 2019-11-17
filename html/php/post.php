@@ -17,7 +17,7 @@ else
   }
   else
   {
-    $req = $bdd->prepare('SELECT ID_EVENTS FROM EVENEMENTS WHERE ID_EVENTS = ?');
+    $req = $bdd->prepare('SELECT ID_EVENTS FROM EVENEMENTS WHERE ID_EVENTS = ? AND E_DATE < NOW()');
     $req->execute(array($e_id));
     if(!$donnee = $req->fetch())
     {
@@ -26,10 +26,21 @@ else
     }
     else
     {
-      if(isset($_FILES['image']) AND $_FILES['image']['error'] == 0)
+      $req_check = $bdd->prepare('SELECT ID_EVENTS FROM INSCRIRE WHERE ID_EVENTS = ? AND ID_MEMBRE = ?');
+      $req_check->execute(array($e_id, $_SESSION['id']));
+
+      if(!$check = $req_check->fetch())
       {
-        if ($_FILES['image']['size'] <= 5242880)
+         $req_check->closeCursor();
+         header('Location: ../events.php');
+      } 
+      else
+      {
+        $req_check->closeCursor();
+        if(isset($_FILES['image']) AND $_FILES['image']['error'] == 0)
         {
+          if ($_FILES['image']['size'] <= 5242880)
+          {
                 $infosfichier = pathinfo($_FILES['image']['name']);
                 $extension_upload = $infosfichier['extension'];
                 $extensions_autorisees = array('jpg', 'jpeg', 'gif', 'png');
@@ -55,22 +66,22 @@ else
                    <p>Le fichier possède une extention non autorisée. Extention autorisé : jpg, jpeg, gif, png.<br />
                 <?php   
                 }
+          }
+          else
+          {?>
+             <h1>Fichier trop volumineux</h1>
+             <p>Le fichier envoyé est trop gros. Taille max : 5 Mo<br />
+           <?php   
+          }
         }
         else
         {?>
-           <h1>Fichier trop volumineux</h1>
-           <p>Le fichier envoyé est trop gros. Taille max : 5 Mo<br />
-         <?php   
+          <h1>Erreur lors de l'upload</h1>
+          <p>Une erreur s'est produite lors de l'upload de l'image. Veuillez contacter l'adminstrateur du site.<br />
+        <?php  
         }
       }
-      else
-      {?>
-        <h1>Erreur lors de l'upload</h1>
-        <p>Une erreur s'est produite lors de l'upload de l'image. Veuillez contacter l'adminstrateur du site.<br />
-      <?php  
-      }
     }
-  }
 }
 ?>
          <a href="../events.php?id_event=<?php echo $e_id; ?>">Retour</a></p>

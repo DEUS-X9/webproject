@@ -152,5 +152,8 @@ article h2,article h1{
     color:#000000;
 }
 
-
+img.item{
+    height:5%;
+    width:5%;
+}
 

@@ -138,7 +138,6 @@ img {vertical-align: middle;}
   <span class="dot" onclick="currentSlide(2)"></span> 
   <span class="dot" onclick="currentSlide(3)"></span> 
 </div>
-imgimgimg
 <?php
   $req1 = $bdd->query('SELECT * FROM CATEGORIE');
   $categories = $req1->fetchAll();img

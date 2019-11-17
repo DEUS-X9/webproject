@@ -49,29 +49,6 @@ if(isset($_COOKIE['mail']) AND isset($_COOKIE['mdp']) AND !isset($_SESSION['id']
   <link rel="icon" type="image/png" href="/webprojet/images/favicon.png" />
 </head>
 <body> 
-	<!-- script pour les cookies -->
-	<script src="https://cc.cdn.civiccomputing.com/8/cookieControl-8.x.min.js%22%3E</script>
-<script>
-    var config = {
-        apiKey: 'ee37b9a968559c92dbad9ce7fe876361563573ab',
-        product: 'COMMUNITY',
-        optionalCookies: [
-            {
-                    name: 'cookies obligatoires/fonctionnels',
-                    label: 'Cookies obligatoires/fonctionnels',
-                    description: '',
-                    cookies: [],
-                    onAccept : function(){},
-                    onRevoke: function(){}
-                }
-        ],
-
-        position: 'LEFT',
-        theme: 'DARK'
-    };
-
-    CookieControl.load( config );
-</script>
  <header>
 	
 			<a href="/webprojet/index.php">

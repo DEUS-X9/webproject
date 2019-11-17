@@ -94,5 +94,6 @@ else
                   <input type="checkbox" id="auto" name="auto" checked/><br />
                   <input type="submit" value="Connection" /><br />
 		</form>
+		<?php require 'php/footer.php'; ?>
 	</body>
 </html>

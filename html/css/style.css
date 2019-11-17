@@ -70,7 +70,7 @@ margin-right: auto;
 }
 
 .info{
-text-size: 80%;
+font-size: 80%;
 color: #4C4C4C;
 }
 
@@ -108,7 +108,7 @@ article h2,article h1{
 
 .metadata{
   margin-left: 50px;
-  text-size: 130%;
+  font-size: 130%;
   color:#f2f2f2;
 }
 

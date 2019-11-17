@@ -16,7 +16,7 @@ if(!isset($_POST['prix1']) OR !isset($_POST['prix2']) OR !isset($_POST['categori
   $categories = $req1->fetchAll();
   foreach($categories as $categorie)
   {?>
-    <h5 class="categorie"><?php echo $categorie['NOM_CATEGORIE']; ?></h5><br />
+    <h4 class="categorie"><?php echo $categorie['NOM_CATEGORIE']; ?></h4><br />
     <?php
     $req2 = $bdd->prepare('SELECT SHOP.ID_ITEM, ITEM, PRIX, DESCRIPTION, CHEMIN FROM SHOP INNER JOIN REPRESENTER ON REPRESENTER.ID_ITEM = SHOP.ID_ITEM INNER JOIN PHOTO ON REPRESENTER.ID_PHOTO = PHOTO.ID_PHOTO WHERE ID_CATEGORIE = ? ORDER BY PRIX DESC');
     $req2->execute(array($categorie['ID_CATEGORIE']));
@@ -26,7 +26,7 @@ if(!isset($_POST['prix1']) OR !isset($_POST['prix2']) OR !isset($_POST['categori
     {?>
       <div class="item">
 	 <a href="shop.php?id_item=<?php echo $article['ID_ITEM']; ?>"><h4><?php echo $article['ITEM']; ?></h4></a>
-	 <img src="photos/<?php echo $article['CHEMIN']; ?>" style="margin-left:90%; height:20%"/>
+	 <img src="photos/<?php echo $article['CHEMIN']; ?>" class="center"/>
 	 <p>Prix : <?php echo $article['PRIX']; ?>€<br /><?php echo nl2br($article['DESCRIPTION']); ?></p>
       </div>
     <?php
@@ -45,7 +45,7 @@ else
   $req1->execute(array($categorie));
   if($d_categorie = $req1->fetch())
   {?>
-        <h5 class="categorie"><?php echo $d_categorie['NOM_CATEGORIE']; ?></h5><br />
+        <h4 class="categorie"><?php echo $d_categorie['NOM_CATEGORIE']; ?></h4><br />
         <?php
         if($ordre_prix == 0)
         {
@@ -63,7 +63,7 @@ else
         {?>
            <div class="item">
 	     <a href="shop.php?id_item=<?php echo $article['ID_ITEM']; ?>"><h4><?php echo $article['ITEM']; ?></h4></a>
-	     <img src="photos/<?php echo $article['CHEMIN']; ?>" style="margin-left:90%; height:20%"/>
+	     <img src="photos/<?php echo $article['CHEMIN']; ?>" class="center"/>
 	     <p>Prix : <?php echo $article['PRIX']; ?>€<br /><?php echo nl2br($article['DESCRIPTION']); ?></p>
            </div>
         <?php
@@ -76,7 +76,7 @@ else
      $categories = $req1->fetchAll();
      foreach($categories as $categorie)
      {?>
-        <h5 class="categorie"><?php echo $categorie['NOM_CATEGORIE']; ?></h5><br />
+        <h4 class="categorie"><?php echo $categorie['NOM_CATEGORIE']; ?></h4><br />
         <?php
         if($ordre_prix == 0)
         {
@@ -94,7 +94,7 @@ else
         {?>
            <div class="item">
 	     <a href="shop.php?id_item=<?php echo $article['ID_ITEM'] ?>"><h4><?php echo $article['ITEM'] ?></h4></a>
-	     <img src="photos/<?php echo $article['CHEMIN'] ?>" style="margin-left:90%; height:20%"/>
+	     <img src="photos/<?php echo $article['CHEMIN'] ?>" class="center"/>
 	     <p>Prix : <?php echo $article['PRIX'] ?>€<br /><?php echo nl2br($article['DESCRIPTION']); ?></p>
            </div>
         <?php

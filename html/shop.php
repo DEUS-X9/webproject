@@ -84,6 +84,10 @@ img {vertical-align: middle;}
 @media only screen and (max-width: 300px) {
   .prev, .next,.text {font-size: 11px}
 }
+
+.flex-container {
+  display: flex;
+}
 </style>
 
 <div class="slideshow-container">img
@@ -117,11 +121,14 @@ img {vertical-align: middle;}
 
 <?php
   $req1 = $bdd->query('SELECT * FROM CATEGORIE');
-  $categories = $req1->fetchAll();img
+  $categories = $req1->fetchAll();
 ?>
 
 <form id="filtres">
-   Filtrer par :<br />
+
+<div class="flex-container">
+	
+  <div>   Filtrer par :
    <label for="categorie">Catégorie : </label>
    <select name="categorie" id="categorie">
    <option value="0" selected>Toutes</option>
@@ -131,8 +138,9 @@ img {vertical-align: middle;}
       echo '<option value="' . $categorie['ID_CATEGORIE'] . '">' . $categorie['NOM_CATEGORIE'] . '</option>';
     }
    ?>
-   </select><br/>
-   <?php
+   </select></div>
+	
+  <div>   <?php
      $req_prix_min = $bdd->query('SELECT PRIX FROM SHOP ORDER BY PRIX LIMIT 0, 1');
      $req_prix_max = $bdd->query('SELECT PRIX FROM SHOP ORDER BY PRIX DESC LIMIT 0, 1');
      $prix_min = $req_prix_min->fetch();
@@ -141,10 +149,20 @@ img {vertical-align: middle;}
    <label for="prix1">Prix (en €) entre : </label>
    <input type="text" name="prix1" id="prix1" value="<?php echo $prix_min['PRIX']; ?>"/>
    <label for="prix2"> et </label>
-   <input type="text" name="prix2" id="prix2" value="<?php echo $prix_max['PRIX']; ?>"/><br /><br />
-   <input type="radio" name="ordre_prix" value="0" id="prix_croissant" checked/> <label for="prix_croissant">Prix croissant</label><br />
-   <input type="radio" name="ordre_prix" value="1" id="prix_decroissant" /> <label for="prix_decroissant">Prix décroissant</label><br /><br />
-   <input id="send" type="submit" value="Filtrer">  <input id="send" type="reset" value="Remettre à 0" />
+   <input type="text" name="prix2" id="prix2" value="<?php echo $prix_max['PRIX']; ?>"/>
+	</div>
+	
+  <div>   <input type="radio" name="ordre_prix" value="0" id="prix_croissant" checked/> <label for="prix_croissant">Prix croissant</label>
+	</div>
+	
+  <div>	
+   <input type="radio" name="ordre_prix" value="1" id="prix_decroissant" /> <label for="prix_decroissant">Prix décroissant</label>
+	</div>  
+	
+	<div>   <input id="send" type="submit" value="Filtrer">  <input id="send" type="reset" value="Remettre à 0" />
+	</div>
+</div>
+		
 </form>  
 
 <br/>
@@ -224,6 +242,4 @@ img {vertical-align: middle;}
   }?>
   </body>
 </html>
-
- 
 

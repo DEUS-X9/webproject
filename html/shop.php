@@ -183,69 +183,9 @@ img {vertical-align: middle;}
 ?>
 <div>
 
-<script>
-      function addEvent(element, event, func) {
-	     if(element.addEventListener)
-		{
-		  element.addEventListener(event, func, false);
-		}
-		else
-		{
-		  element.attachEvent('on' + event, func);
-		}
-	}
-	
-	var formulaire = document.getElementById('filtres');
-        var boutton = document.getElementById('send');
-        var item_box = document.getElementById('items_box');
-	
-	addEvent(boutton, 'click', function(e){
-	  e.preventDefault();
-	  
-	  var xhr = new XMLHttpRequest();
-	  var data = new FormData(formulaire);
-	  
-	  xhr.onloadend = function() {
-	  if(xhr.status == 200)
-	  {
-	    item_box.innerHTML = xhr.responseText;
-	  }
-	  else
-	  {
-	     alert('Erreur lors du filtrage : Erreur ' + xhr.status + '; ' + xhr.statusText);
-	  } 
-	  };
-	  xhr.open('POST', 'ajax/filters.php');
-	  xhr.send(data);
-	});
+<script type="text/javascript" src="js/caroussel_shop.js">    
 </script>
-<script>
-var slideIndex = 1;
-showSlides(slideIndex);
-
-function plusSlides(n) {
-  showSlides(slideIndex += n);
-}
-
-function currentSlide(n) {
-  showSlides(slideIndex = n);
-}
-
-function showSlides(n) {
-  var i;
-  var slides = document.getElementsByClassName("mySlides");
-  var dots = document.getElementsByClassName("dot");
-  if (n > slides.length) {slideIndex = 1}    
-  if (n < 1) {slideIndex = slides.length}
-  for (i = 0; i < slides.length; i++) {
-      slides[i].style.display = "none";  
-  }
-  for (i = 0; i < dots.length; i++) {
-      dots[i].className = dots[i].className.replace(" active", "");
-  }
-  slides[slideIndex-1].style.display = "block";  
-  dots[slideIndex-1].className += " active";
-}
+<script type="text/javascript" src="js/ajax_shop.js">
 </script>
   <?php
   }

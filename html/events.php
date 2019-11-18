@@ -631,6 +631,8 @@ function month($month_p) {
                  {
                     header('Location: events.php');
                  }
-             ?>
+             
+               require('php/footer.php');
+          ?>
 	</body>
 </html>

@@ -120,7 +120,7 @@ else if(isset($_POST['pay']))
                      {
                        $nombre['total'] = 0;
                      } 
-                     echo 'Total : ' . $total . '€ (total article : ' . $nombre['total'] .')'; 
+                     echo '<p>Total : ' . $total . '€ (total article : ' . $nombre['total'] .')</p>'; 
                    ?>
                    </h5>
                    <div id="boutton_form">

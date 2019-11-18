@@ -252,7 +252,7 @@
         $req_img->execute(array($id_item));
         $images = $req_img->fetchAll(); ?>
         <h2><?php echo $article['ITEM']; ?></h2>
-        <a href="shop.php">Retour</a><br /><br />
+        <p><a href="shop.php">Retour</a></p><br /><br />
         <p>Description : <?php echo nl2br($article['DESCRIPTION']); ?></p>
         <p>Prix : <?php echo $article['PRIX']; ?></p>
 <?php

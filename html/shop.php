@@ -1,17 +1,67 @@
 <?php require 'php/header.php'; ?>
 <h1>Boutique</h1>
 <?php 
-    if(isset($_SESSION['id']) && !isset($_SESSION['']))
+    //On affiche le panier si la session existe
+    if(isset($_SESSION['id']))
     {
-      $req_nombre = $bdd->prepare('SELECT SUM(NOMBRE) AS total FROM ENREGISTRER INNER JOIN PANIER ON PANIER.ID_PANIER = ENREGISTRER.ID_PANIER WHERE PANIER.ID_MEMBRE = ? GROUP BY ENREGISTRER.ID_ITEM');
-      $req_nombre->execute(array($_SESSION['id']));
-      $nombre = $req_nombre->fetch();
+      if(isset($_SESSION['id_panier']))
+      {
+        $req_nombre = $bdd->prepare('SELECT SUM(NOMBRE) AS total FROM ENREGISTRER WHERE ID_PANIER = ?');
+        $req_nombre->execute(array($_SESSION['id_panier']));
+        $nombre = $req_nombre->fetch();
+        if($nombre['total'] == NULL)
+        {
+          $nombre['total'] = 0;
+        } 
+      }
+      else
+      {
+        $req = $bdd->prepare('SELECT ID_PANIER FROM PANIER WHERE ID_MEMBRE = ? ORDER BY DATE DESC LIMIT 0, 1');
+        $req->execute(array($_SESSION['id']));
+       
+        if(!$donnee = $req->fetch())
+        {
+          $req->closeCursor();
+          $req = $bdd->prepare('INSERT INTO PANIER(ID_MEMBRE) VALUES(?)');
+          $req->execute(array($_SESSION['id']));
+          $_SESSION['id_panier'] = $bdd->lastInsertId();
+        }
+        else
+        {
+          $req->closeCursor();
+          $req = $bdd->prepare('SELECT ID FROM VENTE WHERE ID_PANIER_DONNE_LIEU = ?');
+          $req->execute(array($donnee['ID_PANIER']));
+         
+          if(!$donnee2 = $req->fetch())
+          {
+            $req->closeCursor();
+            $_SESSION['id_panier'] = $donnee['ID_PANIER'];
+          }
+          else
+          {
+            $req->closeCursor();
+            $req = $bdd->prepare('INSERT INTO PANIER(ID_MEMBRE) VALUES(?)');
+            $req->execute(array($_SESSION['id']));
+            $_SESSION['id_panier'] = $bdd->lastInsertId();
+          } 
+        }
+        $nombre = array('total' => 0);
+      }
       ?>
       <p><a href="basket.php">Voir mon panier (<?php echo $nombre['total']; ?>)</a></p>
     <?php
-    } 
+    }
+
+    //On teste si on est sur la page normale
     if(!isset($_GET['admin']) AND !isset($_GET['id_item']))
-    {?>
+    {
+       //On affiche la page administration si l'utilisateur a les droits
+       if(isset($_SESSION['droit']) AND ($_SESSION['droit'] == 2 OR $_SESSION['droit'] == 4))
+       {?>
+          <p><a href="shop.php?admin=1">Administration</a></p>
+        <?php
+       }?>
+
      <h2>Nos meilleures ventes : </h2>
      <style>
       * {box-sizing: border-box}
@@ -87,20 +137,28 @@
       display: flex;
       }
      </style>
+
+     <?php
+       $req_carroussel = $bdd->query('SELECT SUM(ENREGISTRER.NOMBRE) AS Total, SHOP.ITEM, PHOTO.CHEMIN FROM ENREGISTRER INNER JOIN SHOP ON SHOP.ID_ITEM = ENREGISTRER.ID_ITEM INNER JOIN REPRESENTER ON REPRESENTER.ID_ITEM = ENREGISTRER.ID_ITEM INNER JOIN PHOTO ON PHOTO.ID_PHOTO = REPRESENTER.ID_PHOTO GROUP BY ENREGISTRER.ID_ITEM ORDER BY Total DESC LIMIT 0, 3');
+
+       $donnee1 = $req_carroussel->fetch();
+       $donnee2 = $req_carroussel->fetch();
+       $donnee3 = $req_carroussel->fetch();
+     ?>
      <!-- Slideshow container -->
      <div class="slideshow-container">
        <!-- Full-width images with number and caption text -->
        <div class="mySlides">
-        <img src="" style="width:100%">
-       <div class="text">Caption Text</div>
+        <img src="photos/<?php echo $donnee1['CHEMIN']; ?>" style="width:100%">
+       <div class="text"><?php echo $donnee1['ITEM']; ?></div>
       </div>
       <div class="mySlides">
-          <img src="" style="width:100%">
-          <div class="text">Caption Two</div>
+          <img src="photos/<?php echo $donnee2['CHEMIN']; ?>" style="width:100%">
+          <div class="text"><?php echo $donnee2['ITEM']; ?></div>
       </div>
       <div class="mySlides">
-          <img src="" style="width:100%">
-          <div class="text">Caption Three</div>
+          <img src="photos/<?php echo $donnee3['CHEMIN']; ?>" style="width:100%">
+          <div class="text"><?php echo $donnee3['ITEM']; ?></div>
       </div>
       <!-- Next and previous buttons -->
       <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
@@ -194,6 +252,7 @@
         $req_img->execute(array($id_item));
         $images = $req_img->fetchAll(); ?>
         <h2><?php echo $article['ITEM']; ?></h2>
+        <a href="shop.php">Retour</a><br /><br />
         <p>Description : <?php echo nl2br($article['DESCRIPTION']); ?></p>
         <p>Prix : <?php echo $article['PRIX']; ?></p>
 <?php
@@ -208,7 +267,7 @@
       <form method="post" action="basket.php">
         Mettre dans le panier<br />
         <input type="text" name="id_item" value="<?php echo $id_item; ?>" hidden/>
-        <label for="nombre">Nombre : </label> <input type="number" name="nombre" id="nombre" /><br /><br />
+        <label for="nombre">Nombre : </label> <input type="number" value="1" name="nombre" id="nombre" autofocus/><br /><br />
         <input type="submit" value="Mettre dans mon panier" />
       </form>
     <?php
@@ -225,6 +284,7 @@
        {
          if($_SESSION['droit'] == 2 OR $_SESSION['droit'] == 4)
          {?>
+           <p><a href="shop.php">Retour</a></p>
            <h4>Gestion articles</h4>
            <div id="item_admin_box">
              <?php
@@ -288,7 +348,7 @@
            </form>
            <br /><h4>Ajouter catégorie</h4>
            <form id="form_add_cat">
-               <label for="nom_item">Nom : </label><input type="text" name="nom_item" id="nom_item"/><br />
+               <label for="nom_cat">Nom : </label><input type="text" name="nom_cat" id="nom_cat"/><br />
 	       <input id="form_add_submit_cat" type="submit" value="Ajouter" /><br />
            </form>
            <script>
@@ -362,6 +422,7 @@
 	           if(xhr.status == 200)
 	           {
 	             cat_item_box.innerHTML = xhr.responseText;
+                     formulaire_add_cat.reset();
 	           }
 	           else
 	           {

@@ -53,7 +53,6 @@ else
           $req1 = $bdd->prepare('INSERT INTO SHOP(ITEM, PRIX, DESCRIPTION, ID_CATEGORIE) VALUES(?, ?, ?, ?)');
           $req1->execute(array($nom_item, $prix_item, $desc_item, $cat_item));
           $id_item = $bdd->lastInsertId();
-
           $req1->closeCursor();
 
           //On upload le fichier
@@ -106,7 +105,9 @@ else
 		 http_response_code(500);
 	    }
 	    else
-	    {?>
+	    {
+                  $req = $bdd->query('SELECT ID_ITEM, ITEM, PRIX, DESCRIPTION, ACTIF, NOM_CATEGORIE FROM SHOP INNER JOIN CATEGORIE ON CATEGORIE.ID_CATEGORIE = SHOP.ID_CATEGORIE');
+                  ?>
                   <table class="table table-striped table-dark">
   		  <thead>
     			<tr>

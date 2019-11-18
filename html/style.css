@@ -3,15 +3,6 @@ body {
     background-origin: padding-box;
     background-color: #f2f2f2;
     background-repeat: no-repeat;
-    font-family: arial;
-    height: 100%;
-    padding: 1px;
-    position: relative;
-    width: 100%;
-    position: sticky;
-
-}
-
 
 
 header {
@@ -62,25 +53,25 @@ form {
 }
 
 img.center {
-height:30%;
-width:30%;
-display: block;
-margin-left: auto;
-margin-right: auto;
+  height:30%;
+  width:30%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .info{
-font-size: 80%;
-color: #4C4C4C;
+  font-size: 80%;
+  color: #4C4C4C;
 }
 
 article {
-   background-color:  #000000;
-   padding: 30px;
-   margin: 50px;
-   text-align: justify;
-   color: #d69c2f;
-   border-radius: 10px;
+  background-color:  #000000;
+  padding: 30px;
+  margin: 50px;
+  text-align: justify;
+  color: #d69c2f;
+  border-radius: 10px;
 }
 
 article h2,article h1{
@@ -112,55 +103,55 @@ article h2,article h1{
 }
 
 .com{
-    color:#000000;
-    background-color: #c2c2c2;
-    border-radius: 20px;
-    margin-left:10px;
+   color:#000000;
+   background-color: #c2c2c2;
+   border-radius: 20px;
+   margin-left:10px;
    margin-right:60%;
-    padding:10px;
+   padding:10px;
 }
 
 .forum{
-    background-color: #ffffff;
-    border-radius: 20px;
-    margin: 30px;
-    padding-bottom: 40px;
-      padding-bottom: 15px;
+   background-color: #ffffff;
+   border-radius: 20px;
+   margin: 30px;
+   padding-bottom: 40px;
+   padding-bottom: 15px;
 
 }
 
 .pseudo{
-    color:#6e6e6e;
+   color:#6e6e6e;
 }
 
 .item{
-      border: solid #4d75bb;
-
-    color:#4d75bb;
-    background-color: #ffffff;
-    border-radius: 13px;
-    margin-top: 20px;
-    margin-bottom: 30px;
-    margin-left:50px;
-    margin-right:50px;
-    padding-top:20px;
-    padding-bottom:20px;
+   border: solid #4d75bb;
+   color:#4d75bb;
+   background-color: #ffffff;
+   border-radius: 13px;
+   margin-top: 20px;
+   margin-bottom: 30px;
+   margin-left:50px;
+   margin-right:50px;
+   padding-top:20px;
+   padding-bottom:20px;
 }
 
 .item p{
-    color:#000000;
+   color:#000000;
 }
 
 .flex-container{
-    display: flex;
-    font-size: 70%;
+   display: flex;
+   font-size: 70%;
 }
 
 .footer{
-    margin-top:70px;
-    padding:30px;
-    background-color: #a3a3a3;
-    color:#f2f2f2;
-    font-size:80%;
-    text-align: center;
+   margin-top:40%;
+   padding:30px;
+   background-color: #a3a3a3;
+   color:#f2f2f2;
+   font-size:80%;
+   text-align: center;
 }
+

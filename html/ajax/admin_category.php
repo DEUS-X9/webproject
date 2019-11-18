@@ -51,6 +51,7 @@ else
                   //Tant qu'il y a des articles, on génère les lignes
 		  while($donnees = $req->fetch())
 		  {
+                      $req = $bdd->query('SELECT ID_ITEM, ITEM, PRIX, DESCRIPTION, ACTIF, NOM_CATEGORIE FROM SHOP INNER JOIN CATEGORIE ON CATEGORIE.ID_CATEGORIE = SHOP.ID_CATEGORIE');
 		      echo '    <tr><th scope="row"> ' . $donnees['ID_ITEM'] . '</th><td>' . $donnees['ITEM']. '</td><td>' . $donnees['NOM_CATEGORIE']. '</td><td>' . $donnees['PRIX']. '</td><td>';
                       //SI l'article est disponible à la vente, on ajoute la fonction supprimer
                       if($donnees['ACTIF'] == 1)
@@ -105,7 +106,9 @@ else
 		 http_response_code(500);
 	    }
 	    else
-	    {?>
+	    {
+                  $req = $bdd->query('SELECT ID_ITEM, ITEM, PRIX, DESCRIPTION, ACTIF, NOM_CATEGORIE FROM SHOP INNER JOIN CATEGORIE ON CATEGORIE.ID_CATEGORIE = SHOP.ID_CATEGORIE');
+                  ?>
                   <table class="table table-striped table-dark">
   		  <thead>
     			<tr>

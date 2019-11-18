@@ -133,6 +133,7 @@ else if(isset($_POST['pay']))
                        <input type="submit" value="Payer <?php echo $total; ?>€" />
                      </form>
                    </div>
+                   <p>Si vous achetez nos articles, vous acceptez nos <a href="cgv/cgv.docx">Conditions Générales de Vente</a></p>
                   <?php
                    $req->closeCursor();
                    $req_nombre->closeCursor();

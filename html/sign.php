@@ -78,6 +78,33 @@ if(isset($_POST['nom']) AND isset($_POST['fnom']) AND isset($_POST['email']) AND
                  'id_region' => $selectedRegion));
 		
 		 $_SESSION['prem'] = false;
+
+
+                 $mail = "Bonjour " .  strtoupper($nom) . " " . ucfirst($fnom) . ",\n\nMerci de nous faire confiance et s'être inscit à notre site.\n\nBonne réception.\nL'Equipe du BDE\n\nCeci est un mail généré automatiquement. Merci de ne pas répondre.";
+
+                 $mail_html = nl2br($mail);
+
+                 $boundary = "-----=".md5(rand());
+
+                 //Création du header de l'e-mail.
+                 $header = "From: \"Site BDE CESI\"<web@webfacile76.fr>\n";
+                 $header .= "Reply-to: \"Site BDE CESI\" <web@webfacile76.fr>\n";
+                 $header .= "MIME-Version: 1.0\n";
+                 $header .= "Content-Type: multipart/alternative;\n boundary=\"$boundary\"\n";
+                          
+                 //Définition du message
+                 $message = "\n--" . $boundary . "\n";
+                 $message .= "Content-Type: text/plain; charset=\"utf8\"\n";
+                 $message .= "Content-Transfer-Encoding: 8bit\n";
+                 $message .= "\n" . $mail . "\n";
+                 $message .= "\n--" . $boundary . "\n";
+                 $message .= "Content-Type: text/html; charset=\"utf8\"\n";
+                 $message .= "Content-Transfer-Encoding: 8bit\n";
+                 $message .= "\n" . $mail_html . "\n";
+                 $message .= "\n--" . $boundary . "--\n";
+                 $message .= "\n--" . $boundary . "--\n";
+                 
+                 mail($email, 'Inscription site BDE', $message, $header, NULL);
                  header('Location: login.php');
                }
                else

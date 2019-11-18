@@ -399,7 +399,7 @@ function month($month_p) {
                                 $req2->execute(array($e_id, $_SESSION['id']));
                                 if(!$test = $req2->fetch())
                                 {
-                                   echo '<a class="linkpost" href="php/e_register.php?e_id=' . $event['ID_EVENTS'] .'">S\'inscrire</a><br />';
+                                   echo '<a class="linkpost" href="php/e_register.php?e_id=' . $donnee['ID_EVENTS'] .'">S\'inscrire</a><br />';
                                 }
                                 else
                                 {

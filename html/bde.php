@@ -28,8 +28,6 @@ function test_reg2($arg1, $arg2)
 
 $req_region = $bdd->query("SELECT * FROM REGION");
 $regions = $req_region->fetchAll(); 
-$req_droit = $bdd->query("SELECT * FROM TYPE_UTILISATEUR");
-$droits = $req_droit->fetchAll(); 
 $id = "";
 
 if(!isset($_SESSION['id']))
@@ -51,6 +49,8 @@ else if(isset($_POST['nom']) AND isset($_POST['fnom']) AND isset($_POST['email']
 
      try
      {
+        $req_droit = $bdd->prepare("SELECT * FROM TYPE_UTILISATEUR WHERE TYPE_UTILISATEUR <= ?");
+        $req_droit->execute(array($_SESSION['droit']));
         if($nom == '' OR $fnom == '' OR $email == '' OR $selectedRegion == '' OR $selectedFct == '')
         {
            $id = "empty";
@@ -73,8 +73,15 @@ else if(isset($_POST['nom']) AND isset($_POST['fnom']) AND isset($_POST['email']
 
                if($donnees = $req->fetch())
                {
-                 $req2 = $bdd->prepare('UPDATE MEMBRE SET NOM = ?, PRENOM = ?, MAIL = ?, ID_REGION = ?, TYPE_UTILISATEUR = ? WHERE ID_MEMBRE = ?');
-                 $req2->execute(array($nom, $fnom, $email, $selectedRegion, $selectedFct, $donnees['ID_MEMBRE']));
+                 if($donnees['ID_REGION'] != $_SESSION['id_region'] AND ($_SESSION['droit'] == 2 OR $donnees['TYPE_UTILISATEUR'] >= 3))
+                 {
+                    header('Location: bde.php');
+                 }
+                 else
+                 {
+                   $req2 = $bdd->prepare('UPDATE MEMBRE SET NOM = ?, PRENOM = ?, MAIL = ?, ID_REGION = ?, TYPE_UTILISATEUR = ? WHERE ID_MEMBRE = ?');
+                   $req2->execute(array($nom, $fnom, $email, $selectedRegion, $selectedFct, $donnees['ID_MEMBRE']));
+                 }
                }
                else
                {
@@ -95,17 +102,24 @@ else if(isset($_POST['nom']) AND isset($_POST['fnom']) AND isset($_POST['email']
 }
 else if(isset($_GET['compte']) AND isset($_GET['delete']))
 {
-  $user_del = (int)$_GET['compte'];
-  $req = $bdd->prepare('SELECT * FROM MEMBRE WHERE ID_MEMBRE = ?');
-  $req->execute(array($user_del));
-
-  if($req->columnCount() != 0)
+  if($donnees['ID_REGION'] != $_SESSION['id_region'] AND ($_SESSION['droit'] == 2 OR $donnees['TYPE_UTILISATEUR'] >= 3))
   {
-    $req2 = $bdd->prepare('UPDATE MEMBRE SET actif = 0 WHERE ID_MEMBRE = ?');
-    $req2->execute(array($user_del));
+     header('Location: bde.php');            
   }
+  else
+  {
+    $user_del = (int)$_GET['compte'];
+    $req = $bdd->prepare('SELECT * FROM MEMBRE WHERE ID_MEMBRE = ? ');
+    $req->execute(array($user_del));
 
-  header('Location: bde.php');
+    if($req->columnCount() != 0)
+    {
+      $req2 = $bdd->prepare('UPDATE MEMBRE SET actif = 0 WHERE ID_MEMBRE = ?');
+      $req2->execute(array($user_del));
+    }
+
+    header('Location: bde.php');
+  }
 }
 ?>
 		<h1>Page d'administration</h1>
@@ -113,7 +127,15 @@ else if(isset($_GET['compte']) AND isset($_GET['delete']))
 		<?php 
 		if(!isset($_GET['compte']))
 		{
-		  $req = $bdd->query('SELECT * FROM MEMBRE');
+                  if($_SESSION['droit'] == 2)
+                  {
+		    $req = $bdd->prepare('SELECT * FROM MEMBRE WHERE ID_REGION = ? AND TYPE_UTILISATEUR < 3');
+                    $req->execute(array($_SESSION['id_region']));
+                  }
+                  else
+                  {
+                    $req = $bdd->query('SELECT * FROM MEMBRE');
+                  }
 		  
 		  if($req->columnCount() == 0)
 		  {
@@ -152,8 +174,8 @@ else if(isset($_GET['compte']) AND isset($_GET['delete']))
 		  <p><a href="bde.php">Retour</a></p><br />
 		<?php
 		  $compte = (int)htmlspecialchars($_GET['compte']);
-		  $req = $bdd->prepare('SELECT * FROM MEMBRE WHERE ID_MEMBRE = ?');
-		  $req->execute(array($compte));
+		  $req = $bdd->prepare('SELECT * FROM MEMBRE WHERE ID_MEMBRE = ? AND TYPE_UTILISATEUR < ?');
+		  $req->execute(array($compte, $_SESSION['droit']));
 
                   if($req->columnCount() == 0)
 		  {
@@ -161,7 +183,11 @@ else if(isset($_GET['compte']) AND isset($_GET['delete']))
 		  }
 		  else if($donnee = $req->fetch() AND $donnee['actif'] == 1)
 		  {
-                ?>
+                      if($donnee['ID_REGION'] != $_SESSION['id_region'] AND ($_SESSION['droit'] == 2 OR $donnee['TYPE_UTILISATEUR'] >= 3))
+                      {
+                        header('Location: bde.php');
+                      }
+                      ?>
 		  <form method="post">
 			<h3>Compte <?php echo $compte ?></h3><br />
                         <span class="error">
@@ -196,6 +222,9 @@ else if(isset($_GET['compte']) AND isset($_GET['delete']))
 		       <lablel for="fonction">Fonction : </lablel>
        		       <select name="fonction" id="fonction" required>
 		       <?php  
+                         $req_droit = $bdd->prepare("SELECT * FROM TYPE_UTILISATEUR WHERE TYPE_UTILISATEUR <= ?");
+                         $req_droit->execute(array($_SESSION['droit']));
+                         $droits = $req_droit->fetchAll(); 
 		 	 foreach($droits as $element)
                   	 {
 		     	  if($donnee['TYPE_UTILISATEUR'] == $element['TYPE_UTILISATEUR'])
@@ -217,12 +246,11 @@ else if(isset($_GET['compte']) AND isset($_GET['delete']))
 		 }
                  else
                  {
-                    echo '<p>Compte désactivé</p>';
+                    echo '<p>Compte inaccessible</p>';
 	         }
                }
 	       $req->closeCursor();
                $req_region->closeCursor();
-               $req_droit->closeCursor();
                ?>
 	  
 	  
